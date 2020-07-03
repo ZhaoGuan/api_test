@@ -506,6 +506,8 @@ class InspectionMethod:
 
     # response检查格式
     def format_diff(self, case, response, diff=[]):
+        print(case)
+        print(response)
         try:
             # case为list
             if isinstance(case, list):
@@ -522,7 +524,6 @@ class InspectionMethod:
                 diff.append(self.response_data_check(case, response))
         except Exception as e:
             diff.append(False)
-            print("!!!!!")
             print(e)
             print("错误内容:")
             print("case:" + str(case))

@@ -1,0 +1,31 @@
+OPERATION_MODE:
+  #  content
+  single
+SOURCE:
+  online:
+    URL: https://esa.api.5nuthost.com/v1/app/gbwa/config/theme/fonts/list
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    MODE:
+      TYPE:
+        POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+        {"1":2,"3":4}
+DATA_FORMAT:
+    TYPE:
+       ONLY
+     DATA:
+
+
+DATA_CONTENT:
+
+RESPONSE_HEADER:

@@ -27,7 +27,7 @@ def config_reader(yaml_file):
 
 def config_data_path(yaml_file):
     yf = open(yaml_file)
-    yx = yaml.load(yf)
+    yx = yaml.safe_load(yf)
     yf.close()
     return {"data": yx, "path": yaml_file}
 
