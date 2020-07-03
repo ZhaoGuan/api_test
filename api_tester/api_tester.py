@@ -12,7 +12,6 @@ class ApiTester:
     def __init__(self, config, source="online"):
         self.inspection_method = InspectionMethod()
         self.config = config["data"]
-        print(self.config)
         self.source = self.config["SOURCE"][source]
         self.headers_data = self.source["HEADERS"]
         self.url = self.source["URL"]
@@ -53,7 +52,8 @@ class ApiTester:
             self.fail_list.append({"request_data": request_data, "response": response.text})
         try:
             response_json = json.loads(response.text)
-        except:
+        except Exception as e:
+            print("Json 解析错误", e)
             response_json = False
             self.fail_list.append({"request_data": request_data, "response": response.text})
         if self.assert_data_format is not None and response_code_result and response_json:

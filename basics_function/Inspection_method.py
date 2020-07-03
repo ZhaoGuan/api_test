@@ -52,17 +52,6 @@ class InspectionMethod:
                       "EMPTY_STRING_CHECK": True
                       }
         # host+path 和 url+MD5 判断应该做 配置文件
-        self.host_list = ["host", "originHost", "picHost", "videoHost"]
-        self.path_list = ["originPath", "path", "videoPath", "avatarPath", "cover", "url", "themeDetailImgUrls",
-                          "themeDownload", "homeImageUrl"]
-        self.host_path_map = {"path": "picHost", "originPath": "originHost", "videoPath": "videoHost",
-                              "avatarPath": "picHost", "cover": "picHost",
-                              "url": "host|PASS", "homeImageUrl": "host", "themeDownload": "host",
-                              "themeDetailImgUrls": "host"}
-        self.md5_list = ["check_code", "diff_check_code"]
-        self.md5_url_map = {"check_code": "url", "diff_check_code": "diff_url"}
-        self.host_data = {}
-        self.response_host_lit = []
         self.requests = requests
         self.url_fail = []
 
@@ -173,8 +162,8 @@ class InspectionMethod:
             # 遇到list进行处理
             try:
                 i = int(i)
-            except:
-                pass
+            except Exception as e:
+                print(e)
             # 对层级错误进行报错
             try:
                 if i == "random":
@@ -261,94 +250,6 @@ class InspectionMethod:
                 else:
                     self.format_diff(i, e, diff)
 
-    def keys_in_list(self, keys, list_data):
-        key_list = []
-        for key in keys:
-            if key in list_data:
-                key_list.append(key)
-        if key_list != []:
-            return key_list
-        else:
-            return None
-
-    def pic_case_data_url_update_case(self, case, url_stream, key):
-        if url_stream is not False:
-            pic_size = self.get_pic_size(url_stream)
-            case["width"] = str(pic_size["width"])
-            case["height"] = str(pic_size["height"])
-            case[key] = "$$$"
-        else:
-            case["width"] = str("URL_WRONG")
-            case["height"] = str("URL_WRONG")
-            case[key] = "$$$"
-
-    def pic_case_data_url_update_case_list(self, case, url_stream, key):
-        width = ""
-        height = ""
-        if url_stream is not False:
-            pic_size = self.get_pic_size(url_stream)
-            case[key] = "$$$"
-            width = str(pic_size["width"])
-            height = str(pic_size["height"])
-        return {"width": width, "height": height}
-
-    def pic_url_stitching(self, key_list, case, response):
-        if len(key_list) == 1:
-            response_value = self.path_combination(key_list[0], response[key_list[0]])
-            url_stream = self.get_url_stream(response_value)
-            self.pic_case_data_url_update_case(case, url_stream, key_list[0])
-        else:
-            width = ""
-            height = ""
-            for key in key_list:
-                response_value = self.path_combination(key, response[key])
-                url_stream = self.get_url_stream(response_value)
-                size_data = self.pic_case_data_url_update_case_list(case, url_stream, key)
-                width = width + size_data["width"] + "|"
-                height = height + size_data["height"] + "|"
-            if width != "" and height != "":
-                case["width"] = width[:-1]
-                case["height"] = height[:-1]
-            print(case)
-
-    # 以case为基础获取图片宽高用例更新case
-    def pic_case_data(self, case, response):
-        key_list = self.keys_in_list(list(case.keys()), self.path_list)
-        if 'width' in list(case.keys()) and 'height' in list(case.keys()) and (
-                ('url' in list(case.keys())) or ('pic_url' in list(case.keys())) or
-                (key_list is not None and self.host_data != {})):
-            if "url" in list(case.keys()) and (url_parse(response["url"]) is not False):
-                url_stream = self.get_url_stream(response["url"])
-                self.pic_case_data_url_update_case(case, url_stream, "url")
-            elif "pic_url" in list(case.keys()) and (url_parse(response["url"]) is not False):
-                url_stream = self.get_url_stream(response["pic_url"])
-                self.pic_case_data_url_update_case(case, url_stream, "pic_url")
-            else:
-                # path 拼接
-                self.pic_url_stitching(key_list, case, response)
-                # 暂时不检查size
-            # if "size" in list(case.keys()):
-            #     case["size"] = len(str(url_stream.getvalue()))
-        return {"case": case, "response": response}
-
-    # 以response为基础获取图片宽高用例更新case ,具体值显示会出现错误 弃掉
-    def pic_response_data(self, case, response):
-        key_list = self.keys_in_list(list(response.keys()), self.path_list)
-        if 'width' in list(response.keys()) and 'height' in list(response.keys()) and (
-                ('url' in list(response.keys())) or ('pic_url' in list(response.keys())) or (
-                key_list is not None and self.host_data != {})):
-            # .com 的判断是一个临时做法
-            if "url" in list(response.keys()) and (url_parse(response["url"]) is not False):
-                url_stream = self.get_url_stream(response["url"])
-                self.pic_case_data_url_update_case(case, url_stream, "url")
-            elif "pic_url" in list(response.keys()) and (url_parse(response["url"]) is not False):
-                url_stream = self.get_url_stream(response["pic_url"])
-                self.pic_case_data_url_update_case(case, url_stream, "pic_url")
-            else:
-                # path 拼接
-                self.pic_url_stitching(key_list, case, response)
-        return {"case": case, "response": response}
-
     def dict_key_list_cout(self, key, response_list, diff=[]):
         for check_key, check_count in self.extra["DICT_LIST_COUNT"].items():
             if check_key == key and len(response_list) > int(check_count):
@@ -357,141 +258,24 @@ class InspectionMethod:
                 print("$$$$$$$$$$$$$$$$$$$")
                 diff.append(False)
 
-    # 只在最外层不用递归
-    def get_host_data(self, data):
-        for key, value in data.items():
-            if (key in self.host_list) and (key not in self.response_host_lit):
-                self.response_host_lit.append(key)
-                self.host_data[key] = value
-            if isinstance(value, dict):
-                self.get_host_data(value)
-
-    def more_path_combination(self, host, value):
-        host = host.split("|")
-        for i in host:
-            if i in self.response_host_lit:
-                if value[0] != "/" and url_parse(value) is False:
-                    value = "/" + value
-                return self.host_data[i] + value
-            elif host == "PASS":
-                return value
-
-    def _path_combination(self, key, value):
-        host = self.host_path_map[key]
-        if "|" in host:
-            self.more_path_combination(host, value)
-        else:
-            if value[0] != "/" and url_parse(value) is False:
-                value = "/" + value
-            new_value = self.host_data[self.host_path_map[key]] + value
-            return new_value
-
-    # str的path和host进行拼接
-    def path_combination(self, key, value):
-        new_value = value
-        if key in self.path_list and isinstance(value, str) and self.host_data != {} and url_parse(value) is False:
-            try:
-                self._path_combination(key, value)
-            except Exception as e:
-                print("########")
-                print(str(key))
-                print(str(e))
-                print("出现不匹配的host或者path")
-                print("response数据为:")
-                print(str(value))
-        return new_value
-
-    def more_path_combination_list(self, host, value):
-        new_value = value
-        host = host.split("|")
-        for i in host:
-            if i in self.response_host_lit:
-                value_result = []
-                for value_ in value:
-                    if value_[0] != "/" and url_parse(value) is False:
-                        value_ = "/" + value_
-                    value_result.append(self.host_data[i] + value_)
-                new_value = value_result
-                break
-            elif host == "PASS":
-                new_value = value
-        return new_value
-
-    def _path_combination_list(self, key, value):
-        host = self.host_path_map[key]
-        if "|" in host:
-            new_value = self.more_path_combination_list(host, value)
-        else:
-            value_result = []
-            for value_ in value:
-                if value_[0] != "/" and url_parse(value) is False:
-                    value_ = "/" + value_
-                value_result.append(self.host_data[self.host_path_map[key]] + value_)
-            new_value = value_result
-        return new_value
-
-    # list的path和host的拼接
-    def path_combination_list(self, key, value):
-        new_value = value
-        if key in self.path_list and self.host_data != {}:
-            try:
-                new_value = self._path_combination_list(key, value)
-            except Exception as e:
-                print("########")
-                print(str(key))
-                print(str(e))
-                print("出现不匹配的host或者path")
-                print("response数据为:")
-                print(str(value))
-        return new_value
-
-    # md5 替换
-    def case_md5_replace(self, response, case):
-        response_keys = list(response.keys())
-        for i in response_keys:
-            if i in self.md5_list:
-                md5_url_key = self.md5_url_map[i]
-                try:
-                    if ("null" in case[i]) and (response[i] is None or response[i] is "null"):
-                        case[i] = "$$$"
-                    else:
-                        response_content = requests.get(response[md5_url_key], timeout=self.request_time_out)
-                        md5 = get_response_content_md5(response_content.content)
-                        case[i] = md5
-                except Exception as e:
-                    print("MD5获取时出现错误")
-                    print(e)
-        return case
-
     def _format_dict(self, case, response, key, diff):
-        if isinstance(case[key], list):
+        if isinstance(case[key], list) and isinstance(response[key], list):
             if self.extra["DICT_LIST_COUNT"] is not None:
                 self.dict_key_list_cout(key, response[key], diff=diff)
             if (isinstance(case[key], dict) and ("$$$" not in case[key])) or (
                     isinstance(case[key], str) and (case[key] != response[key])):
                 self.format_diff(case[key], response[key], diff)
             else:
-                response_value = self.path_combination_list(key, response[key])
-                self.format_list(case[key], response_value, diff)
+                self.format_list(case[key], response[key], diff)
         elif isinstance(case[key], str):
             # 待验证
-            response_value = self.path_combination(key, response[key])
-            # diff.append(self.response_data_check(case[key], response[key]))
-            diff.append(self.response_data_check(case[key], response_value))
+            diff.append(self.response_data_check(case[key], response[key]))
         else:
             self.format_diff(case[key], response[key], diff)
 
     # response检查dict类型
     def format_dict(self, case, response, diff=[]):
-        self.get_host_data(response)
         if case.keys() == response.keys():
-            if self.resources_to_test:
-                # 根据response处理会更新case 会出现具体值检查的问题
-                new_response_data = self.pic_response_data(case, response)
-                case = new_response_data["case"]
-                response = new_response_data["response"]
-                # md5 校验替换
-                case = self.case_md5_replace(response, case)
             for key in case.keys():
                 # 值得类型是list进行忽略检查
                 self._format_dict(case, response, key, diff)
@@ -506,11 +290,9 @@ class InspectionMethod:
 
     # response检查格式
     def format_diff(self, case, response, diff=[]):
-        print(case)
-        print(response)
         try:
             # case为list
-            if isinstance(case, list):
+            if isinstance(case, list) and isinstance(response, list):
                 self.format_list(case, response, diff=diff)
             # case 为dict
             elif isinstance(case, dict):
@@ -538,7 +320,8 @@ class InspectionMethod:
         try:
             format_type = case["TYPE"]
             format_data = case["DATA"]
-        except:
+        except Exception as e:
+            print(e)
             format_type = "ONLY"
             format_data = case
         result_list = []
@@ -666,7 +449,8 @@ class InspectionMethod:
     def single_data_content_check(self, structure, case, data, response):
         try:
             structure_list = self.structure_check(structure, response)
-        except:
+        except Exception as e:
+            print(e)
             structure_list = False
         if structure_list or structure == "~all":
             if "!=" in str(case):
