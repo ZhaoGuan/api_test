@@ -33,6 +33,14 @@ def data_content_list_data_case(case):
     return {"check_type": check_type, "check_value": check_value, "replacement": replacement}
 
 
+def response_data_check_other(case, response):
+    if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
+            str(case) == "null" and (response != "null" and response is not None)):
+        return False
+    else:
+        return True
+
+
 class InspectionMethod:
     def __init__(self):
         self.resources_to_test = True
@@ -105,13 +113,6 @@ class InspectionMethod:
             print("Http请求错误")
             return False
 
-    def response_data_check_other(self, case, response):
-        if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
-                str(case) == "null" and (response != "null" and response is not None)):
-            return False
-        else:
-            return True
-
     def response_data_check_url(self, response):
         if self.resources_to_test:
             return self.http_resource(response)
@@ -146,7 +147,7 @@ class InspectionMethod:
             else:
                 return isinstance(response, float)
         else:
-            return self.response_data_check_other(case, response)
+            return response_data_check_other(case, response)
 
     # 返回数据校验
     # 多个可能有一个可以那么就通过
