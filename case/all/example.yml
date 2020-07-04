@@ -4,6 +4,8 @@ OPERATION_MODE:
 SOURCE:
   online:
     URL: https://esa.api.5nuthost.com/v1/app/gbwa/config/theme/fonts/list
+    DATA_TYPE :
+        ONLY
     HEADERS:
       TYPE:
         NORMAL

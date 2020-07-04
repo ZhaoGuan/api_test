@@ -9,6 +9,7 @@ import subprocess
 from basics_function.golable_function import config_reader, config_data_path
 from basics_function.create_case_yaml import create_case_list
 from api_tester.api_tester import ApiTester, single_api_tester
+from api_tester.testcase_maker import TestCaseMaker
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,7 +33,7 @@ def format_assert(api_test):
 @allure.feature("接口测试用例")
 @pytest.mark.parametrize("path,source", run_data)
 def test_template(path, source):
-    config = config_data_path(path)
-    api_test = ApiTester(config, source)
+    case = TestCaseMaker(path, source)
+    api_test = ApiTester(case.case_result(), source)
     request_api(api_test)
     format_assert(api_test)

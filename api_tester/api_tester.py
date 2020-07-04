@@ -11,11 +11,15 @@ import requests
 class ApiTester:
     def __init__(self, config, source="online"):
         self.inspection_method = InspectionMethod()
-        self.config = config["data"]
+        self.config = config
         self.source = self.config["SOURCE"][source]
-        self.headers_data = self.source["HEADERS"]
+        self.headers = self.source["HEADERS"]
+        self.headers_type = self.headers["TYPE"]
+        self.headers_data = self.headers["DATA"]
         self.url = self.source["URL"]
         self.params = self.source["PARAMS"]
+        self.params_type = self.params["TYPE"]
+        self.params_data = self.params["DATA"]
         self.request_mode = self.source["MODE"]["TYPE"]
         self.request_body = self.source["BODY"]
         self.body_type = self.request_body["TYPE"]
@@ -27,18 +31,14 @@ class ApiTester:
         self.response = None
 
     def get_headers(self):
-        header_type = self.headers_data["TYPE"]
-        headers_data = self.headers_data["DATA"]
-        if header_type == "NORMAL":
-            return headers_data
+        if self.headers_type == "NORMAL":
+            return self.headers_data
 
     def get_url(self):
-        url_type = self.params["TYPE"]
-        params_data = self.params["DATA"]
-        if params_data is None:
+        if self.params_data is None:
             return self.url
-        if url_type == "JOIN":
-            return self.url + "?" + urlencode(params_data)
+        if self.params_type == "JOIN":
+            return self.url + "?" + urlencode(self.params_data)
 
     def get_body(self):
         if self.request_mode == "GET":
