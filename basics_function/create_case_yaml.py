@@ -43,7 +43,7 @@ def case_list(folder_name):
 def add_case(case, source, temp_server, resources_to_test):
     case_result = {}
     # temp_server 中网站相关的判断属于临时处理 web 地址的暂时不进行测试"
-    if ("!" not in case) and ("content" not in case) and (".DS_Store" not in case) and (
+    if ("!" not in case) and ("example" not in case) and ("content" not in case) and (".DS_Store" not in case) and (
             (temp_server is True and ("web" not in case)) or temp_server is False):
         case_result.update({case: {"path": case, "source": source, "temp_server": temp_server,
                                    "resources_to_test": resources_to_test}})
@@ -57,7 +57,8 @@ def create_case_list(folder_name, source="online", temp_server=False, resources_
     case_result = {}
     case_list_data = select_case_folder(folder_name)
     for case in case_list_data:
-        if ((folder_name == "all_cases") and ("_all_" not in case)) or (folder_name != "all_cases"):
+        if ((folder_name == "all_cases") and ("_all_" not in case)) or (
+                folder_name != "all_cases"):
             case_result.update(add_case(case, source, temp_server, resources_to_test))
     print(case_result)
     if os.path.exists(PATH + "/../temp/") is False:

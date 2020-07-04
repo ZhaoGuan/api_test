@@ -7,10 +7,12 @@ import pytest
 import allure
 import subprocess
 from basics_function.golable_function import config_reader, config_data_path
+from basics_function.create_case_yaml import create_case_list
 from api_tester.api_tester import ApiTester, single_api_tester
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
+create_case_list("all_cases")
 case_data = config_reader(PATH + '/../temp/cases.yaml')
 run_data = []
 for k, v in case_data.items():
