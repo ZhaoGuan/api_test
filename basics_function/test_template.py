@@ -19,25 +19,20 @@ for k, v in case_data.items():
     run_data.append((v["path"], v["source"]))
 
 
-def request_api(path, source):
-    file_path = path
-    try:
-        run_way = config_reader(file_path)['OPERATION_MODE']
-    except Exception as e:
-        print(e)
-        run_way = 'py'
-    if run_way == 'single':
-        result = single_api_tester(path, source)
-    elif run_way == 'content':
-        result = False
-    else:
-        p = subprocess.Popen('python3 ' + file_path + ' -s ' + source, shell=True, stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT)
-        result = str(p.stdout.read().decode())
-    return run_way, result
+@allure.step
+def request_api(api_test):
+    api_test.api_test()
+
+
+@allure.step
+def format_assert(api_test):
+    api_test.api_assert()
 
 
 @allure.feature("接口测试用例")
 @pytest.mark.parametrize("path,source", run_data)
 def test_template(path, source):
-    request_api(path, source)
+    config = config_data_path(path)
+    api_test = ApiTester(config, source)
+    request_api(api_test)
+    format_api(api_test)

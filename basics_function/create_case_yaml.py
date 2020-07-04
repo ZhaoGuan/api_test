@@ -60,7 +60,6 @@ def create_case_list(folder_name, source="online", temp_server=False, resources_
         if ((folder_name == "all_cases") and ("_all_" not in case)) or (
                 folder_name != "all_cases"):
             case_result.update(add_case(case, source, temp_server, resources_to_test))
-    print(case_result)
     if os.path.exists(PATH + "/../temp/") is False:
         os.mkdir(PATH + "/../temp/")
     with open(PATH + "/../temp/cases.yaml", "w") as case:

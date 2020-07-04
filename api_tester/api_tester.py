@@ -23,6 +23,7 @@ class ApiTester:
         self.assert_data_format = self.config["DATA_FORMAT"]
         self.assert_data_content = self.config["DATA_CONTENT"]
         self.fail_list = []
+        self.requests_data = {"headers": self.get_headers(), "url": self.get_url(), "body": self.get_body()}
         self.response = None
 
     def get_headers(self):
@@ -45,18 +46,18 @@ class ApiTester:
         if self.request_mode == "POST" and self.body_type == "JSON":
             return json.dumps(self.body_data)
 
-    def api_assert(self, response, request_data):
-        if response.status_code == 200:
+    def api_assert(self):
+        if self.response.status_code == 200:
             response_code_result = True
         else:
             response_code_result = False
-            self.fail_list.append({"request_data": request_data, "response": response.text})
+            self.fail_list.append({"request_data": self.requests_data, "response": self.response.text})
         try:
-            response_json = json.loads(response.text)
+            response_json = json.loads(self.response.text)
         except Exception as e:
             print("Json 解析错误", e)
             response_json = False
-            self.fail_list.append({"request_data": request_data, "response": response.text})
+            self.fail_list.append({"request_data": self.requests_data, "response": self.response.text})
         if self.assert_data_format is not None and response_code_result and response_json:
             format_result = self.inspection_method.structure_format_diff(self.assert_data_format, response_json)
             if format_result is False:
@@ -73,17 +74,14 @@ class ApiTester:
             print("Response:", fail["response"])
 
     def api_test(self):
-        headers = self.get_headers()
-        url = self.get_url()
-        body = self.get_body()
-        requests_data = {"headers": headers, "url": url, "body": body}
         if self.request_mode == "GET":
-            response = requests.get(url, headers=headers)
+            response = requests.get(url=self.requests_data["url"], headers=self.requests_data["headers"])
         else:
             if self.body_type == "JSON":
-                response = requests.post(url, json=body)
+                response = requests.post(url=self.requests_data["url"], headers=self.requests_data["headers"],
+                                         json=self.requests_data["body"])
         self.response = response
-        self.api_assert(response, requests_data)
+        # self.api_assert(response, requests_data)
 
 
 def single_api_tester(yaml_path, source="online"):
