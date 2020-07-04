@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>接口自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+table       { font-size: 100%; }
+pre         { }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 16pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    padding: 10px;
+    background-color: #E6E6D6;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 8pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+}
+#header_row {
+    font-weight: bold;
+    color: white;
+    background-color: #777;
+}
+#result_table td {
+    border: 1px solid #777;
+    padding: 2px;
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #6c6; }
+.failClass  { background-color: #c60; }
+.errorClass { background-color: #c00; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>接口自动化测试报告</h1>
+<p class='attribute'><strong>Start Time:</strong> 2020-07-04 17:09:22</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:01.903192</p>
+<p class='attribute'><strong>Status:</strong> Failure 5</p>
+
+<p class='description'>接口自动化测试报告</p>
+</div>
+
+
+
+<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row'>
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>View</td>
+</tr>
+
+<tr class='failClass'>
+    <td>running_template.ApiTest</td>
+    <td>5</td>
+    <td>0</td>
+    <td>5</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',5)">Detail</a></td>
+</tr>
+
+<tr id='ft1.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_http_api_00001__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_indexinfo2_yml: test_http_api_00001__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_indexinfo2_yml</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >
+        fail</a>
+
+    <div id='div_ft1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.1: Test Begin
+字典型key不匹配
+case: dict_keys(['aboutMsb', 'ad', 'consultation', 'indexbanner', 'indexicon', 'msg', 'noticemore', 'notices', 'publishVideoUrl', 'pushVideo', 'status', 'teacherProfile', 'userData'])
+response: dict_keys(['msg', 'status'])
+case: {'aboutMsb': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'ad': {'icon': 'HTTP', 'regtype': 'Int', 'type': 'Int'}, 'consultation': {'icon': 'HTTP', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'indexbanner': [{'icon': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'tile': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'indexicon': [{'icon': 'HTTP', 'order': 'Int', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'msg': 'Str', 'noticemore': 'HTTP', 'notices': [{'content': 'Str', 'headImg': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'source': 'Str', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'publishVideoUrl': 'HTTP', 'pushVideo': [{'avatar': 'HTTP', 'cover': 'HTTP', 'favor': None, 'id': 'Int', 'likeCount': None, 'name': 'Str', 'publishVideoUrl': 'HTTP', 'tagName': None, 'teacherId': 'Int', 'title': 'Str', 'url': 'HTTP'}], 'status': 'Int', 'teacherProfile': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'userData': {'isVip': 'Int'}}
+response: {'msg': '缺少版本信息', 'status': 1}
+Test Over
+Traceback (most recent call last):
+  File "/Users/gz/Desktop/project/MSB_api_test/venv/lib/python3.7/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/running_template.py", line 29, in test_http_api
+    result = single_api_tester(path, source)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 92, in single_api_tester
+    a.api_test()
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 86, in api_test
+    self.api_assert(response, requests_data)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 63, in api_assert
+    self.inspection_method.fail_list_assert()
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/Inspection_method.py", line 296, in fail_list_assert
+    assert False, msg
+AssertionError: 
+	错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['aboutMsb', 'ad', 'consultation', 'indexbanner', 'indexicon', 'msg', 'noticemore', 'notices', 'publishVideoUrl', 'pushVideo', 'status', 'teacherProfile', 'userData']) response: dict_keys(['msg', 'status'])
+	case:{'aboutMsb': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'ad': {'icon': 'HTTP', 'regtype': 'Int', 'type': 'Int'}, 'consultation': {'icon': 'HTTP', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'indexbanner': [{'icon': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'tile': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'indexicon': [{'icon': 'HTTP', 'order': 'Int', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'msg': 'Str', 'noticemore': 'HTTP', 'notices': [{'content': 'Str', 'headImg': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'source': 'Str', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'publishVideoUrl': 'HTTP', 'pushVideo': [{'avatar': 'HTTP', 'cover': 'HTTP', 'favor': None, 'id': 'Int', 'likeCount': None, 'name': 'Str', 'publishVideoUrl': 'HTTP', 'tagName': None, 'teacherId': 'Int', 'title': 'Str', 'url': 'HTTP'}], 'status': 'Int', 'teacherProfile': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'userData': {'isVip': 'Int'}}
+	response:{'msg': '缺少版本信息', 'status': 1}
+	
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.2' class='none'>
+    <td class='failCase'><div class='testcase'>test_http_api_00002__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_lessonlist_yml: test_http_api_00002__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_lessonlist_yml</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >
+        fail</a>
+
+    <div id='div_ft1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.2: Test Begin
+字典型key不匹配
+case: dict_keys(['data', 'extendedData', 'msg', 'status'])
+response: dict_keys(['msg', 'status'])
+case: {'data': ['$$$'], 'extendedData': {'page': {'pageNum': 'Int', 'pages': 'Int', 'size': 'Int'}}, 'msg': 'Str', 'status': 'Int'}
+response: {'msg': '缺少版本信息', 'status': 1}
+Test Over
+Traceback (most recent call last):
+  File "/Users/gz/Desktop/project/MSB_api_test/venv/lib/python3.7/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/running_template.py", line 29, in test_http_api
+    result = single_api_tester(path, source)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 92, in single_api_tester
+    a.api_test()
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 86, in api_test
+    self.api_assert(response, requests_data)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 63, in api_assert
+    self.inspection_method.fail_list_assert()
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/Inspection_method.py", line 296, in fail_list_assert
+    assert False, msg
+AssertionError: 
+	错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['data', 'extendedData', 'msg', 'status']) response: dict_keys(['msg', 'status'])
+	case:{'data': ['$$$'], 'extendedData': {'page': {'pageNum': 'Int', 'pages': 'Int', 'size': 'Int'}}, 'msg': 'Str', 'status': 'Int'}
+	response:{'msg': '缺少版本信息', 'status': 1}
+	
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.3' class='none'>
+    <td class='failCase'><div class='testcase'>test_http_api_00003__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_myInfoV1_yml: test_http_api_00003__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_myInfoV1_yml</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.3')" >
+        fail</a>
+
+    <div id='div_ft1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.3: Test Begin
+字典型key不匹配
+case: dict_keys(['children', 'features', 'msg', 'status', 'version'])
+response: dict_keys(['msg', 'features', 'children', 'status'])
+case: {'children': [{'courseInfo': [{'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'course_tips': 'Str', 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'remainClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'usedClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'userInfo': {'age': 'Int', 'avatar': 'Str', 'birth': 'Str', 'customerService': 'Str', 'flowstatus': 'Int', 'fulltime': 'Str', 'gender': 'Int', 'id': 'Int', 'isVip': 'Bool', 'mmobile': 'Str', 'mobile': 'Str', 'smobile': 'Str', 'tj_mobile': 'Str', 'type': 'Int', 'username': 'Str'}, 'userMall': {'num': 'Int', 'title': 'Str', 'url': 'HTTP'}}], 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'Str'}], 'msg': 'Str', 'status': 'Int', 'version': 'Str'}
+response: {'msg': 'ok', 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2020/07/02/588352137f4b88c4b6a0aadec35b3bff.png', 'type': 5, 'title': '临时课堂', 'url': '', 'order': 8}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/03/04/edfbf9a209ef9fe830fcc98af6558e5b.png', 'type': 1, 'title': '金币商城', 'url': 'https://storeapi.meishubao.com/shop/url/home', 'order': 7}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/05/26/56962661374af234336bf0ee02ea6f7d.png', 'type': 1, 'title': '我的任务', 'url': 'https://vip.meishubao.com/1v1h5pages/student/integral/mall', 'order': 6}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/9f48b1a2782546660e86ded75999cc90.png', 'type': 1, 'title': '我的包裹', 'url': 'https://vip.meishubao.com/1v1h5pages/student/packageList', 'order': 5}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/1a5167c1d8abb975e2db89c6d2d45248.png', 'type': 1, 'title': '帮助中心', 'url': 'https://vip.meishubao.com/1v1h5app/lessonhelp.html?role=1', 'order': 4}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/27afb4a65b519bfdb518a45e4e435d24.png', 'type': 4, 'title': '设备检测', 'url': '', 'order': 3}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/a58f9507b5742b8cb851b60f7821ecea.png', 'type': 1, 'title': '关于我们', 'url': 'https://vip.meishubao.com/1v1h5app/aboutUS', 'order': 2}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/51f5c6b0a76f20cffb1a79c70a982c57.png', 'type': 3, 'title': '系统设置', 'url': '', 'order': 1}], 'children': [{'userInfo': {'tj_mobile': '', 'gender': '', 'customerService': '400-6226-190', 'sex': 0, 'mobile': '', 'birth': '', 'id': 0, 'avatar': '', 'type': 1, 'age': 0, 'isVip': False, 'username': '注册 / 登录'}, 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2019/03/05/8976dba292b353f1f1854e3a6ce60177.png', 'type': 1, 'title': '我的订单', 'url': 'https://vip.meishubao.com/1v1h5pages/student/invoiceOrder?fromid=null', 'order': 100}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/3d88e2ff94e20226c746aa4da3055566.png', 'type': 1, 'title': '推荐奖励明细', 'url': 'https://vip.meishubao.com/ref/record.html?fromid=null', 'order': 90}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/a1ef08cf89ada56a1a469019218500d4.png', 'type': 1, 'title': '取消记录', 'url': 'https://vip.meishubao.com/h5app/leaverecord.html?fromid=null', 'order': 80}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/7dc94fa4816dd4cfbb9a1f7a37a6b4f1.png', 'type': 1, 'title': '邀请有礼', 'url': 'https://vip.meishubao.com/1v1h5pages/student/sharePosterCourtesyEntry?userid=null', 'order': 70}], 'courseInfo': [{'num': 0, 'type': 1, 'title': '剩余主修课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '剩余公开课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '赠送课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '已上课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}]}], 'status': 0}
+Test Over
+Traceback (most recent call last):
+  File "/Users/gz/Desktop/project/MSB_api_test/venv/lib/python3.7/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/running_template.py", line 29, in test_http_api
+    result = single_api_tester(path, source)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 92, in single_api_tester
+    a.api_test()
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 86, in api_test
+    self.api_assert(response, requests_data)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 63, in api_assert
+    self.inspection_method.fail_list_assert()
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/Inspection_method.py", line 296, in fail_list_assert
+    assert False, msg
+AssertionError: 
+	错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['children', 'features', 'msg', 'status', 'version']) response: dict_keys(['msg', 'features', 'children', 'status'])
+	case:{'children': [{'courseInfo': [{'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'course_tips': 'Str', 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'remainClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'usedClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'userInfo': {'age': 'Int', 'avatar': 'Str', 'birth': 'Str', 'customerService': 'Str', 'flowstatus': 'Int', 'fulltime': 'Str', 'gender': 'Int', 'id': 'Int', 'isVip': 'Bool', 'mmobile': 'Str', 'mobile': 'Str', 'smobile': 'Str', 'tj_mobile': 'Str', 'type': 'Int', 'username': 'Str'}, 'userMall': {'num': 'Int', 'title': 'Str', 'url': 'HTTP'}}], 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'Str'}], 'msg': 'Str', 'status': 'Int', 'version': 'Str'}
+	response:{'msg': 'ok', 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2020/07/02/588352137f4b88c4b6a0aadec35b3bff.png', 'type': 5, 'title': '临时课堂', 'url': '', 'order': 8}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/03/04/edfbf9a209ef9fe830fcc98af6558e5b.png', 'type': 1, 'title': '金币商城', 'url': 'https://storeapi.meishubao.com/shop/url/home', 'order': 7}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/05/26/56962661374af234336bf0ee02ea6f7d.png', 'type': 1, 'title': '我的任务', 'url': 'https://vip.meishubao.com/1v1h5pages/student/integral/mall', 'order': 6}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/9f48b1a2782546660e86ded75999cc90.png', 'type': 1, 'title': '我的包裹', 'url': 'https://vip.meishubao.com/1v1h5pages/student/packageList', 'order': 5}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/1a5167c1d8abb975e2db89c6d2d45248.png', 'type': 1, 'title': '帮助中心', 'url': 'https://vip.meishubao.com/1v1h5app/lessonhelp.html?role=1', 'order': 4}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/27afb4a65b519bfdb518a45e4e435d24.png', 'type': 4, 'title': '设备检测', 'url': '', 'order': 3}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/a58f9507b5742b8cb851b60f7821ecea.png', 'type': 1, 'title': '关于我们', 'url': 'https://vip.meishubao.com/1v1h5app/aboutUS', 'order': 2}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/51f5c6b0a76f20cffb1a79c70a982c57.png', 'type': 3, 'title': '系统设置', 'url': '', 'order': 1}], 'children': [{'userInfo': {'tj_mobile': '', 'gender': '', 'customerService': '400-6226-190', 'sex': 0, 'mobile': '', 'birth': '', 'id': 0, 'avatar': '', 'type': 1, 'age': 0, 'isVip': False, 'username': '注册 / 登录'}, 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2019/03/05/8976dba292b353f1f1854e3a6ce60177.png', 'type': 1, 'title': '我的订单', 'url': 'https://vip.meishubao.com/1v1h5pages/student/invoiceOrder?fromid=null', 'order': 100}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/3d88e2ff94e20226c746aa4da3055566.png', 'type': 1, 'title': '推荐奖励明细', 'url': 'https://vip.meishubao.com/ref/record.html?fromid=null', 'order': 90}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/a1ef08cf89ada56a1a469019218500d4.png', 'type': 1, 'title': '取消记录', 'url': 'https://vip.meishubao.com/h5app/leaverecord.html?fromid=null', 'order': 80}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/7dc94fa4816dd4cfbb9a1f7a37a6b4f1.png', 'type': 1, 'title': '邀请有礼', 'url': 'https://vip.meishubao.com/1v1h5pages/student/sharePosterCourtesyEntry?userid=null', 'order': 70}], 'courseInfo': [{'num': 0, 'type': 1, 'title': '剩余主修课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '剩余公开课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '赠送课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '已上课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}]}], 'status': 0}
+	
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.4' class='none'>
+    <td class='failCase'><div class='testcase'>test_http_api_00004__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_stulessons_yml: test_http_api_00004__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_stulessons_yml</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.4')" >
+        fail</a>
+
+    <div id='div_ft1.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.4: Test Begin
+字典型key不匹配
+case: dict_keys([])
+response: dict_keys(['isVip', 'openOrderTimes', 'remainClassNum', 'username', 'mobile'])
+case: {}
+response: {'isVip': 2, 'openOrderTimes': False, 'remainClassNum': 0, 'username': '', 'mobile': ''}
+Test Over
+Traceback (most recent call last):
+  File "/Users/gz/Desktop/project/MSB_api_test/venv/lib/python3.7/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/running_template.py", line 29, in test_http_api
+    result = single_api_tester(path, source)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 92, in single_api_tester
+    a.api_test()
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 86, in api_test
+    self.api_assert(response, requests_data)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 63, in api_assert
+    self.inspection_method.fail_list_assert()
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/Inspection_method.py", line 296, in fail_list_assert
+    assert False, msg
+AssertionError: 
+	错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys([]) response: dict_keys(['isVip', 'openOrderTimes', 'remainClassNum', 'username', 'mobile'])
+	case:{}
+	response:{'isVip': 2, 'openOrderTimes': False, 'remainClassNum': 0, 'username': '', 'mobile': ''}
+	
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.5' class='none'>
+    <td class='failCase'><div class='testcase'>test_http_api_00005__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_verity_roomtype_yml: test_http_api_00005__Users_gz_Desktop_project_MSB_api_test_basics_function____case_all_verity_roomtype_yml</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.5')" >
+        fail</a>
+
+    <div id='div_ft1.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.5: Test Begin
+Test Over
+Traceback (most recent call last):
+  File "/Users/gz/Desktop/project/MSB_api_test/venv/lib/python3.7/site-packages/ddt.py", line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/running_template.py", line 29, in test_http_api
+    result = single_api_tester(path, source)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 92, in single_api_tester
+    a.api_test()
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 86, in api_test
+    self.api_assert(response, requests_data)
+  File "/Users/gz/Desktop/project/MSB_api_test/api_tester/api_tester.py", line 63, in api_assert
+    self.inspection_method.fail_list_assert()
+  File "/Users/gz/Desktop/project/MSB_api_test/basics_function/Inspection_method.py", line 296, in fail_list_assert
+    assert False, msg
+AssertionError: 
+	错误原因:返回数据校验错误，错误内容:
+	case:[]
+	response:null
+	
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>5</td>
+    <td>0</td>
+    <td>5</td>
+    <td>0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+</body>
+</html>

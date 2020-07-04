@@ -1,0 +1,74 @@
+{
+  "uid" : "b1a8273437954620fa374b796ffaacdd",
+  "name" : "behaviors",
+  "children" : [ {
+    "name" : "接口测试用例",
+    "children" : [ {
+      "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml-online]",
+      "uid" : "ed2e8f4e4f5d15ed",
+      "parentUid" : "22b961144582e2535d64f4179a0788fe",
+      "status" : "failed",
+      "time" : {
+        "start" : 1593854099315,
+        "stop" : 1593854099790,
+        "duration" : 475
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml'", "'online'" ]
+    }, {
+      "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml-online]",
+      "uid" : "b4e07b21c979125c",
+      "parentUid" : "22b961144582e2535d64f4179a0788fe",
+      "status" : "failed",
+      "time" : {
+        "start" : 1593854099888,
+        "stop" : 1593854100381,
+        "duration" : 493
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml'", "'online'" ]
+    }, {
+      "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml-online]",
+      "uid" : "a858a5c4c97751a6",
+      "parentUid" : "22b961144582e2535d64f4179a0788fe",
+      "status" : "failed",
+      "time" : {
+        "start" : 1593854100417,
+        "stop" : 1593854100905,
+        "duration" : 488
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml'", "'online'" ]
+    }, {
+      "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml-online]",
+      "uid" : "c992cc5f29a96e74",
+      "parentUid" : "22b961144582e2535d64f4179a0788fe",
+      "status" : "failed",
+      "time" : {
+        "start" : 1593854100938,
+        "stop" : 1593854101395,
+        "duration" : 457
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml'", "'online'" ]
+    }, {
+      "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml-online]",
+      "uid" : "d22385b2ffafab1a",
+      "parentUid" : "22b961144582e2535d64f4179a0788fe",
+      "status" : "failed",
+      "time" : {
+        "start" : 1593854101428,
+        "stop" : 1593854101709,
+        "duration" : 281
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml'", "'online'" ]
+    } ],
+    "uid" : "22b961144582e2535d64f4179a0788fe"
+  } ]
+}

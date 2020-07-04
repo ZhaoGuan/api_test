@@ -17,57 +17,6 @@ $$$ 表示忽略
 """
 
 
-def data_content_list_data_case(case):
-    case_data = case.split("=")
-    replacement = case_data[0].split(">")
-    case_value = case_data[1]
-    if "%" in case_value:
-        check_type = "format"
-        check_value = json.loads(case_value.replace("%", ""))
-    elif "#" in case_value:
-        check_type = "structure"
-        check_value = "#"
-    else:
-        check_type = "equal"
-        check_value = case_value
-    return {"check_type": check_type, "check_value": check_value, "replacement": replacement}
-
-
-def response_data_check_other(case, response):
-    if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
-            str(case) == "null" and (response != "null" and response is not None)):
-        return False
-    else:
-        return True
-
-
-def list_repeated_examination(response, diff=[]):
-    new_response = []
-    repeated = []
-    for i in response:
-        if i not in new_response:
-            new_response.append(i)
-        else:
-            repeated.append(i)
-    if len(repeated) > 0:
-        diff.append(False)
-        print("$$$$$$$$$$$$$$$$$$$")
-        print("list中有重复内容")
-        print("response:" + str(response))
-        print("重复的内容为:" + str(repeated))
-        print("$$$$$$$$$$$$$$$$$$$$")
-
-
-def list_empty_check(case, response, diff=[]):
-    if len(response) == 0:
-        diff.append(False)
-        print("$$$$$$$$$$$$$$$$$$$")
-        print("response list内容为空:")
-        print("case:" + str(case))
-        print("response:" + str(response))
-        print("$$$$$$$$$$$$$$$$$$$")
-
-
 class InspectionMethod:
     def __init__(self):
         self.resources_to_test = True
@@ -81,52 +30,70 @@ class InspectionMethod:
         # host+path 和 url+MD5 判断应该做 配置文件
         self.requests = requests
         self.url_fail = []
+        self.fail_list = []
+
+    def fail_append(self, data):
+        if data is not None:
+            self.fail_list.append(data)
+
+    def data_content_list_data_case(self, case):
+        case_data = case.split("=")
+        replacement = case_data[0].split(">")
+        case_value = case_data[1]
+        if "%" in case_value:
+            check_type = "format"
+            check_value = json.loads(case_value.replace("%", ""))
+        elif "#" in case_value:
+            check_type = "structure"
+            check_value = "#"
+        else:
+            check_type = "equal"
+            check_value = case_value
+        return {"check_type": check_type, "check_value": check_value, "replacement": replacement}
+
+    def response_data_check_other(self, case, response):
+        if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
+                str(case) == "null" and (response != "null" and response is not None)):
+            return False
+        else:
+            return True
+
+    def list_repeated_examination(self, response):
+        new_response = []
+        repeated = []
+        for i in response:
+            if i not in new_response:
+                new_response.append(i)
+            else:
+                repeated.append(i)
+        if len(repeated) > 0:
+            fail_data = {"reason": "list中有重复的内容，重复内容为:{}".format(repeated), "response": response, "case": None}
+            self.fail_list.append(fail_data)
+
+    def list_empty_check(self, case, response):
+        if len(response) == 0:
+            fail_data = {"reason": "response list内容为空", "response": response, "case": case}
+            self.fail_list.append(fail_data)
 
     # http资源验证
-    def get_pic_size(self, pic):
-        img = Image.open(pic)
-        size = list(img.size)
-        height = size[1]
-        width = size[0]
-        return {"height": height, "width": width}
-
-    def get_url_stream(self, url):
-        url = str(url).replace("%2F", "/")
-        if self.extra["URL_FROM"] is not None and self.extra["URL_FROM"] not in url:
-            print("资源来源不是" + str(self.extra["URL_FROM"]))
-        try:
-            response = self.requests.head(url, timeout=self.request_time_out)
-            if response.status_code == 200:
-                response = self.requests.get(url, timeout=self.request_time_out)
-                print(url)
-                return io.BytesIO(response.content)
-            else:
-                print(url)
-                print("Http请求错误!")
-                print(response.status_code)
-                self.url_fail.append(url)
-                return False
-        except Exception as e:
-            print(e)
-            print("Http请求错误!")
-            self.url_fail.append(url)
-            return False
 
     def http_resource(self, url):
         url = str(url).replace("%2F", "/")
         if self.extra["URL_FROM"] is not None and self.extra["URL_FROM"] not in url:
-            print(url)
-            print("资源来源不是" + str(self.extra["URL_FROM"]))
+            self.fail_list.append(
+                {"reason": url + " 资源来源不是" + str(self.extra["URL_FROM"]), "case": None, "response": None})
         try:
             resources = self.requests.head(url, timeout=self.request_time_out)
             if resources.status_code in [200, 300, 301, 302, 303, 304, 305, 306, 307]:
                 return True
             else:
-                print("url请求错误" + str(resources.status_code))
+                self.fail_list.append(
+                    {"reason": url + "url请求错误" + str(resources.status_code), "case": None, "response": None})
                 return False
         except Exception as e:
             print(e)
-            print("Http请求错误")
+            self.fail_list.append(
+                {"reason": "Http请求错误,错误信息:" + e, "case": None, "response": None})
             return False
 
     def response_data_check_url(self, response):
@@ -140,7 +107,7 @@ class InspectionMethod:
         if ((response != "") and (self.extra["EMPTY_STRING_CHECK"])) or self.extra["EMPTY_STRING_CHECK"] is False:
             return isinstance(response, str)
         else:
-            print("出现空字符串")
+            self.fail_list.append({"reason": "出现空字符串", "case": None, "response": response})
             return False
 
     # 返回数据详细校验
@@ -163,7 +130,7 @@ class InspectionMethod:
             else:
                 return isinstance(response, float)
         else:
-            return response_data_check_other(case, response)
+            return self.response_data_check_other(case, response)
 
     # 返回数据校验
     # 多个可能有一个可以那么就通过
@@ -176,13 +143,9 @@ class InspectionMethod:
         else:
             result.append(self.response_data_check_(case, response))
         if True in result:
-            return True
+            return None
         else:
-            print(str(result))
-            print("返回数据校验错误,错误内容:")
-            print("case:" + str(case))
-            print("response:" + str(response))
-            return False
+            return {"reason": "返回数据校验错误，错误内容:", "case": str(case), "response": str(response)}
 
     def get_key_value_list(self, keys, data):
         for i in keys:
@@ -198,10 +161,7 @@ class InspectionMethod:
                 else:
                     data = data[i]
             except Exception as e:
-                print(e)
-                print("不存在字段，内容报错:")
-                print(str(i))
-                print(str(data))
+                self.fail_list.append({"reason": "不存在字段，内容报错:" + e, "case": str(i) + " " + str(data), "response": None})
                 data = False
         return data
 
@@ -219,6 +179,8 @@ class InspectionMethod:
                 print("不存在字段，内容报错:")
                 print(str(keys))
                 print(str(data))
+                self.fail_list.append(
+                    {"reason": "不存在字段，内容报错:" + e, "case": str(keys) + " " + str(data), "response": None})
                 data = False
         return data
 
@@ -239,83 +201,89 @@ class InspectionMethod:
 
     # response检查list类型
     # 默认进行重复检查
-    def format_list(self, case, response, diff=[]):
+    def format_list(self, case, response):
         model = case[0]
         if self.extra["LIST_REPEATED"] is True:
-            list_repeated_examination(response=response, diff=diff)
+            self.list_repeated_examination(response=response)
         if self.extra["LIST_EMPTY"] is True:
-            list_empty_check(case, response, diff)
+            self.list_empty_check(case, response)
         for i in case:
             for e in response:
                 if isinstance(i, str):
-                    diff.append(self.response_data_check(model, e))
+                    fail_data = self.response_data_check(model, e)
+                    self.fail_append(fail_data)
                 else:
-                    self.format_diff(i, e, diff)
+                    self.format_diff(i, e)
 
-    def dict_key_list_count(self, key, response_list, diff=[]):
+    def dict_key_list_count(self, key, response_list):
         for check_key, check_count in self.extra["DICT_LIST_COUNT"].items():
             if check_key == key and len(response_list) > int(check_count):
-                print("$$$$$$$$$$$$$$$$$$$")
-                print(key, "对应的list长度为" + str(len(response_list)) + "超过判断长度" + str(check_count))
-                print("$$$$$$$$$$$$$$$$$$$")
-                diff.append(False)
+                fail_data = {"reason": str(key) + " 对应的list长度为" + str(len(response_list)) + "超过判断长度" + str(check_count),
+                             "case": None, "response": None}
+                self.fail_list.append(fail_data)
 
-    def _format_dict(self, case, response, key, diff):
+    def _format_dict(self, case, response, key):
         if isinstance(case[key], list) and isinstance(response[key], list):
             if self.extra["DICT_LIST_COUNT"] is not None:
-                self.dict_key_list_count(key, response[key], diff=diff)
+                self.dict_key_list_count(key, response[key])
             if (isinstance(case[key], dict) and ("$$$" not in case[key])) or (
                     isinstance(case[key], str) and (case[key] != response[key])):
-                self.format_diff(case[key], response[key], diff)
+                self.format_diff(case[key], response[key])
             else:
-                self.format_list(case[key], response[key], diff)
+                self.format_list(case[key], response[key])
         elif isinstance(case[key], str):
             # 待验证
-            diff.append(self.response_data_check(case[key], response[key]))
+            self.fail_append(self.response_data_check(case[key], response[key]))
         else:
-            self.format_diff(case[key], response[key], diff)
+            self.format_diff(case[key], response[key])
 
     # response检查dict类型
-    def format_dict(self, case, response, diff=[]):
+    def format_dict(self, case, response):
         if case.keys() == response.keys():
             for key in case.keys():
                 # 值得类型是list进行忽略检查
-                self._format_dict(case, response, key, diff)
+                self._format_dict(case, response, key)
         else:
-            print("错误内容:")
-            print("字典型key不匹配")
-            print("case: " + str(case.keys()))
-            print("response: " + str(response.keys()))
-            print("case: " + str(case))
-            print("response: " + str(response))
-            diff.append(False)
+            msg = "response检查dict类型错误,字典型key不匹配,case: {} response: {}".format(str(case.keys()),
+                                                                              str(response.keys()))
+            fail_data = {"reason": msg, "case": case, "response": response}
+            self.fail_list.append(fail_data)
 
     # response检查格式
-    def format_diff(self, case, response, diff=[]):
+    def format_diff(self, case, response):
         try:
             # case为list
             if isinstance(case, list) and isinstance(response, list):
-                self.format_list(case, response, diff=diff)
+                self.format_list(case, response)
             # case 为dict
             elif isinstance(case, dict):
-                self.format_dict(case, response, diff=diff)
+                self.format_dict(case, response)
             # case 为str
             else:
                 if case is None:
                     case = "null"
                 if response is None:
                     response = "null"
-                diff.append(self.response_data_check(case, response))
+                self.fail_append(self.response_data_check(case, response))
         except Exception as e:
-            diff.append(False)
             print(e)
-            print("错误内容:")
-            print("case:" + str(case))
-            print("response:" + str(response))
-        if False in diff:
+            fail_data = {"reason": "response格式检查错误", "case": case, "response": response}
+            self.fail_list.append(fail_data)
+        if len(self.fail_list) > 0:
             return False
         else:
             return True
+
+    def fail_list_assert(self):
+        msg = ""
+        if len(self.fail_list) > 0:
+            for fail in self.fail_list:
+                msg = msg + "\n\t错误原因:{}\n\t".format(fail["reason"])
+                if fail["case"] is not None:
+                    msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
+                if fail["response"] is not None:
+                    msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
+            assert False, msg
 
     # 检查格式条件判断
     def structure_format_diff(self, case, response):
@@ -323,21 +291,18 @@ class InspectionMethod:
             format_type = case["TYPE"]
             format_data = case["DATA"]
         except Exception as e:
-            print(e)
             format_type = "ONLY"
             format_data = case
         result_list = []
-        diff = []
         if format_type == "ONLY":
-            return self.format_diff(format_data, response, diff=diff)
+            return self.format_diff(format_data, response)
         else:
             # 多个可能时case
             for content, single_case in format_data.items():
                 if self.key_value_check(content, response):
-                    result_list.append(self.format_diff(single_case, response, diff=diff))
+                    result_list.append(self.format_diff(single_case, response))
                 else:
-                    print('未发现对应DATA_FORMAT条件')
-                    print('条件为:' + str(content))
+                    assert False, "未发现对应DATA_FORMAT条件,条件为: {}".format(str(content))
         if True in result_list:
             return True
         else:
@@ -564,7 +529,7 @@ class InspectionMethod:
             if "//" in str(structure):
                 structure_result = self.data_content_list_data_structure(structure, response)
                 if structure_result is not False:
-                    case_data = data_content_list_data_case(case_)
+                    case_data = self.data_content_list_data_case(case_)
                     result_list.append(self.data_content_list_check(structure_result, case_data, response))
             else:
                 result_list.append(self.single_data_content_check(structure, case_, data, response))

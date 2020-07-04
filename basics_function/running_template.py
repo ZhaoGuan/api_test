@@ -4,10 +4,9 @@
 from basics_function.HTMLTestRunner import HTMLTestRunner
 from basics_function.golable_function import config_reader
 from ddt import ddt, data, file_data, unpack
+from api_tester.api_tester import single_api_tester
 import os
 import unittest
-from http_test_runner import single_request_runner
-from http_test_runner import content_request_runner
 import subprocess
 
 PATH = os.path.dirname(os.path.abspath(__file__))
@@ -27,11 +26,10 @@ class ApiTest(unittest.TestCase):
         except:
             run_way = 'py'
         if run_way == 'single':
-            result = single_request_runner(file_path, source, resources_to_test, temp_server)
+            result = single_api_tester(path, source)
             assert result
         elif run_way == 'content':
-            result = content_request_runner(file_path, source, resources_to_test, temp_server)
-            assert result
+            assert False
         else:
             p = subprocess.Popen('python3 ' + file_path + ' -s ' + source, shell=True, stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT)

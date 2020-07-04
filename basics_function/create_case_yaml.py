@@ -7,22 +7,22 @@ import os
 PATH = os.path.dirname(os.path.abspath(__file__))
 
 
-def dirlist(path, allfile):
+def dir_list(path, all_files):
     file_list = os.listdir(path)
     for filename in file_list:
         filepath = os.path.join(path, filename)
         if os.path.isdir(filepath):
-            dirlist(filepath, allfile)
+            dir_list(filepath, all_files)
         else:
-            allfile.append(filepath)
-    return allfile
+            all_files.append(filepath)
+    return all_files
 
 
 def select_case_folder(options):
     if options == "all_cases":
         result = []
         path = PATH + "/../case"
-        return dirlist(path, result)
+        return dir_list(path, result)
     else:
         return case_list(options)
 
@@ -31,7 +31,7 @@ def case_list(folder_name):
     folder_path = PATH + "/../case/" + folder_name
     folder_list = []
     try:
-        dirlist(folder_path, folder_list)
+        dir_list(folder_path, folder_list)
     except Exception as e:
         print(e)
         print("文件夹填写错误")
@@ -59,7 +59,12 @@ def create_case_list(folder_name, source="online", temp_server=False, resources_
     for case in case_list_data:
         if ((folder_name == "all_cases") and ("_all_" not in case)) or (folder_name != "all_cases"):
             case_result.update(add_case(case, source, temp_server, resources_to_test))
+    print(case_result)
     if os.path.exists(PATH + "/../temp/") is False:
         os.mkdir(PATH + "/../temp/")
     with open(PATH + "/../temp/cases.yaml", "w") as case:
         yaml.dump(case_result, case, default_flow_style=False)
+
+
+if __name__ == "__main__":
+    create_case_list("all")

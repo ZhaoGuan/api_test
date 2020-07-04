@@ -1,0 +1,62 @@
+{
+  "uid" : "e11abf205dcbd99d",
+  "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml-online]",
+  "fullName" : "basics_function.test_template#test_template",
+  "historyId" : "22b480796d4fb6d4df4ad5390389e642",
+  "time" : {
+    "start" : 1593853970719,
+    "stop" : 1593853971046,
+    "duration" : 327
+  },
+  "status" : "failed",
+  "statusMessage" : "AssertionError: \n\t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['aboutMsb', 'ad', 'consultation', 'indexbanner', 'indexicon', 'msg', 'noticemore', 'notices', 'publishVideoUrl', 'pushVideo', 'status', 'teacherProfile', 'userData']) response: dict_keys(['msg', 'status'])\n\tcase:{'aboutMsb': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'ad': {'icon': 'HTTP', 'regtype': 'Int', 'type': 'Int'}, 'consultation': {'icon': 'HTTP', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'indexbanner': [{'icon': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'tile': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'indexicon': [{'icon': 'HTTP', 'order': 'Int', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'msg': 'Str', 'noticemore': 'HTTP', 'notices': [{'content': 'Str', 'headImg': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'source': 'Str', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'publishVideoUrl': 'HTTP', 'pushVideo': [{'avatar': 'HTTP', 'cover': 'HTTP', 'favor': None, 'id': 'Int', 'likeCount': None, 'name': 'Str', 'publishVideoUrl': 'HTTP', 'tagName': None, 'teacherId': 'Int', 'title': 'Str', 'url': 'HTTP'}], 'status': 'Int', 'teacherProfile': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'userData': {'isVip': 'Int'}}\n\tresponse:{'msg': '缺少版本信息', 'status': 1}",
+  "statusTrace" : "path = '/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml', source = 'online'\n\n    @allure.feature(\"接口测试用例\")\n    @pytest.mark.parametrize(\"path,source\", run_data)\n    def test_template(path, source):\n>       request_api(path, source)\n\nbasics_function/test_template.py:41: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nbasics_function/test_template.py:28: in request_api\n    result = single_api_tester(path, source)\napi_tester/api_tester.py:92: in single_api_tester\n    a.api_test()\napi_tester/api_tester.py:86: in api_test\n    self.api_assert(response, requests_data)\napi_tester/api_tester.py:63: in api_assert\n    self.inspection_method.fail_list_assert()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <basics_function.Inspection_method.InspectionMethod object at 0x107d4a790>\n\n    def fail_list_assert(self):\n        msg = \"\"\n        if len(self.fail_list) > 0:\n            for fail in self.fail_list:\n                msg = msg + \"\\n\\t错误原因:{}\\n\\t\".format(fail[\"reason\"])\n                if fail[\"case\"] is not None:\n                    msg = msg + \"case:{}\\n\\t\".format(fail[\"case\"])\n                if fail[\"response\"] is not None:\n                    msg = msg + \"response:{}\\n\\t\".format(fail[\"response\"])\n>           assert False, msg\nE           AssertionError: \nE           \t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['aboutMsb', 'ad', 'consultation', 'indexbanner', 'indexicon', 'msg', 'noticemore', 'notices', 'publishVideoUrl', 'pushVideo', 'status', 'teacherProfile', 'userData']) response: dict_keys(['msg', 'status'])\nE           \tcase:{'aboutMsb': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'ad': {'icon': 'HTTP', 'regtype': 'Int', 'type': 'Int'}, 'consultation': {'icon': 'HTTP', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'indexbanner': [{'icon': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'tile': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'indexicon': [{'icon': 'HTTP', 'order': 'Int', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'msg': 'Str', 'noticemore': 'HTTP', 'notices': [{'content': 'Str', 'headImg': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'source': 'Str', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'publishVideoUrl': 'HTTP', 'pushVideo': [{'avatar': 'HTTP', 'cover': 'HTTP', 'favor': None, 'id': 'Int', 'likeCount': None, 'name': 'Str', 'publishVideoUrl': 'HTTP', 'tagName': None, 'teacherId': 'Int', 'title': 'Str', 'url': 'HTTP'}], 'status': 'Int', 'teacherProfile': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'userData': {'isVip': 'Int'}}\nE           \tresponse:{'msg': '缺少版本信息', 'status': 1}\n\nbasics_function/Inspection_method.py:286: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "接口测试用例"
+  }, {
+    "name" : "parentSuite",
+    "value" : "basics_function"
+  }, {
+    "name" : "suite",
+    "value" : "test_template"
+  }, {
+    "name" : "host",
+    "value" : "MacBook-Pro.local"
+  }, {
+    "name" : "thread",
+    "value" : "85595-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "basics_function.test_template"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "path",
+    "value" : "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml'"
+  }, {
+    "name" : "source",
+    "value" : "'online'"
+  } ],
+  "links" : [ ],
+  "hidden" : true,
+  "retry" : true,
+  "extra" : {
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "e11abf205dcbd99d.json",
+  "parameterValues" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml'", "'online'" ]
+}

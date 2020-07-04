@@ -1,0 +1,94 @@
+{
+  "uid" : "4b4757e66a1912dae1a509f688f20b0f",
+  "name" : "categories",
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "AssertionError: \n\t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['aboutMsb', 'ad', 'consultation', 'indexbanner', 'indexicon', 'msg', 'noticemore', 'notices', 'publishVideoUrl', 'pushVideo', 'status', 'teacherProfile', 'userData']) response: dict_keys(['msg', 'status'])\n\t\n\tcase:{'aboutMsb': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'ad': {'icon': 'HTTP', 'regtype': 'Int', 'type': 'Int'}, 'consultation': {'icon': 'HTTP', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'indexbanner': [{'icon': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'tile': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'indexicon': [{'icon': 'HTTP', 'order': 'Int', 'regtype': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'msg': 'Str', 'noticemore': 'HTTP', 'notices': [{'content': 'Str', 'headImg': 'HTTP', 'id': 'Int', 'regtype': 'Int', 'source': 'Str', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'publishVideoUrl': 'HTTP', 'pushVideo': [{'avatar': 'HTTP', 'cover': 'HTTP', 'favor': None, 'id': 'Int', 'likeCount': None, 'name': 'Str', 'publishVideoUrl': 'HTTP', 'tagName': None, 'teacherId': 'Int', 'title': 'Str', 'url': 'HTTP'}], 'status': 'Int', 'teacherProfile': [{'imgurl': 'HTTP', 'subTitle': 'Str', 'title': 'Str', 'url': 'HTTP'}], 'userData': {'isVip': 'Int'}}\n\t\n\tresponse:{'msg': '缺少版本信息', 'status': 1}",
+      "children" : [ {
+        "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml-online]",
+        "uid" : "ed2e8f4e4f5d15ed",
+        "parentUid" : "2331a4d9afd9056f8c73707848dab73b",
+        "status" : "failed",
+        "time" : {
+          "start" : 1593854099315,
+          "stop" : 1593854099790,
+          "duration" : 475
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml'", "'online'" ]
+      } ],
+      "uid" : "2331a4d9afd9056f8c73707848dab73b"
+    }, {
+      "name" : "AssertionError: \n\t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['data', 'extendedData', 'msg', 'status']) response: dict_keys(['msg', 'status'])\n\t\n\tcase:{'data': ['$$$'], 'extendedData': {'page': {'pageNum': 'Int', 'pages': 'Int', 'size': 'Int'}}, 'msg': 'Str', 'status': 'Int'}\n\t\n\tresponse:{'msg': '缺少版本信息', 'status': 1}",
+      "children" : [ {
+        "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml-online]",
+        "uid" : "b4e07b21c979125c",
+        "parentUid" : "4c8eab64d0ed50eedcce313793be31b0",
+        "status" : "failed",
+        "time" : {
+          "start" : 1593854099888,
+          "stop" : 1593854100381,
+          "duration" : 493
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml'", "'online'" ]
+      } ],
+      "uid" : "4c8eab64d0ed50eedcce313793be31b0"
+    }, {
+      "name" : "AssertionError: \n\t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys(['children', 'features', 'msg', 'status', 'version']) response: dict_keys(['msg', 'features', 'children', 'status'])\n\t\n\tcase:{'children': [{'courseInfo': [{'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'course_tips': 'Str', 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}], 'remainClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'usedClass': {'num': 'Float', 'title': 'Str', 'type': 'Int', 'url': 'HTTP'}, 'userInfo': {'age': 'Int', 'avatar': 'Str', 'birth': 'Str', 'customerService': 'Str', 'flowstatus': 'Int', 'fulltime': 'Str', 'gender': 'Int', 'id': 'Int', 'isVip': 'Bool', 'mmobile': 'Str', 'mobile': 'Str', 'smobile': 'Str', 'tj_mobile': 'Str', 'type': 'Int', 'username': 'Str'}, 'userMall': {'num': 'Int', 'title': 'Str', 'url': 'HTTP'}}], 'features': [{'icon': 'HTTP', 'order': 'Int', 'title': 'Str', 'type': 'Int', 'url': 'Str'}], 'msg': 'Str', 'status': 'Int', 'version': 'Str'}\n\t\n\tresponse:{'msg': 'ok', 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2020/07/02/588352137f4b88c4b6a0aadec35b3bff.png', 'type': 5, 'title': '临时课堂', 'url': '', 'order': 8}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/03/04/edfbf9a209ef9fe830fcc98af6558e5b.png', 'type': 1, 'title': '金币商城', 'url': 'https://storeapi.meishubao.com/shop/url/home', 'order': 7}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2020/05/26/56962661374af234336bf0ee02ea6f7d.png', 'type': 1, 'title': '我的任务', 'url': 'https://vip.meishubao.com/1v1h5pages/student/integral/mall', 'order': 6}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/9f48b1a2782546660e86ded75999cc90.png', 'type': 1, 'title': '我的包裹', 'url': 'https://vip.meishubao.com/1v1h5pages/student/packageList', 'order': 5}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/1a5167c1d8abb975e2db89c6d2d45248.png', 'type': 1, 'title': '帮助中心', 'url': 'https://vip.meishubao.com/1v1h5app/lessonhelp.html?role=1', 'order': 4}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/27afb4a65b519bfdb518a45e4e435d24.png', 'type': 4, 'title': '设备检测', 'url': '', 'order': 3}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/a58f9507b5742b8cb851b60f7821ecea.png', 'type': 1, 'title': '关于我们', 'url': 'https://vip.meishubao.com/1v1h5app/aboutUS', 'order': 2}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/51f5c6b0a76f20cffb1a79c70a982c57.png', 'type': 3, 'title': '系统设置', 'url': '', 'order': 1}], 'children': [{'userInfo': {'tj_mobile': '', 'gender': '', 'customerService': '400-6226-190', 'sex': 0, 'mobile': '', 'birth': '', 'id': 0, 'avatar': '', 'type': 1, 'age': 0, 'isVip': False, 'username': '注册 / 登录'}, 'features': [{'icon': 'https://vip.meishubao.com/ke/upload/image/2019/03/05/8976dba292b353f1f1854e3a6ce60177.png', 'type': 1, 'title': '我的订单', 'url': 'https://vip.meishubao.com/1v1h5pages/student/invoiceOrder?fromid=null', 'order': 100}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/3d88e2ff94e20226c746aa4da3055566.png', 'type': 1, 'title': '推荐奖励明细', 'url': 'https://vip.meishubao.com/ref/record.html?fromid=null', 'order': 90}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/14/a1ef08cf89ada56a1a469019218500d4.png', 'type': 1, 'title': '取消记录', 'url': 'https://vip.meishubao.com/h5app/leaverecord.html?fromid=null', 'order': 80}, {'icon': 'https://vip.meishubao.com/ke/upload/image/2019/08/15/7dc94fa4816dd4cfbb9a1f7a37a6b4f1.png', 'type': 1, 'title': '邀请有礼', 'url': 'https://vip.meishubao.com/1v1h5pages/student/sharePosterCourtesyEntry?userid=null', 'order': 70}], 'courseInfo': [{'num': 0, 'type': 1, 'title': '剩余主修课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '剩余公开课', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '赠送课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}, {'num': 0, 'type': 1, 'title': '已上课时', 'url': 'https://vip.meishubao.com/h5app/lessondetail.html'}]}], 'status': 0}",
+      "children" : [ {
+        "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml-online]",
+        "uid" : "a858a5c4c97751a6",
+        "parentUid" : "f5aaea241285f336d22e16415a5b1926",
+        "status" : "failed",
+        "time" : {
+          "start" : 1593854100417,
+          "stop" : 1593854100905,
+          "duration" : 488
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml'", "'online'" ]
+      } ],
+      "uid" : "f5aaea241285f336d22e16415a5b1926"
+    }, {
+      "name" : "AssertionError: \n\t错误原因:response检查dict类型错误,字典型key不匹配,case: dict_keys([]) response: dict_keys(['isVip', 'openOrderTimes', 'remainClassNum', 'username', 'mobile'])\n\t\n\tcase:{}\n\t\n\tresponse:{'isVip': 2, 'openOrderTimes': False, 'remainClassNum': 0, 'username': '', 'mobile': ''}",
+      "children" : [ {
+        "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml-online]",
+        "uid" : "c992cc5f29a96e74",
+        "parentUid" : "62049cd5d0c3bd156ea33767d09ce6b2",
+        "status" : "failed",
+        "time" : {
+          "start" : 1593854100938,
+          "stop" : 1593854101395,
+          "duration" : 457
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml'", "'online'" ]
+      } ],
+      "uid" : "62049cd5d0c3bd156ea33767d09ce6b2"
+    }, {
+      "name" : "AssertionError: \n\t错误原因:返回数据校验错误，错误内容:\n\t\n\tcase:[]\n\t\n\tresponse:null",
+      "children" : [ {
+        "name" : "test_template[/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml-online]",
+        "uid" : "d22385b2ffafab1a",
+        "parentUid" : "21491d96531886c538a528fa9a4de838",
+        "status" : "failed",
+        "time" : {
+          "start" : 1593854101428,
+          "stop" : 1593854101709,
+          "duration" : 281
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ "'/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml'", "'online'" ]
+      } ],
+      "uid" : "21491d96531886c538a528fa9a4de838"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ]
+}

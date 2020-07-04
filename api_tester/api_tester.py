@@ -23,6 +23,7 @@ class ApiTester:
         self.assert_data_format = self.config["DATA_FORMAT"]
         self.assert_data_content = self.config["DATA_CONTENT"]
         self.fail_list = []
+        self.response = None
 
     def get_headers(self):
         header_type = self.headers_data["TYPE"]
@@ -59,8 +60,9 @@ class ApiTester:
         if self.assert_data_format is not None and response_code_result and response_json:
             format_result = self.inspection_method.structure_format_diff(self.assert_data_format, response_json)
             if format_result is False:
-                reason = "DATA_FORMAT错误,请检查详细内容!"
-                self.fail_list.append({"request_data": request_data, "response": response.text, "reason": reason})
+                self.inspection_method.fail_list_assert()
+            else:
+                self.inspection_method.fail_list = []
 
     def error_message(self):
         for fail in self.fail_list:
@@ -80,12 +82,19 @@ class ApiTester:
         else:
             if self.body_type == "JSON":
                 response = requests.post(url, json=body)
+        self.response = response
         self.api_assert(response, requests_data)
-        if len(self.fail_list) > 0:
-            self.error_message()
+
+
+def single_api_tester(yaml_path, source="online"):
+    config = config_data_path(yaml_path)
+    a = ApiTester(config)
+    a.api_test()
+    if len(a.fail_list) > 0:
+        return False
+    else:
+        return True
 
 
 if __name__ == "__main__":
-    config = config_data_path("./../case/verity_roomtype.yml")
-    a = ApiTester(config)
-    a.api_test()
+    single_api_tester("./../case/all/verity_roomtype.yml")
