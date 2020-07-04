@@ -34,7 +34,6 @@ class ApiTest(unittest.TestCase):
             p = subprocess.Popen('python3 ' + file_path + ' -s ' + source, shell=True, stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT)
             result = str(p.stdout.read().decode())
-            print(result)
             if ('失败' in result) or ('AssertionError' in result) or ('Traceback' in result) or ('SyntaxError' in result):
                 assert False
 
