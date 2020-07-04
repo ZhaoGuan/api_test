@@ -41,6 +41,33 @@ def response_data_check_other(case, response):
         return True
 
 
+def list_repeated_examination(response, diff=[]):
+    new_response = []
+    repeated = []
+    for i in response:
+        if i not in new_response:
+            new_response.append(i)
+        else:
+            repeated.append(i)
+    if len(repeated) > 0:
+        diff.append(False)
+        print("$$$$$$$$$$$$$$$$$$$")
+        print("list中有重复内容")
+        print("response:" + str(response))
+        print("重复的内容为:" + str(repeated))
+        print("$$$$$$$$$$$$$$$$$$$$")
+
+
+def list_empty_check(case, response, diff=[]):
+    if len(response) == 0:
+        diff.append(False)
+        print("$$$$$$$$$$$$$$$$$$$")
+        print("response list内容为空:")
+        print("case:" + str(case))
+        print("response:" + str(response))
+        print("$$$$$$$$$$$$$$$$$$$")
+
+
 class InspectionMethod:
     def __init__(self):
         self.resources_to_test = True
@@ -179,7 +206,7 @@ class InspectionMethod:
         return data
 
     # response字段获取
-    def get_key_vaule(self, keys, data):
+    def get_key_value(self, keys, data):
         if "/" in str(keys):
             keys = keys.split("/")
         if isinstance(keys, list):
@@ -204,45 +231,20 @@ class InspectionMethod:
         case = case.split("=")
         keys = case[0]
         value = case[1]
-        data_value = self.get_key_vaule(keys, data)
+        data_value = self.get_key_value(keys, data)
         if value == data_value:
             return True
         else:
             return False
-
-    def list_repeated_examination(self, response, diff=[]):
-        new_response = []
-        repeated = []
-        for i in response:
-            if i not in new_response:
-                new_response.append(i)
-            else:
-                repeated.append(i)
-        if len(repeated) > 0:
-            diff.append(False)
-            print("$$$$$$$$$$$$$$$$$$$")
-            print("list中有重复内容")
-            print("response:" + str(response))
-            print("重复的内容为:" + str(repeated))
-            print("$$$$$$$$$$$$$$$$$$$$")
-
-    def list_empty_check(self, case, response, diff=[]):
-        if len(response) == 0:
-            diff.append(False)
-            print("$$$$$$$$$$$$$$$$$$$")
-            print("response list内容为空:")
-            print("case:" + str(case))
-            print("response:" + str(response))
-            print("$$$$$$$$$$$$$$$$$$$")
 
     # response检查list类型
     # 默认进行重复检查
     def format_list(self, case, response, diff=[]):
         model = case[0]
         if self.extra["LIST_REPEATED"] is True:
-            self.list_repeated_examination(response=response, diff=diff)
+            list_repeated_examination(response=response, diff=diff)
         if self.extra["LIST_EMPTY"] is True:
-            self.list_empty_check(case, response, diff)
+            list_empty_check(case, response, diff)
         for i in case:
             for e in response:
                 if isinstance(i, str):
@@ -250,7 +252,7 @@ class InspectionMethod:
                 else:
                     self.format_diff(i, e, diff)
 
-    def dict_key_list_cout(self, key, response_list, diff=[]):
+    def dict_key_list_count(self, key, response_list, diff=[]):
         for check_key, check_count in self.extra["DICT_LIST_COUNT"].items():
             if check_key == key and len(response_list) > int(check_count):
                 print("$$$$$$$$$$$$$$$$$$$")
@@ -261,7 +263,7 @@ class InspectionMethod:
     def _format_dict(self, case, response, key, diff):
         if isinstance(case[key], list) and isinstance(response[key], list):
             if self.extra["DICT_LIST_COUNT"] is not None:
-                self.dict_key_list_cout(key, response[key], diff=diff)
+                self.dict_key_list_count(key, response[key], diff=diff)
             if (isinstance(case[key], dict) and ("$$$" not in case[key])) or (
                     isinstance(case[key], str) and (case[key] != response[key])):
                 self.format_diff(case[key], response[key], diff)
@@ -357,19 +359,19 @@ class InspectionMethod:
             case_ = i.replace("!", "").split("=")
             keys = case_[0].split("/")
             value = case_[1]
-            if self.get_key_vaule(keys, data) != value and value != "#":
+            if self.get_key_value(keys, data) != value and value != "#":
                 result = False
                 break
-            elif self.get_key_vaule(keys, data) != value and value != "#" and "!" in structure:
+            elif self.get_key_value(keys, data) != value and value != "#" and "!" in structure:
                 break
             # 检查结构不检查值
             elif value == "#":
-                result = self.get_key_vaule(keys, data)
+                result = self.get_key_value(keys, data)
         return result
 
     # 具体值得检查
     def content_check(self, case_keys, case_value, response):
-        response = self.get_key_vaule(case_keys, response)
+        response = self.get_key_value(case_keys, response)
         # # 表示检查格式
         # case中因为转换所有都为str,所以强制装换response
         if (case_value == "#" and response is not False) or (response is not False and str(response) == case_value):
@@ -378,7 +380,7 @@ class InspectionMethod:
             return False
 
     def content_check_unequal(self, case_keys, case_value, response):
-        response = self.get_key_vaule(case_keys, response)
+        response = self.get_key_value(case_keys, response)
         # # 表示检查格式
         # case中因为转换所有都为str,所以强制装换response
         if (case_value == "#" and response is not False) or (
@@ -417,14 +419,6 @@ class InspectionMethod:
         case_value = case[1]
         case_keys = case[0]
         if "|" in case_value:
-            # result_list = []
-            # 循环检查有正确就是正确
-            # for case_value_ in case_value.split("|"):
-            #     result_list.append(self.content_check(case_keys, case_value_, response))
-            # if True in result_list:
-            #     return True
-            # else:
-            #     return False
             return self.multivalued_split_check(case_keys, case_value, response)
         else:
             return self.content_check(case_keys, case_value, response)
@@ -434,14 +428,6 @@ class InspectionMethod:
         case_value = case[1]
         case_keys = case[0]
         if "|" in case_value:
-            # result_list = []
-            # 循环检查有正确就是正确
-            # for case_value_ in case_value.split("|"):
-            #     result_list.append(self.content_check(case_keys, case_value_, response))
-            # if True in result_list:
-            #     return True
-            # else:
-            #     return False
             return self.multivalued_split_check_unequal(case_keys, case_value, response)
         else:
             return self.content_check_unequal(case_keys, case_value, response)
@@ -464,7 +450,7 @@ class InspectionMethod:
             return True
 
     def data_content_list_response_list_split(self, temp, upper_structure, structure, data):
-        temp_data = self.get_key_vaule(structure, data)
+        temp_data = self.get_key_value(structure, data)
         if isinstance(temp_data, list):
             for temp_data_ in temp_data:
                 key = temp_data.index(temp_data_)
@@ -487,7 +473,7 @@ class InspectionMethod:
                 self.data_content_list_response_list_split(temp, this_structure, structure, i)
                 response = temp
         elif isinstance(response_data, dict):
-            response_data = self.get_key_vaule(structure, data["response_data"])
+            response_data = self.get_key_value(structure, data["response_data"])
             new_structure = self.new_structure(data["structure"], structure)
             response = {"response_data": response_data, "structure": new_structure}
         else:
@@ -516,7 +502,7 @@ class InspectionMethod:
             else:
                 response = self.data_content_list_response_data_analysis(structure, response)
         elif isinstance(response, list) or isinstance(response, dict):
-            response_data = self.get_key_vaule(structure, response)
+            response_data = self.get_key_value(structure, response)
             response = {"response_data": response_data, "structure": structure}
         else:
             response = False
@@ -554,14 +540,14 @@ class InspectionMethod:
         result_list = []
         for structure in structure_result:
             structure = structure.replace(replacement[0], replacement[1])
-            check_response = self.get_key_vaule(structure, response)
+            check_response = self.get_key_value(structure, response)
             if check_type == "format":
                 result_list.append(self.structure_format_diff(check_value, check_response))
             elif "|" in check_value:
                 result = self.multivalued_split_check(check_value, structure, response)
                 result_list.append(result)
             else:
-                response_value = self.get_key_vaule(structure, response)
+                response_value = self.get_key_value(structure, response)
                 if ("check_value" == check_value and response_value == check_value) or (response_value is not False):
                     result_list.append(True)
                 else:
@@ -588,7 +574,7 @@ class InspectionMethod:
             return True
 
     def header_check_(self, case, value, response_header):
-        response_header_value = self.get_key_vaule(case, response_header)
+        response_header_value = self.get_key_value(case, response_header)
         if "|" in value and response_header_value is not False:
             if response_header[case] in list(value.split("|")):
                 return True
