@@ -35,4 +35,4 @@ def test_template(path, source):
     config = config_data_path(path)
     api_test = ApiTester(config, source)
     request_api(api_test)
-    format_api(api_test)
+    format_assert(api_test)
