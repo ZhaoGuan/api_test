@@ -1,30 +1,5 @@
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/indexinfo2.yml
+/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml:
+  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml
   resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/lessonlist.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/myInfoV1.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/stulessons.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/test.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/test.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml
-  resources_to_test: true
-  source: online
+  source: dev
   temp_server: false

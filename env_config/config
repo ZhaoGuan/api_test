@@ -8,5 +8,5 @@ little_bear:
   online:
     HOST:
       xxxx
-  test:
-    HOST:
+  dev:
+    HOST: https://test.meixiu.mobi

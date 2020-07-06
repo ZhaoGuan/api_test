@@ -13,11 +13,15 @@ from api_tester.testcase_maker import TestCaseMaker
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
-create_case_list("all_cases")
+create_case_list("all_cases","dev")
 case_data = config_reader(PATH + '/../temp/cases.yaml')
 run_data = []
 for k, v in case_data.items():
     run_data.append((v["path"], v["source"]))
+apis = []
+for k, v in case_data.items():
+    apis.append(v["api"])
+print(apis)
 
 
 @allure.step
@@ -42,7 +46,7 @@ def anther_assert(api_test):
 
 
 @allure.feature("接口测试用例")
-@pytest.mark.parametrize("path,source", run_data)
+@pytest.mark.parametrize("path,source", run_data,ids=apis)
 def test_template(path, source):
     case = TestCaseMaker(path, source)
     api_test = ApiTester(case.case_result(), source)
