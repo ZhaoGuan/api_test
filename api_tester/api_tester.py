@@ -65,24 +65,28 @@ class ApiTester:
         self.body_type = "JSON"
         return body_func(func_data=self.body_data, case_data=self.case_data)
 
-    def api_assert(self):
+    def format_assert(self):
         if self.response.status_code == 200:
             response_code_result = True
         else:
             response_code_result = False
-            self.fail_list.append({"request_data": self.requests_data, "response": self.response.text})
-        try:
-            response_json = json.loads(self.response.text)
-        except Exception as e:
-            print("Json 解析错误", e)
-            response_json = False
-            self.fail_list.append({"request_data": self.requests_data, "response": self.response.text})
-        if self.assert_data_format is not None and response_code_result and response_json:
-            format_result = self.inspection_method.structure_format_diff(self.assert_data_format, response_json)
+            msg = "请求结果非200,Code为:{}".format(str(self.response.status_code))
+            self.fail_list.append({"reason": msg, "case": None, "response": self.response.text})
+        if self.assert_data_format is not None and response_code_result:
+            format_result = self.inspection_method.structure_format_diff(self.assert_data_format, self.response)
             if format_result is False:
                 self.inspection_method.fail_list_assert()
+                self.inspection_method.fail_list = []
             else:
                 self.inspection_method.fail_list = []
+
+    def content_assert(self):
+        if self.assert_data_content is not None and self.inspection_method.response_content_check(
+                self.assert_data_content, self.response) is False:
+            self.inspection_method.fail_list_assert()
+            self.inspection_method.fail_list = []
+        else:
+            self.inspection_method.fail_list = []
 
     def another_assert(self):
         if self.another_assert_data is None:
