@@ -3,6 +3,7 @@
 # __author__ = "Gz"
 import yaml
 import os
+from basics_function.golable_function import config_reader
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -42,13 +43,15 @@ def case_list(folder_name):
 
 def add_case(case, source, temp_server, resources_to_test):
     case_result = {}
+    file_datas = config_reader(case)
+    URL_PATH = file_datas["SOURCE"]["URL_PATH"]
     # temp_server 中网站相关的判断属于临时处理 web 地址的暂时不进行测试"
     if ("!" not in case) and ("example" not in case) and ("content" not in case) and (".DS_Store" not in case) and (
             (temp_server is True and ("web" not in case)) or temp_server is False):
         case_result.update({case: {"path": case, "source": source, "temp_server": temp_server,
-                                   "resources_to_test": resources_to_test}})
+                                   "resources_to_test": resources_to_test,"api":URL_PATH}})
         return {
-            case: {"path": case, "source": source, "temp_server": temp_server, "resources_to_test": resources_to_test}}
+            case: {"path": case, "source": source, "temp_server": temp_server, "resources_to_test": resources_to_test,"api":URL_PATH}}
     else:
         return {}
 

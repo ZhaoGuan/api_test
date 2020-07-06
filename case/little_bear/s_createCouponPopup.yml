@@ -1,0 +1,61 @@
+SOURCE:
+  URL_PATH: /api/s/v1/popup/createCouponPopup
+  METHOD:
+    POST
+  DATA_TYPE:
+    ONLY
+  online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+        deviceId: 1770B7B6-6A71-46CD-83BA-6197F367E227
+        userId: 469154496589860864
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+ASSERT:
+  DATA_FORMAT:
+    TYPE:
+      ONLY
+    DATA:
+      {
+        "status": "Str",
+        "code": 'Int',
+        "payload": {
+          "name": "Str",
+          "title": "Str",
+          "description": "Str",
+          "status": "Str",
+          "type": "Str"
+        }
+      }
+  DATA_CONTENT:
+    online:
+    dev:
+      - code: 0
+      - payload/status: UNINFORMED
+  ANOTHER_ASSERT:
+  RESPONSE_HEADER:

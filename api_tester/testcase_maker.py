@@ -33,7 +33,7 @@ class TestCaseMaker:
         self.params = self.source["PARAMS"]
         self.params_type = self.params["TYPE"]
         self.params_data = self.params["DATA"]
-        self.request_mode = self.source["METHOD"]
+        self.request_mode = self.case_data["SOURCE"]["METHOD"]
         self.request_body = self.source["BODY"]
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]

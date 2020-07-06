@@ -14,13 +14,13 @@ class ApiTester:
         self.inspection_method = InspectionMethod()
         self.case_data = config
         try:
-            self.env_data = self.case_data["ENV_DATA"]
+            self.env_data = self.case_data["ENV_DATA"][source]
         except:
             self.env_data = None
         if self.env_data is None:
             self.host = None
         else:
-            self.host = self.case_data["HOST"]
+            self.host = self.env_data["HOST"]
         self.url_path = self.case_data["SOURCE"]["URL_PATH"]
         self.source = self.case_data["SOURCE"][source]
         self.url = self.case_data["SOURCE"][source]["URL"]
@@ -30,12 +30,12 @@ class ApiTester:
         self.params = self.source["PARAMS"]
         self.params_type = self.params["TYPE"]
         self.params_data = self.params["DATA"]
-        self.request_mode = self.source["METHOD"]
+        self.request_mode = self.case_data["SOURCE"]["METHOD"]
         self.request_body = self.source["BODY"]
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
         self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
-        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"]["online"]
+        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][source]
         self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
         self.another_assert_fail_list = []
         self.fail_list = []

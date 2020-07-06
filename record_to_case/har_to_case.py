@@ -5,82 +5,7 @@ import os
 import json
 import base64
 import yaml
-
-
-# 根据数据类型生成校验参数
-def data_type_case(data):
-    if isinstance(data, str) and "http" in data:
-        data_type = "HTTP"
-    elif isinstance(data, bool) or data == "bool":
-        data_type = "Bool"
-    elif isinstance(data, str) or data == "string":
-        data_type = "Str"
-    elif isinstance(data, int) or data == "int":
-        data_type = "Int"
-    elif isinstance(data, float) or data == "float":
-        data_type = "Float"
-    else:
-        # 处理了None
-        data_type = None
-    return data_type
-
-
-# content数据清洗
-# 把接口中的值清理了
-# 如果遇到的是一个LIST那么默认其中所有的内容都是一致的只保留一个模板内容
-def ergodic_list(data):
-    if len(data) > 0:
-        for i in range(len(data)):
-            if i == 0:
-                if isinstance(data[i], str) or isinstance(data[i], int) or \
-                        isinstance(data[i], bool) or isinstance(data[i], float) or data[i] is None:
-                    data[i] = data_type_case(data[i])
-                    print("list中存放的不是dict")
-                else:
-                    ergodic(data[i])
-            else:
-                data[i] = "####"
-    else:
-        # 对空list的忽略
-        data.append("$$$")
-
-
-def ergodic_dict(data):
-    for key in data.keys():
-        if isinstance(data[key], str) or isinstance(data[key], int) or \
-                isinstance(data[key], bool) or isinstance(data[key], float) or data[key] is None:
-            data[key] = data_type_case(data[key])
-        else:
-            ergodic(data[key])
-
-
-def ergodic(data):
-    if isinstance(data, list):
-        ergodic_list(data)
-    elif isinstance(data, dict):
-        ergodic_dict(data)
-    return data
-
-
-def delete_none(data):
-    for k, v in data.items():
-        if isinstance(v, list):
-            data[k] = [v[0]]
-            print(data[k])
-        if isinstance(v, dict):
-            delete_none(v)
-
-
-# 异常数据处理
-# 需要根据具体情况添加主要解决不识别问题
-def data_clear(data):
-    if isinstance(data, bytes):
-        data = data.decode("utf-8")
-    data = json.loads(data)
-    data = ergodic(data)
-    data = json.loads(json.dumps(data).replace(', "####"', ""))
-    print()
-    return data
+from basics_function.json_to_format_case import data_clear
 
 
 class HarToCase:
@@ -138,10 +63,10 @@ class HarToCase:
             encoding = content["encoding"]
             if response_mimetype == "application/json;charset=UTF-8" and encoding == "base64":
                 response_body = base64.b64decode(response_body).decode('utf-8')
-            case_data = {'SOURCE': {'URL_PATH': None, 'METHOD': 'POST',
+            case_data = {'SOURCE': {'URL_PATH': None, 'METHOD': method,
                                     'DATA_TYPE': 'ONLY',
                                     'online': {'URL': url, 'HEADERS': {'TYPE': 'NORMAL', 'DATA': the_header},
-                                               'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params}, 'METHOD': 'POST',
+                                               'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params},
                                                'BODY': {'TYPE': body_type, 'DATA': the_post_body}}},
                          'ASSERT': {'DATA_FORMAT': {'TYPE': 'ONLY', 'DATA': data_clear(response_body)},
                                     'DATA_CONTENT': {'online': None, 'test': None}, 'RESPONSE_HEADER': None}}

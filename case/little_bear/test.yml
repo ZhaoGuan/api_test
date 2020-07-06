@@ -1,0 +1,119 @@
+SOURCE:
+  URL_PATH: /api/ts/v1/teaching/student/history/course/list
+  METHOD:
+    GET
+  DATA_TYPE:
+    ONLY
+  online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+        appversion: 1.3.2
+        ostype: ios
+        page: 0
+        studentId: 462297116145094656
+    BODY:
+      TYPE:
+      DATA:
+ASSERT:
+  DATA_FORMAT:
+    TYPE:
+      ONLY
+    DATA:
+      {
+        'status': 'Str',
+        'code': 'Int',
+        'payload': {
+          'content': [{
+                        'studentId': 'Str',
+                        'teacherId': 'Str',
+                        'teamId': 'Str',
+                        'term': 'Str',
+                        'courseId': 'Str',
+                        'currentLesson': 'Str',
+                        'week': 'Int',
+                        'star': 'Int',
+                        'image': 'Str',
+                        'title': 'Str',
+                        'tag': 'Str',
+                        'desc': 'Str',
+                        'lessonType': 'Str',
+                        'startTime': 'Str',
+                        'dayOfWeek': 'Str',
+                        'courseState': 'Str',
+                        'courseStateTip': 'Str',
+                        'processing': 'Str',
+                        'liveUrl': 'Str',
+                        'learned': 'Int',
+                        'locked': 'Int',
+                        'planId': 'Str',
+                        'startLiveTime': $$$,
+                        'liveIsOver': $$$,
+                        'howToTeachCard': $$$
+                      }, ],
+          'pageable': {
+            'sort': {
+              'sorted': 'Bool',
+              'unsorted': 'Bool',
+              'empty': 'Bool'
+            },
+            'pageSize': 'Int',
+            'pageNumber': 'Int',
+            'offset': 'Str',
+            'paged': 'Bool',
+            'unpaged': 'Bool'
+          },
+          'totalPages': 'Int',
+          'totalElements': 'Str',
+          'last': 'Bool',
+          'number': 'Int',
+          'size': 'Int',
+          'numberOfElements': 'Int',
+          'sort': {
+            'sorted': 'Bool',
+            'unsorted': 'Bool',
+            'empty': 'Bool'
+          },
+          'first': 'Bool',
+          'empty': 'Bool'
+        }
+      }
+  DATA_CONTENT:
+    online:
+    dev:
+      - code: 0
+      - payload/totalPages: 1
+      - payload/content/1/studentId=462297116145094656: payload/content/0/courseId=949
+      - STRUCTURE:
+          code=0:
+              payload/sort: {"sorted": "Bool","unsorted": "Bool","empty": false}
+  ANOTHER_ASSERT:
+#    - TYPE: test
+#      DATA:
+#        - a
+#        - b
+#    - TYPE: test1
+#    - TYPE: a
+  RESPONSE_HEADER:

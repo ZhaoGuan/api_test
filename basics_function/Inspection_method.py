@@ -146,7 +146,8 @@ class InspectionMethod:
                     data = data[i]
             except Exception as e:
                 self.fail_list.append(
-                    {"reason": "\n不存在字段，内容报错:" + e, "case": str(i) + " " + str(data), "response": None})
+                    {"reason": "\n不存在字段，内容报错:" + str(e), "case": str(i) + " " + str(data),
+                     "response": json.dumps(data)})
                 data = False
         return data
 
@@ -163,8 +164,10 @@ class InspectionMethod:
                 print(str(keys))
                 print(str(data))
                 self.fail_list.append(
-                    {"reason": "\n不存在字段，内容报错:" + e, "case": str(keys) + " " + str(data), "response": None})
+                    {"reason": "\n不存在字段，内容报错:" + str(e), "case": str(keys), "response": json.dumps(data)})
                 data = False
+        if isinstance(data, int):
+            return str(data)
         return data
 
     # key value 条件判断
@@ -174,10 +177,10 @@ class InspectionMethod:
 
     def key_value_check(self, case, data):
         if isinstance(case, dict):
-            keys = list(case.keys())[0]
-            value = list(case.values())[0].split("|")
+            keys = str(list(case.keys())[0]).split("/")
+            value = str(list(case.values())[0]).split("|")
             data_value = self.get_key_value(keys, data)
-            if data_value and value not in data_value:
+            if data_value and data_value not in value:
                 fail_data = {"reason": "检查字段值与预期不符", "case": case, "response": data}
                 self.fail_list.append(fail_data)
                 return False
@@ -185,10 +188,10 @@ class InspectionMethod:
                 return True
         else:
             case = case.split("=")
-            keys = case[0].split("/")
-            value = case[1].split("|")
+            keys = str(case[0]).split("/")
+            value = str(case[1]).split("|")
             data_value = self.get_key_value(keys, data)
-            if data_value and value not in data_value:
+            if data_value and data_value not in value:
                 fail_data = {"reason": "检查字段值与预期不符", "case": case, "response": data}
                 self.fail_list.append(fail_data)
                 return False
@@ -273,9 +276,10 @@ class InspectionMethod:
             return True
 
     # 检查格式条件判断
-    def structure_format_diff(self, case, response):
+    def structure_format_diff(self, case, response, json_check=True):
         try:
-            response = json.loads(response.text)
+            if json_check == True:
+                response = json.loads(response.text)
         except:
             assert False, "Json解析错误\n" + "数据内容为:{}\n".format(response.text)
         try:
@@ -312,7 +316,7 @@ class InspectionMethod:
                 if fail["case"] is not None:
                     msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
                 if fail["response"] is not None:
-                    msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
+                    msg = msg + "\n\tresponse:{}\n\t".format(json.dumps(fail["response"]))
                 msg = msg + "\n\t"
             assert False, msg
 
@@ -321,7 +325,7 @@ class InspectionMethod:
         case_key = list(case.keys())[0]
         case_value = list(case.values())[0]
         if "=" in case_key:
-            if self.key_value_check(case, response) and self.key_value_check(case_value, response):
+            if self.key_value_check(case_key, response) and self.key_value_check(case_value, response):
                 return True
             else:
                 return False
@@ -332,10 +336,10 @@ class InspectionMethod:
         base = list(case.keys())[0]
         to_check_content = list(case.values())[0]
         if self.key_value_check(base, response):
-            the_response_keys = list(to_check_content.keys())[0]
+            the_response_keys = str(list(to_check_content.keys())[0]).split("/")
             the_content = list(to_check_content.values())[0]
             the_response = self.get_key_value(the_response_keys, response)
-            self.structure_format_diff(the_content, the_response)
+            self.structure_format_diff(the_content, the_response, json_check=False)
         else:
             fail_data = {"reason": "未发现匹配条件", "case": case, "response": response}
             self.fail_list.append(fail_data)
