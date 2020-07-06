@@ -36,21 +36,6 @@ class InspectionMethod:
         if data is not None:
             self.fail_list.append(data)
 
-    def data_content_list_data_case(self, case):
-        case_data = case.split("=")
-        replacement = case_data[0].split(">")
-        case_value = case_data[1]
-        if "%" in case_value:
-            check_type = "format"
-            check_value = json.loads(case_value.replace("%", ""))
-        elif "#" in case_value:
-            check_type = "structure"
-            check_value = "#"
-        else:
-            check_type = "equal"
-            check_value = case_value
-        return {"check_type": check_type, "check_value": check_value, "replacement": replacement}
-
     def response_data_check_other(self, case, response):
         if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
                 str(case) == "null" and (response != "null" and response is not None)):
@@ -167,8 +152,6 @@ class InspectionMethod:
 
     # response字段获取
     def get_key_value(self, keys, data):
-        if "/" in str(keys):
-            keys = keys.split("/")
         if isinstance(keys, list):
             data = self.get_key_value_list(keys, data)
         else:
@@ -190,14 +173,27 @@ class InspectionMethod:
     """
 
     def key_value_check(self, case, data):
-        case = case.split("=")
-        keys = case[0]
-        value = case[1]
-        data_value = self.get_key_value(keys, data)
-        if value == data_value:
-            return True
+        if isinstance(case, dict):
+            keys = list(case.keys())[0]
+            value = list(case.values())[0].split("|")
+            data_value = self.get_key_value(keys, data)
+            if data_value and value not in data_value:
+                fail_data = {"reason": "检查字段值与预期不符", "case": case, "response": data}
+                self.fail_list.append(fail_data)
+                return False
+            else:
+                return True
         else:
-            return False
+            case = case.split("=")
+            keys = case[0].split("/")
+            value = case[1].split("|")
+            data_value = self.get_key_value(keys, data)
+            if data_value and value not in data_value:
+                fail_data = {"reason": "检查字段值与预期不符", "case": case, "response": data}
+                self.fail_list.append(fail_data)
+                return False
+            else:
+                return True
 
     # response检查list类型
     # 默认进行重复检查
@@ -279,6 +275,10 @@ class InspectionMethod:
     # 检查格式条件判断
     def structure_format_diff(self, case, response):
         try:
+            response = json.loads(response.text)
+        except:
+            assert False, "Json解析错误\n" + "数据内容为:{}\n".format(response.text)
+        try:
             format_type = case["TYPE"]
             format_data = case["DATA"]
         except Exception as e:
@@ -289,6 +289,11 @@ class InspectionMethod:
             return self.format_diff(format_data, response)
         else:
             # 多个可能时case
+            '''
+            DATA:
+             k/k/k=v0 : you_data_format_v2
+             k/k/k=v1 : you_data_format_v1
+            '''
             for content, single_case in format_data.items():
                 if self.key_value_check(content, response):
                     result_list.append(self.format_diff(single_case, response))
@@ -310,3 +315,49 @@ class InspectionMethod:
                     msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
                 msg = msg + "\n\t"
             assert False, msg
+
+    # data content check
+    def specific_value_check(self, case, response):
+        case_key = list(case.keys())[0]
+        case_value = list(case.values())[0]
+        if "=" in case_key:
+            if self.key_value_check(case, response) and self.key_value_check(case_value, response):
+                return True
+            else:
+                return False
+        else:
+            return self.key_value_check(case, response)
+
+    def content_structure_check(self, case, response):
+        base = list(case.keys())[0]
+        to_check_content = list(case.values())[0]
+        if self.key_value_check(base, response):
+            the_response_keys = list(to_check_content.keys())[0]
+            the_content = list(to_check_content.values())[0]
+            the_response = self.get_key_value(the_response_keys, response)
+            self.structure_format_diff(the_content, the_response)
+        else:
+            fail_data = {"reason": "未发现匹配条件", "case": case, "response": response}
+            self.fail_list.append(fail_data)
+
+    def _response_content_check(self, case, response):
+        case_tag = list(case.keys())[0]
+        if case_tag == "STRUCTURE":
+            self.content_structure_check(case["STRUCTURE"], response)
+        else:
+            self.specific_value_check(case, response)
+
+    def response_content_check(self, case, response):
+        try:
+            response = json.loads(response.text)
+        except:
+            assert False, "Json解析错误\n" + "数据内容为:{}\n".format(response.text)
+        if isinstance(case, list):
+            for _case in case:
+                self._response_content_check(_case, response)
+        else:
+            self._response_content_check(case, response)
+        if len(self.fail_list) > 0:
+            return False
+        else:
+            return True

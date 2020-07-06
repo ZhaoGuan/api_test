@@ -27,13 +27,17 @@ def request_api(api_test):
 
 @allure.step
 def format_assert(api_test):
-    api_test.api_assert()
+    api_test.format_assert()
+
+
+@allure.step
+def content_assert(api_test):
+    api_test.content_assert()
 
 
 @allure.step
 def anther_assert(api_test):
     api_test.another_assert()
-    print(api_test.another_assert_fail_list)
     api_test.another_assert_report()
 
 
@@ -44,4 +48,5 @@ def test_template(path, source):
     api_test = ApiTester(case.case_result(), source)
     request_api(api_test)
     format_assert(api_test)
+    content_assert(api_test)
     anther_assert(api_test)
