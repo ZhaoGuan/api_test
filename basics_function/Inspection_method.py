@@ -25,7 +25,7 @@ class InspectionMethod:
                       "LIST_EMPTY": True,
                       "DICT_LIST_COUNT": None,
                       "URL_FROM": None,
-                      "EMPTY_STRING_CHECK": True
+                      "EMPTY_STRING_CHECK": False
                       }
         # host+path 和 url+MD5 判断应该做 配置文件
         self.requests = requests
@@ -76,7 +76,6 @@ class InspectionMethod:
             self.fail_list.append(fail_data)
 
     # http资源验证
-
     def http_resource(self, url):
         url = str(url).replace("%2F", "/")
         if self.extra["URL_FROM"] is not None and self.extra["URL_FROM"] not in url:
@@ -274,17 +273,6 @@ class InspectionMethod:
         else:
             return True
 
-    def fail_list_assert(self):
-        msg = ""
-        if len(self.fail_list) > 0:
-            for fail in self.fail_list:
-                msg = msg + "\n\t错误原因:{}\n\t".format(fail["reason"])
-                if fail["case"] is not None:
-                    msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
-                if fail["response"] is not None:
-                    msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
-            assert False, msg
-
     # 检查格式条件判断
     def structure_format_diff(self, case, response):
         try:
@@ -308,264 +296,13 @@ class InspectionMethod:
         else:
             return False
 
-    # 条件确认
-
-    # 发现不对就不对了,字典强匹配
-    """
-        case格式a=1&b=2
-        data 为一个字典
-        """
-
-    def structure_check(self, structure, data):
-        result = True
-        truth_structure = structure.split("@")[0]
-        case_list = truth_structure.split("&")
-        for i in case_list:
-            case_ = i.replace("!", "").split("=")
-            keys = case_[0].split("/")
-            value = case_[1]
-            if self.get_key_value(keys, data) != value and value != "#":
-                result = False
-                break
-            elif self.get_key_value(keys, data) != value and value != "#" and "!" in structure:
-                break
-            # 检查结构不检查值
-            elif value == "#":
-                result = self.get_key_value(keys, data)
-        return result
-
-    # 具体值得检查
-    def content_check(self, case_keys, case_value, response):
-        response = self.get_key_value(case_keys, response)
-        # # 表示检查格式
-        # case中因为转换所有都为str,所以强制装换response
-        if (case_value == "#" and response is not False) or (response is not False and str(response) == case_value):
-            return True
-        else:
-            return False
-
-    def content_check_unequal(self, case_keys, case_value, response):
-        response = self.get_key_value(case_keys, response)
-        # # 表示检查格式
-        # case中因为转换所有都为str,所以强制装换response
-        if (case_value == "#" and response is not False) or (
-                response is not False and str(response) != str(case_value)):
-            return True
-        else:
-            return False
-
-    # 单一条件判断
-    """
-    单一判断判断的值中有/那么会按照一个list去处理
-    """
-
-    def multivalued_split_check(self, check_value, structure, response):
-        temp = []
-        # 循环检查有正确就是正确
-        for case_value_ in check_value.split("|"):
-            temp.append(self.content_check(structure, case_value_, response))
-        if True in temp:
-            return True
-        else:
-            return False
-
-    def multivalued_split_check_unequal(self, check_value, structure, response):
-        temp = []
-        # 循环检查有正确就是正确
-        for case_value_ in check_value.split("|"):
-            temp.append(self.content_check_unequal(structure, case_value_, response))
-        if True in temp:
-            return True
-        else:
-            return False
-
-    def single_data_content_check_equal(self, case, response):
-        case = case.split("=")
-        case_value = case[1]
-        case_keys = case[0]
-        if "|" in case_value:
-            return self.multivalued_split_check(case_keys, case_value, response)
-        else:
-            return self.content_check(case_keys, case_value, response)
-
-    def single_data_content_check_unequal(self, case, response):
-        case = case.split("!=")
-        case_value = case[1]
-        case_keys = case[0]
-        if "|" in case_value:
-            return self.multivalued_split_check_unequal(case_keys, case_value, response)
-        else:
-            return self.content_check_unequal(case_keys, case_value, response)
-
-    def single_data_content_check(self, structure, case, data, response):
-        try:
-            structure_list = self.structure_check(structure, response)
-        except Exception as e:
-            print(e)
-            structure_list = False
-        if structure_list or structure == "~all":
-            if "!=" in str(case):
-                return self.single_data_content_check_unequal(case, response)
-            else:
-                return self.single_data_content_check_equal(case, response)
-        else:
-            print("未满足条件:" + structure)
-            print("数据内容为:")
-            print(str(data))
-            return True
-
-    def data_content_list_response_list_split(self, temp, upper_structure, structure, data):
-        temp_data = self.get_key_value(structure, data)
-        if isinstance(temp_data, list):
-            for temp_data_ in temp_data:
-                key = temp_data.index(temp_data_)
-                this_structure = self.new_structure(upper_structure, structure)
-                new_structure = self.new_structure(this_structure, key)
-                temp.append({"response_data": temp_data_, "structure": new_structure})
-        else:
-            new_structure = self.new_structure(upper_structure, structure)
-            temp.append({"response_data": temp_data, "structure": new_structure})
-
-    def data_content_list_response_data_analysis(self, structure, data):
-        upper_structure = data["structure"]
-        response_data = data["response_data"]
-        if isinstance(response_data, list) and response_data != []:
-            temp = []
-            response = []
-            for i in response_data:
-                key = response_data.index(i)
-                this_structure = self.new_structure(upper_structure, key)
-                self.data_content_list_response_list_split(temp, this_structure, structure, i)
-                response = temp
-        elif isinstance(response_data, dict):
-            response_data = self.get_key_value(structure, data["response_data"])
-            new_structure = self.new_structure(data["structure"], structure)
-            response = {"response_data": response_data, "structure": new_structure}
-        else:
-            response = False
-        return response
-
-    def new_structure(self, structure, key):
-        return structure + "/" + str(key)
-
-    def data_content_list_response_list_analysis_response_data_list(self, structure, response):
-        temp_all = []
-        for data in response:
-            response = self.data_content_list_response_data_analysis(structure, data)
-            if isinstance(response, list):
-                print(response)
-                for i in response:
-                    temp_all.append(i)
-            elif isinstance(response, str):
-                temp_all.append(response)
-        return temp_all
-
-    def data_content_list_response_list_analysis(self, structure, response):
-        if "response_data" in str(response):
-            if isinstance(response, list):
-                response = self.data_content_list_response_list_analysis_response_data_list(structure, response)
-            else:
-                response = self.data_content_list_response_data_analysis(structure, response)
-        elif isinstance(response, list) or isinstance(response, dict):
-            response_data = self.get_key_value(structure, response)
-            response = {"response_data": response_data, "structure": structure}
-        else:
-            response = False
-        return response
-
-    def data_content_list_response_data(self, structure_list, response):
-        for structure in structure_list:
-            response = self.data_content_list_response_list_analysis(structure, response)
-        return response
-
-    def data_content_list_data_structure(self, structure, response):
-        value = structure.split("=")[1]
-        structure_list = structure.split("=")[0].split("//")
-        structure_result = []
-        try:
-            data = self.data_content_list_response_data(structure_list, response)
-            if data is False:
-                return False
-        except Exception as e:
-            print("条件层级解析错误")
-            print(e)
-            print(str(structure))
-            return False
-        for i in data:
-            response_data = i["response_data"]
-            structure = i["structure"]
-            if response_data == value:
-                structure_result.append(structure)
-        return structure_result
-
-    def data_content_list_check(self, structure_result, case_data, response):
-        replacement = case_data["replacement"]
-        check_type = case_data["check_type"]
-        check_value = case_data["check_value"]
-        result_list = []
-        for structure in structure_result:
-            structure = structure.replace(replacement[0], replacement[1])
-            check_response = self.get_key_value(structure, response)
-            if check_type == "format":
-                result_list.append(self.structure_format_diff(check_value, check_response))
-            elif "|" in check_value:
-                result = self.multivalued_split_check(check_value, structure, response)
-                result_list.append(result)
-            else:
-                response_value = self.get_key_value(structure, response)
-                if ("check_value" == check_value and response_value == check_value) or (response_value is not False):
-                    result_list.append(True)
-                else:
-                    result_list.append(False)
-        if False in result_list:
-            return False
-        else:
-            return True
-
-    # 具体数据的判断 有判断没有不判断
-    def data_content_check(self, case, data, response):
-        result_list = []
-        for structure, case_ in case.items():
-            if "//" in str(structure):
-                structure_result = self.data_content_list_data_structure(structure, response)
-                if structure_result is not False:
-                    case_data = self.data_content_list_data_case(case_)
-                    result_list.append(self.data_content_list_check(structure_result, case_data, response))
-            else:
-                result_list.append(self.single_data_content_check(structure, case_, data, response))
-        if False in result_list:
-            return False
-        else:
-            return True
-
-    def header_check_(self, case, value, response_header):
-        response_header_value = self.get_key_value(case, response_header)
-        if "|" in value and response_header_value is not False:
-            if response_header[case] in list(value.split("|")):
-                return True
-            else:
-                return False
-        elif response_header_value is not False:
-            if response_header[case] == value:
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    def header_check(self, case, response_header):
-        for key, value in case.items():
-            if key != "~all":
-                if isinstance(value, dict) and self.structure_check(key, response_header):
-                    return self.header_check_(list(value.keys())[0], list(value.values())[0], response_header)
-                elif isinstance(value, str):
-                    return self.header_check_(key, value, response_header)
-                else:
-                    return False
-            else:
-                if isinstance(value, dict):
-                    return self.header_check_(list(value.keys())[0], list(value.values())[0], response_header)
-                elif isinstance(value, str):
-                    return self.header_check_(key, value, response_header)
-                else:
-                    return False
+    def fail_list_assert(self):
+        msg = ""
+        if len(self.fail_list) > 0:
+            for fail in self.fail_list:
+                msg = msg + "\n\t错误原因:{}\n\t".format(fail["reason"])
+                if fail["case"] is not None:
+                    msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
+                if fail["response"] is not None:
+                    msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
+            assert False, msg

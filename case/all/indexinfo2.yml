@@ -1,71 +1,76 @@
-DATA_CONTENT: null
-DATA_FORMAT:
-  DATA:
-    aboutMsb:
-    - imgurl: HTTP
-      subTitle: Str
-      title: Str
-      url: HTTP
-    ad:
-      icon: HTTP
-      regtype: Int
-      type: Int
-    consultation:
-      icon: HTTP
-      regtype: Int
-      title: Str
-      type: Int
-      url: HTTP
-    indexbanner:
-    - icon: HTTP
-      id: Int
-      regtype: Int
-      tile: Str
-      type: Int
-      url: HTTP
-    indexicon:
-    - icon: HTTP
-      order: Int
-      regtype: Int
-      title: Str
-      type: Int
-      url: HTTP
-    msg: Str
-    noticemore: HTTP
-    notices:
-    - content: Str
-      headImg: HTTP
-      id: Int
-      regtype: Int
-      source: Str
-      title: Str
-      type: Int
-      url: HTTP
-    publishVideoUrl: HTTP
-    pushVideo:
-    - avatar: HTTP
-      cover: HTTP
-      favor: null
-      id: Int
-      likeCount: null
-      name: Str
+ASSERT:
+  DATA_CONTENT:
+    online: null
+    test: null
+  DATA_FORMAT:
+    DATA:
+      aboutMsb:
+      - imgurl: HTTP
+        subTitle: Str
+        title: Str
+        url: HTTP
+      ad:
+        icon: HTTP
+        regtype: Int
+        type: Int
+      consultation:
+        icon: HTTP
+        regtype: Int
+        title: Str
+        type: Int
+        url: HTTP
+      indexbanner:
+      - icon: HTTP
+        id: Int
+        regtype: Int
+        tile: Str
+        type: Int
+        url: HTTP
+      indexicon:
+      - icon: HTTP
+        order: Int
+        regtype: Int
+        title: Str
+        type: Int
+        url: HTTP
+      msg: Str
+      noticemore: HTTP
+      notices:
+      - content: Str
+        headImg: HTTP
+        id: Int
+        regtype: Int
+        source: Str
+        title: Str
+        type: Int
+        url: HTTP
       publishVideoUrl: HTTP
-      tagName: null
-      teacherId: Int
-      title: Str
-      url: HTTP
-    status: Int
-    teacherProfile:
-    - imgurl: HTTP
-      subTitle: Str
-      title: Str
-      url: HTTP
-    userData:
-      isVip: Int
-  TYPE: ONLY
-OPERATION_MODE: single
-RESPONSE_HEADER: null
+      pushVideo:
+      - avatar: HTTP
+        cover: HTTP
+        favor: null
+        id: Int
+        likeCount: null
+        name: Str
+        publishVideoUrl: HTTP
+        tagName: null
+        teacherId: Int
+        title: Str
+        url: HTTP
+      status: Int
+      teacherProfile:
+      - imgurl: HTTP
+        subTitle: Str
+        title: Str
+        url: HTTP
+      userData:
+        isVip: Int
+    TYPE: ONLY
+  RESPONSE_HEADER: null
 SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: POST
+  URL_PATH: null
   online:
     BODY:
       DATA: null
@@ -104,8 +109,7 @@ SOURCE:
         uuid: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
         uuidnew: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
       TYPE: NORMAL
-    MODE:
-      TYPE: POST
+    METHOD: POST
     PARAMS:
       DATA: null
       TYPE: JOIN

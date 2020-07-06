@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # __author__ = 'Gz'
-from basics_function.golable_function import config_data_path
+from basics_function.golable_function import config_reader
 from basics_function.Inspection_method import InspectionMethod
 from urllib.parse import urlencode
 import json
@@ -11,21 +11,30 @@ import requests
 class ApiTester:
     def __init__(self, config, source="online"):
         self.inspection_method = InspectionMethod()
-        self.config = config
-        self.source = self.config["SOURCE"][source]
+        self.case_data = config
+        try:
+            self.env_data = self.case_data["ENV_DATA"]
+        except:
+            self.env_data = None
+        if self.env_data is None:
+            self.host = None
+        else:
+            self.host = self.case_data["HOST"]
+        self.url_path = self.case_data["SOURCE"]["URL_PATH"]
+        self.source = self.case_data["SOURCE"][source]
+        self.url = self.case_data["SOURCE"][source]["URL"]
         self.headers = self.source["HEADERS"]
         self.headers_type = self.headers["TYPE"]
         self.headers_data = self.headers["DATA"]
-        self.url = self.source["URL"]
         self.params = self.source["PARAMS"]
         self.params_type = self.params["TYPE"]
         self.params_data = self.params["DATA"]
-        self.request_mode = self.source["MODE"]["TYPE"]
+        self.request_mode = self.source["METHOD"]
         self.request_body = self.source["BODY"]
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
-        self.assert_data_format = self.config["DATA_FORMAT"]
-        self.assert_data_content = self.config["DATA_CONTENT"]
+        self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
+        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"]["online"]
         self.fail_list = []
         self.requests_data = {"headers": self.get_headers(), "url": self.get_url(), "body": self.get_body()}
         self.response = None
@@ -35,6 +44,8 @@ class ApiTester:
             return self.headers_data
 
     def get_url(self):
+        if self.host is not None:
+            self.url = self.host + self.url_path
         if self.params_data is None:
             return self.url
         if self.params_type == "JOIN":
@@ -85,7 +96,7 @@ class ApiTester:
 
 
 def single_api_tester(yaml_path, source="online"):
-    config = config_data_path(yaml_path)
+    config = config_reader(yaml_path)
     a = ApiTester(config)
     a.api_test()
     if len(a.fail_list) > 0:

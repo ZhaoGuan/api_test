@@ -18,11 +18,6 @@
   resources_to_test: true
   source: online
   temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/test.yml:
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/test.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
 /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml:
   path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/all/verity_roomtype.yml
   resources_to_test: true

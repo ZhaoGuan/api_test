@@ -138,13 +138,13 @@ class HarToCase:
             encoding = content["encoding"]
             if response_mimetype == "application/json;charset=UTF-8" and encoding == "base64":
                 response_body = base64.b64decode(response_body).decode('utf-8')
-            case_data = {'OPERATION_MODE': 'single', 'SOURCE': {
-                'online': {'URL': url,
-                           'HEADERS': {'TYPE': 'NORMAL', 'DATA': the_header},
-                           'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params},
-                           'MODE': {'TYPE': method}, 'BODY': {'TYPE': body_type, 'DATA': the_post_body}}},
-                         'DATA_FORMAT': {"DATA": data_clear(response_body), "TYPE": "ONLY"}, 'DATA_CONTENT': None,
-                         'RESPONSE_HEADER': None}
+            case_data = {'SOURCE': {'URL_PATH': None, 'METHOD': 'POST',
+                                    'DATA_TYPE': 'ONLY',
+                                    'online': {'URL': url, 'HEADERS': {'TYPE': 'NORMAL', 'DATA': the_header},
+                                               'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params}, 'METHOD': 'POST',
+                                               'BODY': {'TYPE': body_type, 'DATA': the_post_body}}},
+                         'ASSERT': {'DATA_FORMAT': {'TYPE': 'ONLY', 'DATA': data_clear(response_body)},
+                                    'DATA_CONTENT': {'online': None, 'test': None}, 'RESPONSE_HEADER': None}}
             file_name = url.split("/")[-1] + ".yml"
             with open(case_path + "/" + file_name, "w") as f:
                 yaml.dump(case_data, f)

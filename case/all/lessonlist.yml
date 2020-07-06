@@ -1,19 +1,24 @@
-DATA_CONTENT: null
-DATA_FORMAT:
-  DATA:
-    data:
-    - $$$
-    extendedData:
-      page:
-        pageNum: Int
-        pages: Int
-        size: Int
-    msg: Str
-    status: Int
-  TYPE: ONLY
-OPERATION_MODE: single
-RESPONSE_HEADER: null
+ASSERT:
+  DATA_CONTENT:
+    online: null
+    test: null
+  DATA_FORMAT:
+    DATA:
+      data:
+      - $$$
+      extendedData:
+        page:
+          pageNum: Int
+          pages: Int
+          size: Int
+      msg: Str
+      status: Int
+    TYPE: ONLY
+  RESPONSE_HEADER: null
 SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: POST
+  URL_PATH: null
   online:
     BODY:
       DATA:
@@ -54,8 +59,7 @@ SOURCE:
         uuid: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
         uuidnew: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
       TYPE: NORMAL
-    MODE:
-      TYPE: POST
+    METHOD: POST
     PARAMS:
       DATA: null
       TYPE: JOIN

@@ -1,62 +1,67 @@
-DATA_CONTENT: null
-DATA_FORMAT:
-  DATA:
-    children:
-    - courseInfo:
-      - num: Float
-        title: Str
-        type: Int
-        url: HTTP
-      course_tips: Str
+ASSERT:
+  DATA_CONTENT:
+    online: null
+    test: null
+  DATA_FORMAT:
+    DATA:
+      children:
+      - courseInfo:
+        - num: Float
+          title: Str
+          type: Int
+          url: HTTP
+        course_tips: Str
+        features:
+        - icon: HTTP
+          order: Int
+          title: Str
+          type: Int
+          url: HTTP
+        remainClass:
+          num: Float
+          title: Str
+          type: Int
+          url: HTTP
+        usedClass:
+          num: Float
+          title: Str
+          type: Int
+          url: HTTP
+        userInfo:
+          age: Int
+          avatar: Str
+          birth: Str
+          customerService: Str
+          flowstatus: Int
+          fulltime: Str
+          gender: Int
+          id: Int
+          isVip: Bool
+          mmobile: Str
+          mobile: Str
+          smobile: Str
+          tj_mobile: Str
+          type: Int
+          username: Str
+        userMall:
+          num: Int
+          title: Str
+          url: HTTP
       features:
       - icon: HTTP
         order: Int
         title: Str
         type: Int
-        url: HTTP
-      remainClass:
-        num: Float
-        title: Str
-        type: Int
-        url: HTTP
-      usedClass:
-        num: Float
-        title: Str
-        type: Int
-        url: HTTP
-      userInfo:
-        age: Int
-        avatar: Str
-        birth: Str
-        customerService: Str
-        flowstatus: Int
-        fulltime: Str
-        gender: Int
-        id: Int
-        isVip: Bool
-        mmobile: Str
-        mobile: Str
-        smobile: Str
-        tj_mobile: Str
-        type: Int
-        username: Str
-      userMall:
-        num: Int
-        title: Str
-        url: HTTP
-    features:
-    - icon: HTTP
-      order: Int
-      title: Str
-      type: Int
-      url: Str
-    msg: Str
-    status: Int
-    version: Str
-  TYPE: ONLY
-OPERATION_MODE: single
-RESPONSE_HEADER: null
+        url: Str
+      msg: Str
+      status: Int
+      version: Str
+    TYPE: ONLY
+  RESPONSE_HEADER: null
 SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: POST
+  URL_PATH: null
   online:
     BODY:
       DATA: null
@@ -95,8 +100,7 @@ SOURCE:
         uuid: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
         uuidnew: A8DD39CA-D772-4958-9DA0-7E50F67F2CEA
       TYPE: NORMAL
-    MODE:
-      TYPE: POST
+    METHOD: POST
     PARAMS:
       DATA: null
       TYPE: JOIN
