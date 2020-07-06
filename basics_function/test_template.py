@@ -13,15 +13,21 @@ from api_tester.testcase_maker import TestCaseMaker
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
-create_case_list("all_cases","dev")
+create_case_list("all_cases", "dev")
 case_data = config_reader(PATH + '/../temp/cases.yaml')
 run_data = []
-for k, v in case_data.items():
-    run_data.append((v["path"], v["source"]))
 apis = []
+run_context_data = []
+context_apis = []
 for k, v in case_data.items():
-    apis.append(v["api"])
+    if "context" not in v["path"]:
+        run_data.append((v["path"], v["source"]))
+        apis.append(v["api"])
+    else:
+        run_context_data.append((v["path"], v["source"]))
+        context_apis.append(v["api"])
 print(apis)
+print(context_apis)
 
 
 @allure.step
@@ -46,7 +52,7 @@ def anther_assert(api_test):
 
 
 @allure.feature("接口测试用例")
-@pytest.mark.parametrize("path,source", run_data,ids=apis)
+@pytest.mark.parametrize("path,source", run_data, ids=apis)
 def test_template(path, source):
     case = TestCaseMaker(path, source)
     api_test = ApiTester(case.case_result(), source)
@@ -54,3 +60,22 @@ def test_template(path, source):
     format_assert(api_test)
     content_assert(api_test)
     anther_assert(api_test)
+
+
+@pytest.mark.parametrize("path,source", run_context_data, ids=context_apis)
+def test_context_template(path, source):
+    config_list = config_reader(path)
+    temp_result = None
+    while config_list:
+        step_data = config_list.pop(0)
+        temp_path = PATH + "/../case" + step_data["PATH"]
+        case = TestCaseMaker(temp_path, source)
+        case.replace_case_data(step_data)
+        api_test = ApiTester(case.case_result(), source)
+        api_test.above_response = temp_result
+        request_api(api_test)
+        format_assert(api_test)
+        content_assert(api_test)
+        anther_assert(api_test)
+        temp_result = api_test.response
+        above_way = api_test

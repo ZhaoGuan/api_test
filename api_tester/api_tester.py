@@ -41,6 +41,12 @@ class ApiTester:
         self.fail_list = []
         self.requests_data = {"headers": self.get_headers(), "url": self.get_url(), "body": self.get_body()}
         self.response = None
+        # 上线文数据处理
+        self.above_response = None
+        try:
+            self.above_way = self.case_data["RESULT"]
+        except:
+            self.above_way = None
 
     def get_headers(self):
         if self.headers_type == "NORMAL":
@@ -121,7 +127,7 @@ class ApiTester:
             print("Mode:", self.request_mode)
             print("Response:", fail["response"])
 
-    def api_test(self):
+    def normal_api_test(self):
         if self.request_mode == "GET":
             response = requests.get(url=self.requests_data["url"], headers=self.requests_data["headers"])
         else:
@@ -129,6 +135,16 @@ class ApiTester:
                 response = requests.post(url=self.requests_data["url"], headers=self.requests_data["headers"],
                                          json=self.requests_data["body"])
         self.response = response
+
+    def deal_with_above(self):
+        pass
+
+    def api_test(self):
+        if self.above_way is None:
+            self.normal_api_test()
+        else:
+            self.deal_with_above()
+            self.normal_api_test()
 
 
 def single_api_tester(yaml_path, source="online"):

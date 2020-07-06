@@ -137,7 +137,8 @@ class InspectionMethod:
             try:
                 i = int(i)
             except Exception as e:
-                print(e)
+                # print(e)
+                pass
             # 对层级错误进行报错
             try:
                 if i == "random":
@@ -267,7 +268,7 @@ class InspectionMethod:
                     response = "null"
                 self.fail_append(self.response_data_check(case, response))
         except Exception as e:
-            print(e)
+            # print(e)
             fail_data = {"reason": "response格式检查错误", "case": case, "response": response}
             self.fail_list.append(fail_data)
         if len(self.fail_list) > 0:

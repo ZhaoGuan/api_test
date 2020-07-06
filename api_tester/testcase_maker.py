@@ -3,6 +3,7 @@
 # __author__ = 'Gz'
 import os
 from basics_function.golable_function import config_reader
+import copy
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,8 +17,18 @@ def env_data(case_path, path):
     return None
 
 
+def key_value_twice_replace(base_data, replace_data):
+    for k, v in replace_data.items():
+        if v is None:
+            base_data[k] = v
+        else:
+            for v_k, v_v in v.items():
+                base_data[k][v_k] = v_v
+
+
 class TestCaseMaker:
     def __init__(self, path, source="online", config_path=PATH + "/../env_config/config"):
+        self.source_name = source
         self.case_data = config_reader(path)
         self.env_config = env_data(path, config_path)
         self.case_data["ENV_DATA"] = self.env_config
@@ -26,7 +37,7 @@ class TestCaseMaker:
             self.DATA_TYPE = self.source["SOURCE"]["DATA_TYPE"]
         except:
             self.DATA_TYPE = "ONLY"
-        self.source = self.case_data["SOURCE"][source]
+        self.source = self.case_data["SOURCE"][self.source_name]
         self.headers = self.source["HEADERS"]
         self.headers_type = self.headers["TYPE"]
         self.headers_data = self.headers["DATA"]
@@ -37,12 +48,61 @@ class TestCaseMaker:
         self.request_body = self.source["BODY"]
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
-        self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
-        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"]["online"]
+        try:
+            self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
+        except:
+            self.assert_data_format = None
+        try:
+            self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
+        except:
+            self.assert_data_content = None
         try:
             self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
         except:
             self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
+
+    def replace_case_data(self, new_data):
+        base_path = PATH + "/../case/" + new_data["PATH"]
+        replace_data = new_data["SOURCE"][self.source_name]
+        replace_assert = new_data["ASSERT"]
+        result = new_data["RESULT"]
+        if base_path is None:
+            self.case_data["SOURCE"][self.source_name] = replace_data
+            self.case_data["ASSERT"] = replace_assert
+            assert self.case_data["SOURCE"][""]
+            self.case_data["ENV_DATA"] = self.env_config
+            self.url = self.case_data["SOURCE"]["URL_PATH"]
+            try:
+                self.DATA_TYPE = self.source["SOURCE"]["DATA_TYPE"]
+            except:
+                self.DATA_TYPE = "ONLY"
+            self.source = self.case_data["SOURCE"][self.source_name]
+            self.headers = self.source["HEADERS"]
+            self.headers_type = self.headers["TYPE"]
+            self.headers_data = self.headers["DATA"]
+            self.params = self.source["PARAMS"]
+            self.params_type = self.params["TYPE"]
+            self.params_data = self.params["DATA"]
+            self.request_mode = self.case_data["SOURCE"]["METHOD"]
+            self.request_body = self.source["BODY"]
+            self.body_type = self.request_body["TYPE"]
+            self.body_data = self.request_body["DATA"]
+            try:
+                self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
+            except:
+                self.assert_data_format = None
+            try:
+                self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
+            except:
+                self.assert_data_content = None
+            try:
+                self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
+            except:
+                self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
+        else:
+            key_value_twice_replace(self.case_data["SOURCE"][self.source_name], replace_data)
+            key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
+        self.case_data["RESULT"] = result
 
     def case_result(self):
         if self.DATA_TYPE == "ONLY":

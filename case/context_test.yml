@@ -1,0 +1,79 @@
+- STEP:
+  PATH: /!xbk/xbk_createClass.yml
+  SOURCE:
+    online:
+        HEADERS:
+            TYPE:
+                NORMAL
+            DATA:
+        PARAMS:
+            TYPE:
+                JOIN
+            DATA:
+        BODY:
+            TYPE:
+                JSON
+            DATA:
+    dev:
+        HEADERS:
+            TYPE:
+                NORMAL
+            DATA:
+        PARAMS:
+            TYPE:
+                JOIN
+            DATA:
+        BODY:
+            TYPE:
+                JSON
+            DATA:
+  ASSERT:
+    DATA_CONTENT:
+        online:
+        dev:
+            - status: 1
+    ANOTHER_ASSERT:
+  RESULT:
+    FROM: HEADER|response_body
+    TYPE: KEYS
+    DATA: k/k/k/random/k/k/k
+- STEP:
+  PATH: /!xbk/xbk_createClass.yml
+  SOURCE:
+    online:
+        HEADERS:
+            TYPE:
+                NORMAL
+            DATA:
+        PARAMS:
+            TYPE:
+                JOIN
+            DATA:
+        BODY:
+            TYPE:
+                JSON
+            DATA:
+    dev:
+        HEADERS:
+            TYPE:
+                NORMAL
+            DATA:
+        PARAMS:
+            TYPE:
+                JOIN
+            DATA:
+        BODY:
+            TYPE:
+                JSON
+            DATA:
+  ASSERT:
+    DATA_CONTENT:
+        online:
+        dev:
+            - status: 1
+    ANOTHER_ASSERT:
+  RESULT:
+    FROM: HEADER|response_body
+    TYPE: KEYS
+    DATA: k/k/k/random/k/k/k
+

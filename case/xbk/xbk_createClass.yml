@@ -14,8 +14,6 @@ SOURCE:
       TYPE:
         JOIN
       DATA:
-    METHOD:
-      POST
     BODY:
       TYPE:
         JSON
