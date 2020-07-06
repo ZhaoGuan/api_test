@@ -39,7 +39,16 @@ class TestCaseMaker:
         self.body_data = self.request_body["DATA"]
         self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
         self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"]["online"]
+        try:
+            self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
+        except:
+            self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
 
     def case_result(self):
         if self.DATA_TYPE == "ONLY":
             return self.case_data
+
+
+if __name__ == "__main__":
+    tcm = TestCaseMaker(PATH + "/../case/all/example.yml")
+    print(tcm.case_data)

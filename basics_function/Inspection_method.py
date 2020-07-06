@@ -67,12 +67,12 @@ class InspectionMethod:
             else:
                 repeated.append(i)
         if len(repeated) > 0:
-            fail_data = {"reason": "list中有重复的内容，重复内容为:{}".format(repeated), "response": response, "case": None}
+            fail_data = {"reason": "\nlist中有重复的内容，重复内容为:{}".format(repeated), "response": response, "case": None}
             self.fail_list.append(fail_data)
 
     def list_empty_check(self, case, response):
         if len(response) == 0:
-            fail_data = {"reason": "response list内容为空", "response": response, "case": case}
+            fail_data = {"reason": "\nresponse list内容为空", "response": response, "case": case}
             self.fail_list.append(fail_data)
 
     # http资源验证
@@ -80,19 +80,19 @@ class InspectionMethod:
         url = str(url).replace("%2F", "/")
         if self.extra["URL_FROM"] is not None and self.extra["URL_FROM"] not in url:
             self.fail_list.append(
-                {"reason": url + " 资源来源不是" + str(self.extra["URL_FROM"]), "case": None, "response": None})
+                {"reason": "\n" + url + " 资源来源不是" + str(self.extra["URL_FROM"]), "case": None, "response": None})
         try:
             resources = self.requests.head(url, timeout=self.request_time_out)
             if resources.status_code in [200, 300, 301, 302, 303, 304, 305, 306, 307]:
                 return True
             else:
                 self.fail_list.append(
-                    {"reason": url + "url请求错误" + str(resources.status_code), "case": None, "response": None})
+                    {"reason": url + "\nurl请求错误" + str(resources.status_code), "case": None, "response": None})
                 return False
         except Exception as e:
             print(e)
             self.fail_list.append(
-                {"reason": "Http请求错误,错误信息:" + e, "case": None, "response": None})
+                {"reason": "\nHttp请求错误,错误信息:" + e, "case": None, "response": None})
             return False
 
     def response_data_check_url(self, response):
@@ -106,7 +106,7 @@ class InspectionMethod:
         if ((response != "") and (self.extra["EMPTY_STRING_CHECK"])) or self.extra["EMPTY_STRING_CHECK"] is False:
             return isinstance(response, str)
         else:
-            self.fail_list.append({"reason": "出现空字符串", "case": None, "response": response})
+            self.fail_list.append({"reason": "\n出现空字符串", "case": None, "response": response})
             return False
 
     # 返回数据详细校验
@@ -144,7 +144,7 @@ class InspectionMethod:
         if True in result:
             return None
         else:
-            return {"reason": "返回数据校验错误，错误内容:", "case": str(case), "response": str(response)}
+            return {"reason": "\n返回数据校验错误，错误内容:", "case": str(case), "response": str(response)}
 
     def get_key_value_list(self, keys, data):
         for i in keys:
@@ -160,7 +160,8 @@ class InspectionMethod:
                 else:
                     data = data[i]
             except Exception as e:
-                self.fail_list.append({"reason": "不存在字段，内容报错:" + e, "case": str(i) + " " + str(data), "response": None})
+                self.fail_list.append(
+                    {"reason": "\n不存在字段，内容报错:" + e, "case": str(i) + " " + str(data), "response": None})
                 data = False
         return data
 
@@ -179,7 +180,7 @@ class InspectionMethod:
                 print(str(keys))
                 print(str(data))
                 self.fail_list.append(
-                    {"reason": "不存在字段，内容报错:" + e, "case": str(keys) + " " + str(data), "response": None})
+                    {"reason": "\n不存在字段，内容报错:" + e, "case": str(keys) + " " + str(data), "response": None})
                 data = False
         return data
 
@@ -217,8 +218,9 @@ class InspectionMethod:
     def dict_key_list_count(self, key, response_list):
         for check_key, check_count in self.extra["DICT_LIST_COUNT"].items():
             if check_key == key and len(response_list) > int(check_count):
-                fail_data = {"reason": str(key) + " 对应的list长度为" + str(len(response_list)) + "超过判断长度" + str(check_count),
-                             "case": None, "response": None}
+                fail_data = {
+                    "reason": "\n" + str(key) + " 对应的list长度为" + str(len(response_list)) + "超过判断长度" + str(check_count),
+                    "case": None, "response": None}
                 self.fail_list.append(fail_data)
 
     def _format_dict(self, case, response, key):
@@ -243,8 +245,9 @@ class InspectionMethod:
                 # 值得类型是list进行忽略检查
                 self._format_dict(case, response, key)
         else:
-            msg = "response检查dict类型错误,字典型key不匹配,case: {} response: {}".format(str(case.keys()),
-                                                                              str(response.keys()))
+            msg = "\nresponse检查dict类型错误,字典型key不匹配\n" \
+                  "case: {} \n" \
+                  "response: {} \n".format(str(case.keys()), str(response.keys()))
             fail_data = {"reason": msg, "case": case, "response": response}
             self.fail_list.append(fail_data)
 
@@ -305,4 +308,5 @@ class InspectionMethod:
                     msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
                 if fail["response"] is not None:
                     msg = msg + "\n\tresponse:{}\n\t".format(fail["response"])
+                msg = msg + "\n\t"
             assert False, msg

@@ -46,7 +46,11 @@ ASSERT :
     DATA_CONTENT:
        online:
        test:
-     ANOTHER_ASSSERT:
-        - TYPE :
+    ANOTHER_ASSERT:
+        - TYPE : test
           DATA :
+          - a
+          - b
+        - TYPE : test1
+        - TYPE : a
     RESPONSE_HEADER:

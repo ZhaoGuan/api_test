@@ -8,6 +8,7 @@ from urllib import parse
 from PIL import Image
 import requests
 import io
+import importlib
 
 
 def url_parse(url):
@@ -74,9 +75,24 @@ def list_duplicate_removal(data):
     return result
 
 
-if __name__ == "__main__":
-    import requests
+def assert_function_import(function_name):
+    assert_function = importlib.import_module("customize_function.assert_function", ".")
+    run = getattr(assert_function, function_name)
+    return run
 
-    response = requests.get("https://static.cdn.5nuthost.com/package/bf6ee9406aad7bcd572d119dc0e61128.apk")
-    a = get_response_content_md5(response.content)
-    print(a)
+
+def header_function_import(function_name):
+    assert_function = importlib.import_module("customize_function.header_function", ".")
+    run = getattr(assert_function, function_name)
+    return run
+
+
+def body_function_import(function_name):
+    assert_function = importlib.import_module("customize_function.body_function", ".")
+    run = getattr(assert_function, function_name)
+    return run
+
+
+if __name__ == "__main__":
+    function = assert_function_import("test")
+    function({"a": "a", "b": "b", "c": "c"})

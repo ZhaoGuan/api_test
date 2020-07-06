@@ -30,6 +30,13 @@ def format_assert(api_test):
     api_test.api_assert()
 
 
+@allure.step
+def anther_assert(api_test):
+    api_test.another_assert()
+    print(api_test.another_assert_fail_list)
+    api_test.another_assert_report()
+
+
 @allure.feature("接口测试用例")
 @pytest.mark.parametrize("path,source", run_data)
 def test_template(path, source):
@@ -37,3 +44,4 @@ def test_template(path, source):
     api_test = ApiTester(case.case_result(), source)
     request_api(api_test)
     format_assert(api_test)
+    anther_assert(api_test)
