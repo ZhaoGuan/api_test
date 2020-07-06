@@ -92,12 +92,14 @@ class ApiTester:
                 function_name = assert_data["TYPE"]
                 function_data = assert_data["DATA"]
                 func = assert_function_import(function_name)
-                func(func_data=function_data, case_data=self.case_data, fail_list=self.another_assert_fail_list)
+                func(func_data=function_data, case_data=self.case_data, response=self.response,
+                     fail_list=self.another_assert_fail_list)
         else:
             function_name = self.another_assert_data["TYPE"]
             function_data = self.another_assert_data["DATA"]
             func = assert_function_import(function_name)
-            func(func_data=function_data, case_data=self.case_data, fail_list=self.another_assert_fail_list)
+            func(func_data=function_data, case_data=self.case_data, response=self.response,
+                 fail_list=self.another_assert_fail_list)
 
     def another_assert_report(self):
         msg = ""
