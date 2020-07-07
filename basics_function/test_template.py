@@ -5,8 +5,10 @@
 import os
 import pytest
 import allure
+import yaml
 import subprocess
-from basics_function.golable_function import config_reader, config_data_path
+import shutil
+from basics_function.golable_function import config_reader, temp_yml
 from basics_function.create_case_yaml import create_case_list
 from api_tester.api_tester import ApiTester, single_api_tester
 from api_tester.testcase_maker import TestCaseMaker
@@ -26,8 +28,6 @@ for k, v in case_data.items():
     else:
         run_context_data.append((v["path"], v["source"]))
         context_apis.append(v["api"])
-print(apis)
-print(context_apis)
 
 
 @allure.step
@@ -55,11 +55,15 @@ def anther_assert(api_test):
 @pytest.mark.parametrize("path,source", run_data, ids=apis)
 def test_template(path, source):
     case = TestCaseMaker(path, source)
-    api_test = ApiTester(case.case_result(), source)
-    request_api(api_test)
-    format_assert(api_test)
-    content_assert(api_test)
-    anther_assert(api_test)
+    cases = case.case_result()
+    if isinstance(cases, dict):
+        cases = [cases]
+    for _case in cases:
+        api_test = ApiTester(_case, source)
+        request_api(api_test)
+        format_assert(api_test)
+        content_assert(api_test)
+        anther_assert(api_test)
 
 
 @pytest.mark.parametrize("path,source", run_context_data, ids=context_apis)
@@ -68,7 +72,10 @@ def test_context_template(path, source):
     temp_result = None
     while config_list:
         step_data = config_list.pop(0)
-        temp_path = PATH + "/../case" + step_data["PATH"]
+        if step_data["PATH"] is None:
+            temp_path = temp_yml(step_data, PATH + "/../temp_cases/")
+        else:
+            temp_path = PATH + "/../case" + step_data["PATH"]
         case = TestCaseMaker(temp_path, source)
         case.replace_case_data(step_data)
         api_test = ApiTester(case.case_result(), source)
@@ -78,4 +85,4 @@ def test_context_template(path, source):
         content_assert(api_test)
         anther_assert(api_test)
         temp_result = api_test.response
-        above_way = api_test
+    shutil.rmtree(PATH + "/../temp_cases")

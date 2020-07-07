@@ -4,27 +4,9 @@
   resources_to_test: true
   source: dev
   temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/s_createCouponPopup.yml:
-  api: /api/s/v1/popup/createCouponPopup
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/s_createCouponPopup.yml
-  resources_to_test: true
-  source: dev
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml:
-  api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml
-  resources_to_test: true
-  source: dev
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml:
-  api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml
-  resources_to_test: true
-  source: dev
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/xbk_createClass.yml:
-  api: /xbk/classmanage/class/createClass
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/xbk_createClass.yml
+/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/more_test.yml:
+  api: null
+  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/more_test.yml
   resources_to_test: true
   source: dev
   temp_server: false

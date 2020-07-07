@@ -2,19 +2,34 @@
 # -*- coding: utf-8 -*-
 # __author__ = 'Gz'
 from basics_function.golable_function import config_reader, assert_function_import, header_function_import, \
-    body_function_import
+    body_function_import, above_function_import, get_key_value_list
 from basics_function.Inspection_method import InspectionMethod
 from urllib.parse import urlencode
 import json
 import requests
+import os
+
+PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+def change_keys_value(base_data, keys, value):
+    if isinstance(keys, str):
+        keys = keys.split("/")
+    key = keys.pop(0)
+    if isinstance(base_data[key], dict):
+        base_data[key] = change_keys_value(base_data, keys, value)
+    else:
+        base_data[key] = value
+    return base_data
 
 
 class ApiTester:
     def __init__(self, config, source="online"):
+        self.source_name = source
         self.inspection_method = InspectionMethod()
         self.case_data = config
         try:
-            self.env_data = self.case_data["ENV_DATA"][source]
+            self.env_data = self.case_data["ENV_DATA"][self.source_name]
         except:
             self.env_data = None
         if self.env_data is None:
@@ -22,8 +37,8 @@ class ApiTester:
         else:
             self.host = self.env_data["HOST"]
         self.url_path = self.case_data["SOURCE"]["URL_PATH"]
-        self.source = self.case_data["SOURCE"][source]
-        self.url = self.case_data["SOURCE"][source]["URL"]
+        self.source = self.case_data["SOURCE"][self.source_name]
+        self.url = self.case_data["SOURCE"][self.source_name]["URL"]
         self.headers = self.source["HEADERS"]
         self.headers_type = self.headers["TYPE"]
         self.headers_data = self.headers["DATA"]
@@ -35,16 +50,15 @@ class ApiTester:
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
         self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
-        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][source]
+        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
         self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
         self.another_assert_fail_list = []
         self.fail_list = []
-        self.requests_data = {"headers": self.get_headers(), "url": self.get_url(), "body": self.get_body()}
         self.response = None
         # 上线文数据处理
         self.above_response = None
         try:
-            self.above_way = self.case_data["RESULT"]
+            self.above_way = self.case_data["ABOVE"]
         except:
             self.above_way = None
 
@@ -129,15 +143,61 @@ class ApiTester:
 
     def normal_api_test(self):
         if self.request_mode == "GET":
-            response = requests.get(url=self.requests_data["url"], headers=self.requests_data["headers"])
+            response = requests.get(url=self.get_url(), headers=self.get_headers())
         else:
             if self.body_type == "JSON":
-                response = requests.post(url=self.requests_data["url"], headers=self.requests_data["headers"],
-                                         json=self.requests_data["body"])
+                response = requests.post(url=self.get_url(), headers=self.get_headers(),
+                                         json=self.get_body())
         self.response = response
 
+    def above_response_to(self, data):
+        keys = data["DATA"].split("/")
+        data_to = data["TO"]
+        above_json = json.loads(self.above_response.text)
+        value = get_key_value_list(keys, above_json)
+        assert value, "上文参数获取错误,\n" \
+                      "层级信息:{} \n" \
+                      "上文信息:{}\n".format(str(keys), above_json)
+        for k, v in data_to.items():
+            if k == "PARAMS":
+                change_keys_value(self.params_data, v, value)
+            elif k == "BODY":
+                change_keys_value(self.body_data, v, value)
+            else:
+                change_keys_value(self.headers_data, v, value)
+
+    def above_headers_to(self, data):
+        keys = data["DATA"].split("/")
+        data_to = data["TO"]
+        above_header = self.above_response.headers
+        value = get_key_value_list(keys, above_header)
+        assert value, "上文参数获取错误,\n" \
+                      "层级信息:{} \n" \
+                      "上文信息:{}\n".format(str(keys), above_header)
+        for k, v in data_to.item():
+            if k == "PARAMS":
+                change_keys_value(self.params_data, v, value)
+            if k == "BODY":
+                change_keys_value(self.body_data, v, value)
+            else:
+                change_keys_value(self.headers_data, v, value)
+
     def deal_with_above(self):
-        pass
+        for result in self.above_way:
+            data_from = result["FROM"]
+            data_type = result["TYPE"]
+            if data_from == "HEADERS" and data_type == "ALL":
+                self.headers_data = self.above_response.headers
+                self.headers_type = "NORMAL"
+                return
+            if data_from == "HEADERS" and data_type == "KEYS":
+                self.above_headers_to(result)
+                return
+            if data_from == "BODY" and data_type == "KEYS":
+                self.above_response_to(result)
+                return
+            func = above_function_import(data_type)
+            func(self.case_data)
 
     def api_test(self):
         if self.above_way is None:
@@ -155,7 +215,3 @@ def single_api_tester(yaml_path, source="online"):
         return False
     else:
         return True
-
-
-if __name__ == "__main__":
-    single_api_tester("./../case/all/test.yml")

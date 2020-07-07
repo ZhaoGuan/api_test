@@ -1,20 +1,13 @@
 - STEP:
-  PATH: /!xbk/xbk_createClass.yml
+  PATH:
   SOURCE:
-    online:
-        HEADERS:
-            TYPE:
-                NORMAL
-            DATA:
-        PARAMS:
-            TYPE:
-                JOIN
-            DATA:
-        BODY:
-            TYPE:
-                JSON
-            DATA:
+    URL_PATH:
+    METHOD:
+        GET
+    DATA_TYPE:
+        ONLY
     dev:
+        URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/history/course/list
         HEADERS:
             TYPE:
                 NORMAL
@@ -23,57 +16,50 @@
             TYPE:
                 JOIN
             DATA:
+                appversion: 1.3.2
+                ostype: ios
+                page: 0
+                studentId: 462297116145094656
         BODY:
             TYPE:
                 JSON
             DATA:
   ASSERT:
+    DATA_FORMAT:
     DATA_CONTENT:
-        online:
-        dev:
-            - status: 1
     ANOTHER_ASSERT:
-  RESULT:
-    FROM: HEADER|response_body
-    TYPE: KEYS
-    DATA: k/k/k/random/k/k/k
-- STEP:
-  PATH: /!xbk/xbk_createClass.yml
-  SOURCE:
-    online:
-        HEADERS:
-            TYPE:
-                NORMAL
-            DATA:
-        PARAMS:
-            TYPE:
-                JOIN
-            DATA:
-        BODY:
-            TYPE:
-                JSON
-            DATA:
-    dev:
-        HEADERS:
-            TYPE:
-                NORMAL
-            DATA:
-        PARAMS:
-            TYPE:
-                JOIN
-            DATA:
-        BODY:
-            TYPE:
-                JSON
-            DATA:
-  ASSERT:
-    DATA_CONTENT:
-        online:
-        dev:
-            - status: 1
-    ANOTHER_ASSERT:
-  RESULT:
-    FROM: HEADER|response_body
-    TYPE: KEYS
-    DATA: k/k/k/random/k/k/k
+  ABOVE:
 
+- STEP:
+  PATH:
+  SOURCE:
+    URL_PATH:
+    METHOD:
+        GET
+    DATA_TYPE:
+        ONLY
+    dev:
+        URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/course/getCourseDetail
+        HEADERS:
+            TYPE:
+                NORMAL
+            DATA:
+        PARAMS:
+            TYPE:
+                JOIN
+            DATA:
+                courseId: 944
+                studentId: 462297116145094656
+        BODY:
+            TYPE:
+                JSON
+            DATA:
+  ASSERT:
+    DATA_CONTENT:
+    ANOTHER_ASSERT:
+  ABOVE:
+    - FROM: BODY
+      TYPE: KEYS
+      DATA: payload/content/0/courseId
+      TO:
+        PARAMS: courseId
