@@ -147,23 +147,21 @@ class InspectionMethod:
                     data = data[i]
             except Exception as e:
                 self.fail_list.append(
-                    {"reason": "\n不存在字段，内容报错:" + str(e), "case": str(i) + " " + str(data),
+                    {"reason": "\n不存在字段，内容报错:" + str(e), "case": str(keys) + " " + str(data),
                      "response": json.dumps(data)})
-                data = False
+                return False
         return data
 
     # response字段获取
     def get_key_value(self, keys, data):
         if isinstance(keys, list):
             data = self.get_key_value_list(keys, data)
+            if data is False:
+                return False
         else:
             try:
                 data = data[keys]
             except Exception as e:
-                print(e)
-                print("不存在字段，内容报错:")
-                print(str(keys))
-                print(str(data))
                 self.fail_list.append(
                     {"reason": "\n不存在字段，内容报错:" + str(e), "case": str(keys), "response": json.dumps(data)})
                 data = False

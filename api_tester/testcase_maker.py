@@ -78,7 +78,7 @@ class TestCaseMaker:
             return
         replace_data = new_data["SOURCE"][self.source_name]
         replace_assert = new_data["ASSERT"]
-        result = new_data["RESULT"]
+        result = new_data["ABOVE"]
         key_value_twice_replace(self.case_data["SOURCE"][self.source_name], replace_data)
         key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
         self.case_data["ABOVE"] = result
@@ -100,7 +100,6 @@ class TestCaseMaker:
                 value = list(i.values())[0]
                 keys.append(key)
                 more_data["params"][key] = value
-            print(more_data)
         else:
             more_data["params"] = None
 
