@@ -11,7 +11,7 @@ import shutil
 from basics_function.golable_function import config_reader, temp_yml
 from basics_function.create_case_yaml import create_case_list
 from api_tester.api_tester import ApiTester
-from api_tester.testcase_maker import TestCaseMaker
+from api_tester.testcase_maker import TestCaseMaker, env_data
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -71,9 +71,11 @@ def test_template(path, source):
 def test_context_template(path, source):
     config_list = config_reader(path)
     temp_result = None
+    env = env_data(path, PATH + "/../env_config/config")
     while config_list:
         step_data = config_list.pop(0)
         if step_data["PATH"] is None:
+            step_data["ENV_DATA"] = env
             temp_path = temp_yml(step_data, PATH + "/../temp_cases/")
         else:
             temp_path = PATH + "/../case" + step_data["PATH"]

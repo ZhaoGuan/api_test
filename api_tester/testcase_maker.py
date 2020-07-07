@@ -19,11 +19,11 @@ def env_data(case_path, path):
 
 def key_value_twice_replace(base_data, replace_data):
     for k, v in replace_data.items():
-        if v is None:
-            base_data[k] = v
-        else:
+        if isinstance(v, dict):
             for v_k, v_v in v.items():
                 base_data[k][v_k] = v_v
+        else:
+            base_data[k] = v
 
 
 class TestCaseMaker:
@@ -75,12 +75,14 @@ class TestCaseMaker:
 
     def replace_case_data(self, new_data):
         if new_data["PATH"] is None:
+            self.case_data["ENV_DATA"] = new_data["ENV_DATA"]
             return
         replace_data = new_data["SOURCE"][self.source_name]
         replace_assert = new_data["ASSERT"]
         result = new_data["ABOVE"]
         key_value_twice_replace(self.case_data["SOURCE"][self.source_name], replace_data)
-        key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
+        if replace_assert is not None:
+            key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
         self.case_data["ABOVE"] = result
 
     def more_cases_data_header(self, keys, more_data):
