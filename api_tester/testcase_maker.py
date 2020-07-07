@@ -100,6 +100,7 @@ class TestCaseMaker:
                 value = list(i.values())[0]
                 keys.append(key)
                 more_data["params"][key] = value
+            print(more_data)
         else:
             more_data["params"] = None
 

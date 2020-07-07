@@ -28,6 +28,12 @@
   resources_to_test: true
   source: online
   temp_server: false
+/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test1.yml:
+  api: /api/home/v1/config/home1Init
+  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test1.yml
+  resources_to_test: true
+  source: online
+  temp_server: false
 /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml:
   api: /api/ts/v1/teaching/student/history/course/list
   path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml

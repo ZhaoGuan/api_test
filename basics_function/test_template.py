@@ -10,7 +10,7 @@ import subprocess
 import shutil
 from basics_function.golable_function import config_reader, temp_yml
 from basics_function.create_case_yaml import create_case_list
-from api_tester.api_tester import ApiTester, single_api_tester
+from api_tester.api_tester import ApiTester
 from api_tester.testcase_maker import TestCaseMaker
 
 PATH = os.path.dirname(os.path.abspath(__file__))

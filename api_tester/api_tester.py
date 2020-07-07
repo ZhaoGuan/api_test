@@ -217,12 +217,3 @@ class ApiTester:
             self.deal_with_above()
             self.normal_api_test()
 
-
-def single_api_tester(yaml_path, source="online"):
-    config = config_reader(yaml_path)
-    a = ApiTester(config)
-    a.api_test()
-    if len(a.fail_list) > 0:
-        return False
-    else:
-        return True
