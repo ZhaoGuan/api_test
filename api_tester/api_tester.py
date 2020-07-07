@@ -50,6 +50,7 @@ class ApiTester:
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
         self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
+        self.assert_data_format_data = self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"]
         self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
         self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
         self.another_assert_fail_list = []
@@ -92,7 +93,7 @@ class ApiTester:
             response_code_result = False
             msg = "请求结果非200,Code为:{}".format(str(self.response.status_code))
             self.fail_list.append({"reason": msg, "case": None, "response": self.response.text})
-        if self.assert_data_format is not None and response_code_result:
+        if self.assert_data_format is not None and self.assert_data_format_data is not None and response_code_result:
             format_result = self.inspection_method.structure_format_diff(self.assert_data_format, self.response)
             if format_result is False:
                 self.inspection_method.fail_list_assert()
