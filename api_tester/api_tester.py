@@ -50,9 +50,19 @@ class ApiTester:
         self.body_type = self.request_body["TYPE"]
         self.body_data = self.request_body["DATA"]
         self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
-        self.assert_data_format_data = self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"]
-        self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
+        try:
+            self.assert_data_format_data = self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"]
+        except:
+            self.assert_data_format_data = None
+        try:
+            self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
+        except:
+            self.assert_data_content = None
         self.another_assert_data = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
+        try:
+            self.another_assert_data_source = self.case_data["ASSERT"]["ANOTHER_ASSERT"][self.source_name]
+        except:
+            self.another_assert_data_source = None
         self.another_assert_fail_list = []
         self.fail_list = []
         self.response = None
@@ -110,9 +120,9 @@ class ApiTester:
             self.inspection_method.fail_list = []
 
     def another_assert(self):
-        if self.another_assert_data is None:
+        if self.another_assert_data is None or self.another_assert_data_source is None:
             return
-        if isinstance(self.another_assert_data, list):
+        if isinstance(self.another_assert_data_source, list):
             for assert_data in self.another_assert_data:
                 function_name = assert_data["TYPE"]
                 function_data = assert_data["DATA"]

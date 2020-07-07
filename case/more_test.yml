@@ -4,7 +4,7 @@ SOURCE:
         GET
     DATA_TYPE:
         MORE
-    dev:
+    online:
         URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/course/getCourseDetail
         HEADERS:
             TYPE:

@@ -50,28 +50,28 @@ class TestCaseMaker:
         self.body_data = self.request_body["DATA"]
         try:
             self.assert_data_format = self.case_data["ASSERT"]["DATA_FORMAT"]
+            try:
+                self.assert_data_format_data = self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"]
+            except:
+                self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"] = None
         except:
             self.case_data["ASSERT"]["DATA_FORMAT"] = None
         try:
-            self.assert_data_format_data = self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"]
-        except:
-            self.case_data["ASSERT"]["DATA_FORMAT"]["DATA"] = None
-        try:
             self.assert_data_content = self.case_data["ASSERT"]["DATA_CONTENT"]
+            try:
+                self.assert_data_content_source = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
+            except:
+                self.case_data["ASSERT"]["DATA_CONTENT"] = {self.source_name: None}
         except:
             self.case_data["ASSERT"]["DATA_CONTENT"] = None
         try:
-            self.assert_data_content_source = self.case_data["ASSERT"]["DATA_CONTENT"][self.source_name]
-        except:
-            self.case_data["ASSERT"]["DATA_CONTENT"] = {self.source_name: None}
-        try:
             self.another_assert_another_assert = self.case_data["ASSERT"]["ANOTHER_ASSERT"]
+            try:
+                self.another_assert_another_assert_source = self.case_data["ASSERT"]["ANOTHER_ASSERT"][self.source_name]
+            except:
+                self.case_data["ASSERT"]["ANOTHER_ASSERT"] = {self.source_name: None}
         except:
             self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
-        try:
-            self.another_assert_another_assert_source = self.case_data["ASSERT"]["ANOTHER_ASSERT"][self.source_name]
-        except:
-            self.case_data["ASSERT"]["ANOTHER_ASSERT"][self.source_name] = None
 
     def replace_case_data(self, new_data):
         if new_data["PATH"] is None:

@@ -6,7 +6,7 @@
         GET
     DATA_TYPE:
         ONLY
-    dev:
+    online:
         URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/history/course/list
         HEADERS:
             TYPE:
@@ -38,7 +38,7 @@
         GET
     DATA_TYPE:
         ONLY
-    dev:
+    online:
         URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/course/getCourseDetail
         HEADERS:
             TYPE:

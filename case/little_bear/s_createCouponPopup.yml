@@ -4,7 +4,7 @@ SOURCE:
     POST
   DATA_TYPE:
     ONLY
-  online:
+  dev:
     URL:
     HEADERS:
       TYPE:
@@ -20,7 +20,7 @@ SOURCE:
       TYPE:
         JSON
       DATA:
-  dev:
+  online:
     URL:
     HEADERS:
       TYPE:
