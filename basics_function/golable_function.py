@@ -7,8 +7,10 @@ import hashlib
 from urllib import parse
 from PIL import Image
 import requests
-import io
+import os
 import importlib
+import random
+import time
 
 
 def url_parse(url):
@@ -75,6 +77,36 @@ def list_duplicate_removal(data):
     return result
 
 
+def get_key_value_list(keys, data):
+    for i in keys:
+        # 遇到list进行处理
+        try:
+            i = int(i)
+        except Exception as e:
+            # print(e)
+            pass
+        # 对层级错误进行报错
+        try:
+            if i == "random":
+                data = data[random.choice(list(range(len(data))))]
+            else:
+                data = data[i]
+        except Exception as e:
+            data = False
+    return data
+
+
+def temp_yml(data, path):
+    try:
+        os.makedirs(path)
+    except:
+        pass
+    temp_path = path + str(int(time.time())) + ".yml"
+    with open(path + str(int(time.time())) + ".yml", "w") as f:
+        yaml.dump(data, f)
+    return temp_path
+
+
 def assert_function_import(function_name):
     assert_function = importlib.import_module("customize_function.assert_function", ".")
     run = getattr(assert_function, function_name)
@@ -82,17 +114,18 @@ def assert_function_import(function_name):
 
 
 def header_function_import(function_name):
-    assert_function = importlib.import_module("customize_function.header_function", ".")
-    run = getattr(assert_function, function_name)
+    header_function = importlib.import_module("customize_function.header_function", ".")
+    run = getattr(header_function, function_name)
     return run
 
 
 def body_function_import(function_name):
-    assert_function = importlib.import_module("customize_function.body_function", ".")
-    run = getattr(assert_function, function_name)
+    body_function = importlib.import_module("customize_function.body_function", ".")
+    run = getattr(body_function, function_name)
     return run
 
 
-if __name__ == "__main__":
-    function = assert_function_import("test")
-    function({"a": "a", "b": "b", "c": "c"})
+def above_function_import(function_name):
+    above_function = importlib.import_module("customize_function.above_function", ".")
+    run = getattr(above_function, function_name)
+    return run
