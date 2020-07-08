@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # __author__ = 'Gz'
-from basics_function.golable_function import config_reader, assert_function_import, header_function_import, \
-    body_function_import, above_function_import, get_key_value_list
+from basics_function.golable_function import config_reader, assert_function_import, params_function_import, \
+    header_function_import, body_function_import, above_function_import, get_key_value_list
 from basics_function.Inspection_method import InspectionMethod
 from urllib.parse import urlencode
 import json
@@ -80,12 +80,14 @@ class ApiTester:
         return headers_func(func_data=self.headers_data, case_data=self.case_data)
 
     def get_url(self):
-        if self.host is not None:
+        if self.host is not None and self.url_path is not None:
             self.url = self.host + self.url_path
         if self.params_data is None:
             return self.url
         if self.params_type == "JOIN":
             return self.url + "?" + urlencode(self.params_data)
+        params_func = params_function_import(self.params_type)
+        return params_func(func_data=self.params_data, case_data=self.case_data)
 
     def get_body(self):
         if self.request_mode == "GET":
@@ -216,4 +218,3 @@ class ApiTester:
         else:
             self.deal_with_above()
             self.normal_api_test()
-

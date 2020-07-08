@@ -119,6 +119,12 @@ def header_function_import(function_name):
     return run
 
 
+def params_function_import(function_name):
+    params_function = importlib.import_module("customize_function.params_function", ".")
+    run = getattr(params_function, function_name)
+    return run
+
+
 def body_function_import(function_name):
     body_function = importlib.import_module("customize_function.body_function", ".")
     run = getattr(body_function, function_name)

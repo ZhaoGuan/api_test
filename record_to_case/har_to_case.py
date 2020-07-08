@@ -9,8 +9,9 @@ from basics_function.json_to_format_case import data_clear
 
 
 class HarToCase:
-    def __init__(self, path):
+    def __init__(self, path, source):
         self.path = path
+        self.source = source
 
     def get_params(self, params):
         the_params = {}
@@ -65,16 +66,16 @@ class HarToCase:
                 response_body = base64.b64decode(response_body).decode('utf-8')
             case_data = {'SOURCE': {'URL_PATH': None, 'METHOD': method,
                                     'DATA_TYPE': 'ONLY',
-                                    'online': {'URL': url, 'HEADERS': {'TYPE': 'NORMAL', 'DATA': the_header},
-                                               'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params},
-                                               'BODY': {'TYPE': body_type, 'DATA': the_post_body}}},
+                                    self.source: {'URL': url, 'HEADERS': {'TYPE': 'NORMAL', 'DATA': the_header},
+                                                  'PARAMS': {'TYPE': 'JOIN', 'DATA': the_params},
+                                                  'BODY': {'TYPE': body_type, 'DATA': the_post_body}}},
                          'ASSERT': {'DATA_FORMAT': {'TYPE': 'ONLY', 'DATA': data_clear(response_body)},
-                                    'DATA_CONTENT': {'online': None, 'test': None}, 'RESPONSE_HEADER': None}}
+                                    'DATA_CONTENT': None, 'RESPONSE_HEADER': None}}
             file_name = url.split("/")[-1] + ".yml"
             with open(case_path + "/" + file_name, "w") as f:
                 yaml.dump(case_data, f)
 
 
 if __name__ == "__main__":
-    htc = HarToCase("./Desktop.har")
+    htc = HarToCase("./Desktop.har", source)
     htc.to_case("./")
