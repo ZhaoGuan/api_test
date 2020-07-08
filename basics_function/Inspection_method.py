@@ -341,7 +341,8 @@ class InspectionMethod:
             self.structure_format_diff(the_content, the_response, json_check=False)
         else:
             fail_data = {"reason": "未发现匹配条件", "case": case, "response": response}
-            self.fail_list.append(fail_data)
+            # self.fail_list.append(fail_data)
+            print(fail_data)
 
     def _response_content_check(self, case, response):
         case_tag = list(case.keys())[0]
