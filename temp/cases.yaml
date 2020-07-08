@@ -1,72 +1,42 @@
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/context_test.yml:
-  api: context_test.yml
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/context_test.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/indexinfo2.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/indexinfo2.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/lessonlist.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/lessonlist.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/s_createCouponPopup.yml:
-  api: /api/s/v1/popup/createCouponPopup
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/s_createCouponPopup.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml:
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/cases_from.yml:
   api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test.yml
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/cases_from.yml
   resources_to_test: true
-  source: online
+  source: dev
   temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test1.yml:
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/context_relation_cases_to.yml:
+  api: context_relation_cases_to.yml
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/context_relation_cases_to.yml
+  resources_to_test: true
+  source: dev
+  temp_server: false
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/get_request.yml:
+  api: /api/o/v1/order/getOrders/regtypeAndStatuses
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/get_request.yml
+  resources_to_test: true
+  source: dev
+  temp_server: false
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/get_request_moreassert.yml:
+  api: /api/ts/v1/teaching/student/history/course/list
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/get_request_moreassert.yml
+  resources_to_test: true
+  source: dev
+  temp_server: false
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/more_cases.yml:
   api: /api/home/v1/config/home1Init
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/test1.yml
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/more_cases.yml
   resources_to_test: true
-  source: online
+  source: dev
   temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml:
-  api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/ts_courselist.yml
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/post_paramrequest.yml:
+  api: /api/s/v1/popup/createCouponPopup
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/little_bear/post_paramrequest.yml
   resources_to_test: true
-  source: online
+  source: dev
   temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/more_test.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/more_test.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/myInfoV1.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/myInfoV1.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/stulessons.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/stulessons.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/verity_roomtype.yml:
-  api: null
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/verity_roomtype.yml
-  resources_to_test: true
-  source: online
-  temp_server: false
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/xbk_createClass.yml:
+/Users/renqin/Documents/code/MSB_api_test/basics_function/../case/xbk/post_bodyrequest.yml:
   api: /xbk/classmanage/class/createClass
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/xbk_createClass.yml
+  path: /Users/renqin/Documents/code/MSB_api_test/basics_function/../case/xbk/post_bodyrequest.yml
   resources_to_test: true
-  source: online
+  source: dev
   temp_server: false

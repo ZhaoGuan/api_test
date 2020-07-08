@@ -2,8 +2,7 @@ SOURCE:
   URL_PATH: /api/home/v1/config/home1Init
   METHOD: GET
   DATA_TYPE: MORE
-  MORE_CASES: True
-  dev:
+  online:
     URL:
     HEADERS:
       TYPE:
@@ -19,7 +18,7 @@ SOURCE:
       TYPE:
         JSON
       DATA:
-  online:
+  dev:
     URL:
     HEADERS:
       TYPE:
@@ -32,7 +31,7 @@ SOURCE:
         - a:
             uid: 469154496589860864
         - b:
-            uid: 123123123
+            uid: ""
     BODY:
       TYPE:
       DATA:
@@ -42,13 +41,13 @@ ASSERT:
       ONLY
     DATA:
   DATA_CONTENT:
-    dev:
     online:
+    dev:
       - a:
         - code: 0
         - status: OK
       - b:
         - code: 0
-        - payload/banners/1/banner: "https://s1.meixiu.mobi/image/ad/banner1-invite.png"
+        - payload/banners/0/banner: "https://s1.meixiu.mobi/image/ad/banner1-invite.png"
   ANOTHER_ASSERT:
   RESPONSE_HEADER:

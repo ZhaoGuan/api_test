@@ -5,6 +5,22 @@ SOURCE:
   DATA_TYPE:
     ONLY
   online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
     URL: https://sdbackstage.meishubao.com/xbk/classmanage/class/createClass
     HEADERS:
       TYPE:
