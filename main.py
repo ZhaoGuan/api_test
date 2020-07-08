@@ -13,7 +13,7 @@ from basics_function.json_to_format_case import data_clear
 msg = '''
 -h --help 
 -r --record main.py 指定读取.har文件路径进行用例转换
--p --path .har文件录制转换结果路径
+-p --path .har文件录制转换结果路径,使用-s可以设置source不然默认为online
 -c --cases 运行case某个文件夹的用例，all_case时为所有文件夹
 -f --filepath 运行用例文件夹下某一个用例case文件夹的相对路径
 -s --source 运行case所指定的环境,不填写默认为online
@@ -56,7 +56,7 @@ def opt_check(opts):
 
 def har_to_case(is_record, record_path):
     try:
-        htc = HarToCase(is_record)
+        htc = HarToCase(is_record, source)
         htc.to_case(record_path)
     except Exception as e:
         print("ERROR:")
