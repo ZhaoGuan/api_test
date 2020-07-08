@@ -1,0 +1,60 @@
+SOURCE:
+  URL_PATH: /xbk/classmanage/class/createClass
+  METHOD:
+    POST
+  DATA_TYPE:
+    ONLY
+  online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
+    URL: https://sdbackstage.meishubao.com/xbk/classmanage/class/createClass
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+        token: "1111111"
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    BODY:
+      TYPE:
+        JSON
+      DATA: {
+        "lessonId": "1",
+        "stuBaseCode": "0",
+        "classLessonStartNum": "1",
+        "classEquipment": "4",
+        "classNum": 1,
+        "classStartDate": "2020-03-24",
+        "lessonSubjectGradeId": 38,
+        "timeTmpId": 136,
+        "createClassTimeList": [{
+                                  "timeTmpId": 136
+                                }]
+      }
+ASSERT:
+  DATA_FORMAT:
+    TYPE:
+      ONLY
+    DATA:
+  DATA_CONTENT:
+    online:
+    dev:
+      - status: 1
+  ANOTHER_ASSERT:
+  RESPONSE_HEADER:

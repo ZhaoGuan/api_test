@@ -1,0 +1,12 @@
+xbk:
+  online:
+    HOST:
+      xxxx
+  test:
+    HOST:
+little_bear:
+  online:
+    HOST:
+      https://test.meixiu.mobi
+  dev:
+    HOST: https://test.meixiu.mobi

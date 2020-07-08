@@ -1,0 +1,53 @@
+SOURCE:
+  URL_PATH: /api/home/v1/config/home1Init
+  METHOD: GET
+  DATA_TYPE: MORE
+  online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+        - a:
+            uid: 469154496589860864
+        - b:
+            uid: ""
+    BODY:
+      TYPE:
+      DATA:
+ASSERT:
+  DATA_FORMAT:
+    TYPE:
+      ONLY
+    DATA:
+  DATA_CONTENT:
+    online:
+    dev:
+      - a:
+        - code: 0
+        - status: OK
+      - b:
+        - code: 0
+        - payload/banners/0/banner: "https://s1.meixiu.mobi/image/ad/banner1-invite.png"
+  ANOTHER_ASSERT:
+  RESPONSE_HEADER:
