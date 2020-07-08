@@ -94,7 +94,7 @@ def json_to_format_case(json_data):
 def run(argv):
     try:
         opts, args = getopt.getopt(argv, '-h-r:-p:-c:-f:-s:-j:-a:',
-                                   ["--help", "--record", "--path", "--cases", "--filepath", "--json"])
+                                   ["--help", "--record", "--path", "--source", "--cases", "--filepath", "--json"])
     except getopt.GetoptError:
         print(msg)
         exit()

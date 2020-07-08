@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # __author__ = 'Gz'
 
-def example(case_data):
+def example(func_data, case_data=None):
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print("above")
-    print(case_data)
-    return case_data
+    print("params")
+    print(func_data)
+    return func_data
