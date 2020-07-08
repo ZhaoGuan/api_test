@@ -1,8 +1,8 @@
-**接口测试框架**
-*简介*  
-开发基于python3,主要使用yml文件配置方法来进行用例管理,并且可以自行自动定义header组成方法，body组成方法，断言方法,和上文生成方法来满足特殊需求。
-用例中所有的完整大写字母单词都为关键字，根绝命名规则在用例中包含context的时候会执行上下文测试用例在环境文件中可以利用文件夹名来指定环境变量
-*使用*
+## 接口测试框架
+### 简介
+开发基于python3,主要使用yml文件配置方法来进行用例管理,并且可以自行自动定义header组成方法，body组成方法，断言方法,和上文生成方法来满足特殊需求。 
+用例中所有的完整大写字母单词都为关键字，根绝命名规则在用例中包含context的时候会执行上下文测试用例在环境文件中可以利用文件夹名来指定环境变量。  =
+### 使用
 主要通过命令行运行
 python3 main.py 然后添加参数，参数内容如下:
 -h --help 
@@ -16,10 +16,11 @@ python3 main.py 然后添加参数，参数内容如下:
 -a --alluredir pytest allure报告数据格式存放文件夹，默认为./report
 test运行方法在basics_function/test_template.py中，数据处理和请求的主要内容在api_tester文件夹中.
 如果想添加自动以方法请将内容填写在customize_function文件下的对应.py文件中
-*环境变量*  
+### 环境变量 
 全局环境配置文件在env_config中主要配置全局host  
 现规定测试环境使用dev作为表示线上使用online作为标识
 全局host根据文件夹区分host指向的具体内容
+```yaml
 xbk:
   online:
     HOST:
@@ -32,9 +33,11 @@ little_bear:
       https://test.meixiu.mobi
   dev:
     HOST: https://test.meixiu.mobi
+```
 最外层标识文件夹名,随后是环境名称参数名和具体数值  
 根据以上配置对应文件夹下的所有内容在对应的环境下都拥有所填写的全局HOST值 
 *单用例* 
+```yaml
 SOURCE:
   URL_PATH: #请求路径会与环境变量组合形成url
   METHOD: #请求方法现行只有GET POST
@@ -87,8 +90,10 @@ ASSERT:
        DATA: #填写对应具体数据
     dev:
   RESPONSE_HEADER: #保留字暂时没有作用，随后根据业务添加header判断方法
-*单文件多用例*
+```
+### 单文件多用例
 单文件多用例,是在具体的DATA数据下添加一个表示符来区分使用的数据,不添加标识符的数据视为通用数据。标识如果添加要保证数量一致。
+```yaml
 SOURCE:
   URL_PATH: /api/home/v1/config/home1Init
   METHOD: GET
@@ -103,8 +108,6 @@ SOURCE:
       TYPE:
         JOIN
       DATA:
-    METHOD:
-      POST
     BODY:
       TYPE:
         JSON
@@ -142,8 +145,10 @@ ASSERT:
         - payload/banners/0/banner: "https://s1.meixiu.mobi/image/ad/banner1-invite.png"
   ANOTHER_ASSERT:
   RESPONSE_HEADER:
-*上下问用例*
+```
+### 上下问用例
 上下文用例是顺序执行可以使用之前已经写好的单用例文件,如果不需要可以让PATH关键字为空，随后和单用例一致的数据格式填写,ABOVE关键字是描述使用上文的方法，可以自定义。
+```yaml
 - STEP:
   PATH: /little_bear/cases_from.yml #复用的单用例数据
   SOURCE:
@@ -211,7 +216,8 @@ ASSERT:
       TYPE: #如果想使用自定义方法主要是填写TYPE，保证和自己添加的方法名一致，其他数据所以，会将case中的所有数据传入方法中。
       DATA:
       TO:
-*关于DATA_FORMAT的校验语法*
+```
+### 关于DATA_FORMAT的校验语法
 Bool 表示布尔型
 Int 表示数字型
 String 表示字符型
@@ -220,8 +226,7 @@ null 表示None
 $$$ 表示忽略  
 | 表示或当有多个可能的时候可以用|分离  
 本身DATA_FORMAT是可以填写具体值的,所以你可以复制一个完整的具体内容，如果有特殊部分需要校验可以使用DATA_CONTENT的STRUCTURE进行校验DATA_FORMAT中填写忽略($$$).
-#关于报告*
+### 关于报告
 运行后会默认生成一份allure的报告数据在report文件夹中如果想生成具体报告请使用allure具体使用请参考自己的环境.
 MAC/Linux下实例:
 allure generate --clean  ./report
-
