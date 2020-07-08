@@ -26,7 +26,7 @@ def key_value_twice_replace(base_data, replace_data):
             base_data[k] = v
 
 
-class TestCaseMaker:
+class CaseMaker:
     def __init__(self, path, source="online", config_path=PATH + "/../env_config/config"):
         self.source_name = source
         self.case_data = config_reader(path)

@@ -5,18 +5,13 @@
 import os
 import pytest
 import allure
-import yaml
-import subprocess
 import shutil
 from basics_function.golable_function import config_reader, temp_yml
-from basics_function.create_case_yaml import create_case_list
 from api_tester.api_tester import ApiTester
-from api_tester.testcase_maker import TestCaseMaker, env_data
+from api_tester.case_maker import CaseMaker, env_data
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
-# create_case_list("all_cases", "dev")
-create_case_list("all_cases", "online")
 case_data = config_reader(PATH + '/../temp/cases.yaml')
 run_data = []
 apis = []
@@ -55,7 +50,7 @@ def anther_assert(api_test):
 @allure.feature("接口测试用例")
 @pytest.mark.parametrize("path,source", run_data, ids=apis)
 def test_template(path, source):
-    case = TestCaseMaker(path, source)
+    case = CaseMaker(path, source)
     cases = case.case_result()
     if isinstance(cases, dict):
         cases = [cases]
@@ -67,6 +62,7 @@ def test_template(path, source):
         anther_assert(api_test)
 
 
+@allure.feature("上下文接口测试用例")
 @pytest.mark.parametrize("path,source", run_context_data, ids=context_apis)
 def test_context_template(path, source):
     config_list = config_reader(path)
@@ -79,7 +75,7 @@ def test_context_template(path, source):
             temp_path = temp_yml(step_data, PATH + "/../temp_cases/")
         else:
             temp_path = PATH + "/../case" + step_data["PATH"]
-        case = TestCaseMaker(temp_path, source)
+        case = CaseMaker(temp_path, source)
         case.replace_case_data(step_data)
         api_test = ApiTester(case.case_result(), source)
         api_test.above_response = temp_result

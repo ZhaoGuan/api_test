@@ -41,32 +41,30 @@ def case_list(folder_name):
     return result
 
 
-def add_case(case, source, temp_server, resources_to_test):
+def add_case(case, source):
     case_result = {}
-    file_datas = config_reader(case)
+    file_data = config_reader(case)
     try:
-        URL_PATH = file_datas["SOURCE"]["URL_PATH"]
+        url_path = file_data["SOURCE"]["URL_PATH"]
+        if url_path is None:
+            url_path = case.split("/")[-1]
     except:
-        URL_PATH = case.split("/")[-1]
+        url_path = case.split("/")[-1]
     # temp_server 中网站相关的判断属于临时处理 web 地址的暂时不进行测试"
-    if ("!" not in case) and ("example" not in case) and (".DS_Store" not in case) and (
-            (temp_server is True and ("web" not in case)) or temp_server is False):
-        case_result.update({case: {"path": case, "source": source, "temp_server": temp_server,
-                                   "resources_to_test": resources_to_test, "api": URL_PATH}})
-        return {
-            case: {"path": case, "source": source, "temp_server": temp_server, "resources_to_test": resources_to_test,
-                   "api": URL_PATH}}
+    if ("!" not in case) and ("example" not in case) and (".DS_Store" not in case) and ("web" not in case):
+        case_result.update({case: {"path": case, "source": source, "api": url_path}})
+        return {case: {"path": case, "source": source, "api": url_path}}
     else:
         return {}
 
 
-def create_case_list(folder_name, source="online", temp_server=False, resources_to_test=True):
+def create_case_list(folder_name, source="online"):
     case_result = {}
     case_list_data = select_case_folder(folder_name)
     for case in case_list_data:
         if ((folder_name == "all_cases") and ("_all_" not in case)) or (
                 folder_name != "all_cases"):
-            case_result.update(add_case(case, source, temp_server, resources_to_test))
+            case_result.update(add_case(case, source))
     if os.path.exists(PATH + "/../temp/") is False:
         os.mkdir(PATH + "/../temp/")
     with open(PATH + "/../temp/cases.yaml", "w") as case:
