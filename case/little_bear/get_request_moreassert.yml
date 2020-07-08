@@ -4,7 +4,7 @@ SOURCE:
     GET
   DATA_TYPE:
     ONLY
-  dev:
+  online:
     URL:
     HEADERS:
       TYPE:
@@ -20,7 +20,7 @@ SOURCE:
       TYPE:
         JSON
       DATA:
-  online:
+  dev:
     URL:
     HEADERS:
       TYPE:
@@ -110,10 +110,4 @@ ASSERT:
           code=0:
               payload/sort: {"sorted": "Bool","unsorted": "Bool","empty": false}
   ANOTHER_ASSERT:
-#    - TYPE: test
-#      DATA:
-#        - a
-#        - b
-#    - TYPE: test1
-#    - TYPE: a
   RESPONSE_HEADER:

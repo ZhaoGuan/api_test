@@ -1,12 +1,12 @@
 - STEP:
-  PATH:
+  PATH: /little_bear/cases_from.yml
   SOURCE:
     URL_PATH:
     METHOD:
         GET
     DATA_TYPE:
         ONLY
-    online:
+    dev:
         URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/history/course/list
         HEADERS:
             TYPE:
@@ -33,13 +33,13 @@
 - STEP:
   PATH:
   SOURCE:
-    URL_PATH:
+    URL_PATH: /api/ts/v1/teaching/student/course/getCourseDetail
     METHOD:
         GET
     DATA_TYPE:
         ONLY
-    online:
-        URL: https://test.meixiu.mobi/api/ts/v1/teaching/student/course/getCourseDetail
+    dev:
+        URL:
         HEADERS:
             TYPE:
                 NORMAL

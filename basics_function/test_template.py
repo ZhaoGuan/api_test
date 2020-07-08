@@ -16,7 +16,7 @@ from api_tester.testcase_maker import TestCaseMaker, env_data
 PATH = os.path.dirname(os.path.abspath(__file__))
 
 # create_case_list("all_cases", "dev")
-create_case_list("all_cases", "online")
+create_case_list("all_cases", "dev")
 case_data = config_reader(PATH + '/../temp/cases.yaml')
 run_data = []
 apis = []

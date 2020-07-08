@@ -1,0 +1,50 @@
+SOURCE:
+  URL_PATH: /api/o/v1/order/getOrders/regtypeAndStatuses
+  METHOD: GET
+  DATA_TYPE: ONLY
+  MORE_CASES: True
+  online:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+    METHOD:
+      POST
+    BODY:
+      TYPE:
+        JSON
+      DATA:
+  dev:
+    URL:
+    HEADERS:
+      TYPE:
+        NORMAL
+      DATA:
+    PARAMS:
+      TYPE:
+        JOIN
+      DATA:
+        userId: 469154496589860864
+        regtype: EXPERIENCE
+        statuses: COMPLETED,PAYMENT
+    BODY:
+      TYPE:
+      DATA:
+ASSERT:
+  DATA_FORMAT:
+    TYPE:
+      ONLY
+    DATA: {'status': 'Str', 'code': 'Int', 'payload': [{'id': 'Str', 'cid': 'Str', 'mid': 'Str', 'ctime': 'Str', 'utime': 'Str', 'del': 'Str', 'uid': 'Str', 'stage': 'Str', 'grouponId': 'Str', 'invitePrizeId': 'Str', 'outTradeNo': 'Str', 'type': 'Str', 'regtype': 'Str', 'packagesType': 'Str', 'sup': 'Str', 'packagesId': 'Str', 'appleProductId': 'Str', 'packagesName': 'Str', 'topicId': 'Str', 'addressId': 'Str', 'couponUserId': 'Str', 'packagesCourseWeek': 'Int', 'packagesCourseDay': 'Int', 'teacherId': 'Str', 'payTeacherId': 'Str', 'payChannel': 'Str', 'trialPayChannel': 'Str', 'payChannelUser': 'Str', 'payPageOrigin': 'Str', 'totalAmount': 'Float', 'amount': 'Float', 'remainingAmount': 'Float', 'discountAmount': 'Float', 'gemIntegral': 'Float', 'bearIntegral': 'Float', 'endtime': 'Str', 'buytime': 'Str', 'importTime': 'Str', 'import1v1Oid': 'Str', 'importRemark': 'Str', 'status': 'Str', 'isRefund': 'Str', 'teamId': 'Str', 'lastTeacherId': 'Str', 'lastTeamId': 'Str', 'firstOrderSendId': 'Str', 'spreadCode': 'Str', 'courseCategory': 'Int'}]}
+  DATA_CONTENT:
+    online:
+    dev:
+      - code: 0
+      - status: OK
+      - payload/0/id: 172322280826
+  ANOTHER_ASSERT:
+  RESPONSE_HEADER:
