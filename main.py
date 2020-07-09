@@ -54,7 +54,7 @@ def opt_check(opts):
     return is_record, record_path, cases, source, json_data, filepath, alluredir
 
 
-def har_to_case(is_record, record_path):
+def har_to_case(is_record, record_path, source):
     try:
         htc = HarToCase(is_record, source)
         htc.to_case(record_path)
@@ -100,7 +100,7 @@ def run(argv):
         exit()
     is_record, record_path, cases, source, json_data, filepath, alluredir = opt_check(opts)
     if is_record:
-        har_to_case(is_record, record_path)
+        har_to_case(is_record, record_path, source)
     if cases:
         run_cases(cases, source, alluredir)
     if filepath:

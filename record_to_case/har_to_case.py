@@ -75,7 +75,3 @@ class HarToCase:
             with open(case_path + "/" + file_name, "w") as f:
                 yaml.dump(case_data, f)
 
-
-if __name__ == "__main__":
-    htc = HarToCase("./Desktop.har", source)
-    htc.to_case("./")
