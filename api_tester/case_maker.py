@@ -73,17 +73,29 @@ class CaseMaker:
         except:
             self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
 
+    def replace_source(self, new_data):
+        if "SOURCE" in list(new_data.keys()):
+            replace_data = new_data["SOURCE"][self.source_name]
+            if replace_data is not None:
+                key_value_twice_replace(self.case_data["SOURCE"][self.source_name], replace_data)
+
+    def replace_assert(self, new_data):
+        if "ASSERT" in list(new_data.keys()):
+            replace_assert = new_data["ASSERT"]
+            if replace_assert is not None:
+                key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
+
+    def above(self, new_data):
+        if "ABOVE" in list(new_data.keys()):
+            result = new_data["ABOVE"]
+        else:
+            result = None
+        self.case_data["ABOVE"] = result
+
     def replace_case_data(self, new_data):
         if new_data["PATH"] is None:
             self.case_data["ENV_DATA"] = new_data["ENV_DATA"]
             return
-        replace_data = new_data["SOURCE"][self.source_name]
-        replace_assert = new_data["ASSERT"]
-        result = new_data["ABOVE"]
-        key_value_twice_replace(self.case_data["SOURCE"][self.source_name], replace_data)
-        if replace_assert is not None:
-            key_value_twice_replace(self.case_data["ASSERT"], replace_assert)
-        self.case_data["ABOVE"] = result
 
     def more_cases_data_header(self, keys, more_data):
         if isinstance(self.headers_data, list):

@@ -1,27 +1,27 @@
 ## 接口测试框架
 ### 简介
-开发基于python3,主要使用yml文件配置方法来进行用例管理,并且可以自行自动定义header组成方法，body组成方法，断言方法,和上文生成方法来满足特殊需求。 
-用例中所有的完整大写字母单词都为关键字，根据命名规则在用例中包含context的时候会执行上下文测试用例在环境文件中可以利用文件夹名来指定环境变量。
-环境：python3
-依赖内容安装：pip3 install -r requirements.txt
+开发基于python3,主要使用yml文件配置方法来进行用例管理,并且可以自行自动定义header组成方法，body组成方法，断言方法,和上文生成方法来满足特殊需求。  
+用例中所有的完整大写字母单词都为关键字，根据命名规则在用例中包含context的时候会执行上下文测试用例在环境文件中可以利用文件夹名来指定环境变量。  
+环境：python3   
+依赖内容安装：pip3 install -r requirements.txt  
 ### 使用
-主要通过命令行运行
-python3 main.py 然后添加参数，参数内容如下:
--h --help 
--r --record main.py 指定读取.har文件路径进行用例转换
--p --path .har文件录制转换结果路径
--c --cases 运行case某个文件夹的用例，all_case时为所有文件夹
--f --filepath 运行用例文件夹下某一个用例case文件夹的相对路径
--s --source 运行case所指定的环境,不填写默认为online
--j --json json内容转化为format校验内容
-    eg: -j '{"a":1}'
--a --alluredir pytest allure报告数据格式存放文件夹，默认为./report
+主要通过命令行运行  
+python3 main.py 然后添加参数，参数内容如下:  
+-h --help   
+-r --record main.py 指定读取.har文件路径进行用例转换  
+-p --path .har文件录制转换结果路径  
+-c --cases 运行case某个文件夹的用例，all_case时为所有文件夹  
+-f --filepath 运行用例文件夹下某一个用例case文件夹的相对路径  
+-s --source 运行case所指定的环境,不填写默认为online  
+-j --json json内容转化为format校验内容  
+    eg: -j '{"a":1}'  
+-a --alluredir pytest allure报告数据格式存放文件夹，默认为./report  
 test运行方法在basics_function/test_template.py中，数据处理和请求的主要内容在api_tester文件夹中.
 如果想添加自动以方法请将内容填写在customize_function文件下的对应.py文件中
 ### 环境变量 
-全局环境配置文件在env_config中主要配置全局host  
-现规定测试环境使用dev作为表示线上使用online作为标识
-全局host根据文件夹区分host指向的具体内容
+全局环境配置文件在env_config中主要配置全局host    
+现规定测试环境使用dev作为表示线上使用online作为标识  
+全局host根据文件夹区分host指向的具体内容  
 ```yaml
 xbk:
   online:
@@ -36,9 +36,9 @@ little_bear:
   dev:
     HOST: https://test.meixiu.mobi
 ```
-最外层标识文件夹名,随后是环境名称参数名和具体数值  
-根据以上配置对应文件夹下的所有内容在对应的环境下都拥有所填写的全局HOST值 
-*单用例* 
+最外层标识文件夹名,随后是环境名称参数名和具体数值   
+根据以上配置对应文件夹下的所有内容在对应的环境下都拥有所填写的全局HOST值   
+###单用例
 ```yaml
 SOURCE:
   URL_PATH: #请求路径会与环境变量组合形成url
@@ -94,7 +94,7 @@ ASSERT:
   RESPONSE_HEADER: #保留字暂时没有作用，随后根据业务添加header判断方法
 ```
 ### 单文件多用例
-单文件多用例,是在具体的DATA数据下添加一个表示符来区分使用的数据,不添加标识符的数据视为通用数据。标识如果添加要保证数量一致。
+单文件多用例,是在具体的DATA数据下添加一个表示符来区分使用的数据,不添加标识符的数据视为通用数据。标识如果添加要保证数量一致。  
 ```yaml
 SOURCE:
   URL_PATH: /api/home/v1/config/home1Init
@@ -149,7 +149,8 @@ ASSERT:
   RESPONSE_HEADER:
 ```
 ### 上下问用例
-上下文用例是顺序执行可以使用之前已经写好的单用例文件,如果不需要可以让PATH关键字为空，随后和单用例一致的数据格式填写,ABOVE关键字是描述使用上文的方法，可以自定义。
+上下文用例是顺序执行可以使用之前已经写好的单用例文件,如果不需要可以让PATH关键字为空，随后和单用例一致的数据格式填写,ABOVE关键字是描述使用上文的方法，可以自定义。  
+如果要正确的执行上下文用例文件名需要有关键字context,例如:context_xxxxx.yml    
 ```yaml
 - STEP:
   PATH: /little_bear/cases_from.yml #复用的单用例数据
@@ -220,15 +221,15 @@ ASSERT:
       TO:
 ```
 ### 关于DATA_FORMAT的校验语法
-Bool 表示布尔型
-Int 表示数字型
-String 表示字符型
-null 表示None
-在String的情况是如果是个url会做一次请求检查
-$$$ 表示忽略  
-| 表示或当有多个可能的时候可以用|分离  
-本身DATA_FORMAT是可以填写具体值的,所以你可以复制一个完整的具体内容，如果有特殊部分需要校验可以使用DATA_CONTENT的STRUCTURE进行校验DATA_FORMAT中填写忽略($$$).
+Bool 表示布尔型  
+Int 表示数字型  
+String 表示字符型  
+null 表示None  
+在String的情况是如果是个url会做一次请求检查  
+$$$ 表示忽略    
+| 表示或当有多个可能的时候可以用|分离    
+本身DATA_FORMAT是可以填写具体值的,所以你可以复制一个完整的具体内容，如果有特殊部分需要校验可以使用DATA_CONTENT的STRUCTURE进行校验DATA_FORMAT中填写忽略($$$).  
 ### 关于报告
-运行后会默认生成一份allure的报告数据在report文件夹中如果想生成具体报告请使用allure具体使用请参考自己的环境.
-MAC/Linux下实例:
-allure generate --clean  ./report
+运行后会默认生成一份allure的报告数据在report文件夹中如果想生成具体报告请使用allure具体使用请参考自己的环境.  
+MAC/Linux下实例:  
+allure generate --clean  ./report  
