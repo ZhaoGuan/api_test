@@ -20,6 +20,7 @@ msg = '''
 -j --json json内容转化为format校验内容
     eg: -j '{"a":1}'
 -a --alluredir pytest allure报告数据格式存放文件夹，默认为./report
+-z --result_print 是否在命令行中打印请求内容和结果 true false
 '''
 
 PATH = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +34,7 @@ def opt_check(opts):
     json_data = False
     filepath = False
     alluredir = "./report"
+    result_print = 'false'
     for opt, arg in opts:
         if opt in ["-h", "--help"]:
             print(msg)
@@ -51,7 +53,9 @@ def opt_check(opts):
             filepath = arg
         if opt in ["-a", "--alluredir"]:
             alluredir = arg
-    return is_record, record_path, cases, source, json_data, filepath, alluredir
+        if opt in ["-z", "--result_print"]:
+            result_print = arg
+    return is_record, record_path, cases, source, json_data, filepath, alluredir, result_print
 
 
 def har_to_case(is_record, record_path, source):
@@ -63,21 +67,21 @@ def har_to_case(is_record, record_path, source):
         print(e)
 
 
-def run_cases(cases, source, alluredir):
+def run_cases(cases, source, alluredir, result_print):
     try:
         create_case_list(cases, source)
-        pytest.main(["-s", "-q", "--alluredir", alluredir])
+        pytest.main(["-s", "-q", "--alluredir", alluredir, "--result_print", result_print])
     except Exception as e:
         print("ERROR:")
         print(e)
 
 
-def single_case(filepath, source, alluredir):
+def single_case(filepath, source, alluredir, result_print):
     try:
         data = add_case(filepath, source)
         with open(PATH + "/temp/cases.yaml", "w") as f:
             yaml.dump(data, f, default_flow_style=False)
-        pytest.main(["-s", "-q", "--alluredir", alluredir])
+        pytest.main(["-s", "-q", "--alluredir", alluredir, "--result_print", result_print])
     except Exception as e:
         print("ERROR:")
         print(e)
@@ -93,18 +97,19 @@ def json_to_format_case(json_data):
 
 def run(argv):
     try:
-        opts, args = getopt.getopt(argv, '-h-r:-p:-c:-f:-s:-j:-a:',
-                                   ["--help", "--record", "--path", "--source", "--cases", "--filepath", "--json"])
+        opts, args = getopt.getopt(argv, '-h-z:-r:-p:-c:-f:-s:-j:-a:',
+                                   ["--help", "--record", "--path", "--source", "--cases", "--filepath", "--json",
+                                    "result_print"])
     except getopt.GetoptError:
         print(msg)
         exit()
-    is_record, record_path, cases, source, json_data, filepath, alluredir = opt_check(opts)
+    is_record, record_path, cases, source, json_data, filepath, alluredir, result_print = opt_check(opts)
     if is_record:
         har_to_case(is_record, record_path, source)
     if cases:
-        run_cases(cases, source, alluredir)
+        run_cases(cases, source, alluredir, result_print)
     if filepath:
-        single_case(filepath, source, alluredir)
+        single_case(filepath, source, alluredir, result_print)
     if json_data:
         json_to_format_case(json_data)
 

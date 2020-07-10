@@ -16,6 +16,7 @@ python3 main.py 然后添加参数，参数内容如下:
 -j --json json内容转化为format校验内容  
     eg: -j '{"a":1}'  
 -a --alluredir pytest allure报告数据格式存放文件夹，默认为./report  
+-z --result_print 是否在命令行中打印请求内容和结果 true false   
 test运行方法在basics_function/test_template.py中，数据处理和请求的主要内容在api_tester文件夹中.
 如果想添加自动以方法请将内容填写在customize_function文件下的对应.py文件中
 ### 环境变量 

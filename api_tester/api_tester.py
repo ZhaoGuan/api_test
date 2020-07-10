@@ -66,6 +66,9 @@ class ApiTester:
         self.another_assert_fail_list = []
         self.fail_list = []
         self.response = None
+        self.the_url = None
+        self.the_headers = None
+        self.the_body = None
         # 上线文数据处理
         self.above_response = None
         try:
@@ -155,13 +158,19 @@ class ApiTester:
             print("Response:", fail["response"])
 
     def normal_api_test(self):
+        url = self.get_url()
+        headers = self.get_headers()
+        body = self.get_body()
         if self.request_mode == "GET":
-            response = requests.get(url=self.get_url(), headers=self.get_headers())
+            response = requests.get(url=url, headers=headers)
         else:
             if self.body_type == "JSON":
-                response = requests.post(url=self.get_url(), headers=self.get_headers(),
-                                         json=self.get_body())
+                response = requests.post(url=url, headers=headers,
+                                         json=body)
         self.response = response
+        self.the_url = url
+        self.the_headers = headers
+        self.the_body = url
 
     def above_response_to(self, data):
         keys = data["DATA"].split("/")
