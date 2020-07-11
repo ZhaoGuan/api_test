@@ -10,7 +10,7 @@
         # 数据插入sonar-project.properties
         - sed -i '1a sonar.projectKey='${projectKey} sonar-project.properties
         - sed -i '1a sonar.host.url='${sonar_host} sonar-project.properties
-        - sed -i '1a sonar.login=='${sonar_token} sonar-project.properties
+        - sed -i '1a sonar.login='${sonar_token} sonar-project.properties
         - sed -i '1a sonar.projectName='${CI_PROJECT_NAME}' '${CI_COMMIT_REF_NAME} sonar-project.properties
         - /home/rein/sonar-scanner/bin/sonar-scanner
         # 获取分析结果
