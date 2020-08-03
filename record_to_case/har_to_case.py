@@ -31,12 +31,14 @@ class HarToCase:
     def get_post(self, request):
         try:
             request_mimetype = request["postData"]["mimeType"]
-            post_body = request["postData"]["params"]
         except:
             request_mimetype = None
+        try:
+            post_body = request["postData"]["params"]
+        except:
             post_body = None
         the_post_body = {}
-        if request_mimetype == "application/x-www-form-urlencoded":
+        if request_mimetype is not None and "application/x-www-form-urlencoded" in request_mimetype:
             for response_body_data in post_body:
                 the_post_body[response_body_data["name"]] = response_body_data["value"]
         request_post_type = "NORMAL"
