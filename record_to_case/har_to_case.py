@@ -46,6 +46,14 @@ class HarToCase:
             the_post_body = None
         return the_post_body, request_post_type, body_type, request_body_function
 
+    def new_header(self, header):
+        result = {}
+        for k, v in header.items():
+            if ":" in k:
+                continue
+            result[k] = v
+        return result
+
     def to_case(self, case_path):
         with open(self.path, "r") as f:
             har_data = json.load(f)
@@ -54,9 +62,10 @@ class HarToCase:
             # request things
             request = data["request"]
             method = request['method']
-            url = request["url"]
+            url = request["url"].split("?")[0]
             headers = request["headers"]
             the_header = self.get_headers(headers)
+            the_header = self.new_header(the_header)
             params = request["queryString"]
             the_params = self.get_params(params)
             the_post_body, request_post_type, body_type, request_body_function = self.get_post(request)
