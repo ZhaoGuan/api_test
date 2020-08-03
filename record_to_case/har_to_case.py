@@ -29,15 +29,19 @@ class HarToCase:
         return the_header
 
     def get_post(self, request):
-        request_mimetype = request["postData"]["mimeType"]
-        post_body = request["postData"]["params"]
+        try:
+            request_mimetype = request["postData"]["mimeType"]
+            post_body = request["postData"]["params"]
+        except:
+            request_mimetype = None
+            post_body = None
         the_post_body = {}
         if request_mimetype == "application/x-www-form-urlencoded":
             for response_body_data in post_body:
                 the_post_body[response_body_data["name"]] = response_body_data["value"]
-            request_post_type = "NORMAL"
-            body_type = "JSON"
-            request_body_function = "NORMAL"
+        request_post_type = "NORMAL"
+        body_type = "JSON"
+        request_body_function = "NORMAL"
         if the_post_body == {}:
             the_post_body = None
         return the_post_body, request_post_type, body_type, request_body_function
@@ -74,4 +78,3 @@ class HarToCase:
             file_name = url.split("/")[-1] + ".yml"
             with open(case_path + "/" + file_name, "w") as f:
                 yaml.dump(case_data, f)
-
