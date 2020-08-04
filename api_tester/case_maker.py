@@ -28,14 +28,15 @@ def key_value_twice_replace(base_data, replace_data):
 
 class CaseMaker:
     def __init__(self, path, source="online", config_path=PATH + "/../env_config/config"):
+        self.config_path = config_path
         self.source_name = source
         self.case_data = config_reader(path)
         self.env_config = env_data(path, config_path)
         self.case_data["ENV_DATA"] = self.env_config
         self.url = self.case_data["SOURCE"]["URL_PATH"]
-        try:
+        if "DATA_TYPE" in self.case_data["SOURCE"]:
             self.DATA_TYPE = self.case_data["SOURCE"]["DATA_TYPE"]
-        except:
+        else:
             self.DATA_TYPE = "ONLY"
         self.source = self.case_data["SOURCE"][self.source_name]
         self.headers = self.source["HEADERS"]
@@ -72,6 +73,18 @@ class CaseMaker:
                 self.case_data["ASSERT"]["ANOTHER_ASSERT"] = {self.source_name: None}
         except:
             self.case_data["ASSERT"]["ANOTHER_ASSERT"] = None
+        self.set_env_config()
+
+    def set_env_config(self):
+        env_data = config_reader(self.config_path)
+        if "CONFIG" in env_data.keys() and self.case_data["ENV_DATA"] is None:
+            self.case_data["ENV_DATA"] = {"CONFIG": env_data["CONFIG"]}
+        elif "CONFIG" not in env_data.keys() and self.case_data["ENV_DATA"] is None:
+            self.case_data["ENV_DATA"] = {"CONFIG": None}
+        elif "CONFIG" in env_data.keys():
+            self.case_data["ENV_DATA"]["CONFIG"] = env_data["CONFIG"]
+        else:
+            self.case_data["ENV_DATA"]["CONFIG"] = None
 
     def replace_source(self, new_data):
         if "SOURCE" in list(new_data.keys()):

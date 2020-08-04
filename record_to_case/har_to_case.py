@@ -29,10 +29,7 @@ class HarToCase:
         return the_header
 
     def get_post(self, request):
-        try:
-            request_mimetype = request["postData"]["mimeType"]
-        except:
-            request_mimetype = None
+        request_mimetype = request["postData"]["mimeType"]
         try:
             post_body = request["postData"]["params"]
         except:
@@ -48,7 +45,8 @@ class HarToCase:
             the_post_body = None
         return the_post_body, request_post_type, body_type, request_body_function
 
-    def new_header(self, header):
+    @classmethod
+    def new_header(cls, header):
         result = {}
         for k, v in header.items():
             if ":" in k:

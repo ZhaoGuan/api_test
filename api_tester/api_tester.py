@@ -25,17 +25,26 @@ def change_keys_value(base_data, keys, value):
 
 class ApiTester:
     def __init__(self, config, source="online"):
+        self.env_config = None
         self.source_name = source
         self.inspection_method = InspectionMethod()
         self.case_data = config
-        try:
+        if self.case_data["ENV_DATA"] is not None and self.source_name in self.case_data["ENV_DATA"].keys():
             self.env_data = self.case_data["ENV_DATA"][self.source_name]
-        except:
-            self.env_data = None
-        if self.env_data is None:
-            self.host = None
-        else:
             self.host = self.env_data["HOST"]
+        else:
+            self.env_data = None
+            self.host = None
+        if "CONFIG" in self.case_data:
+            self.case_config = self.case_data["CONFIG"]
+            if "ASSERT" in self.case_config.keys():
+                self.case_assert_config = self.case_config["ASSERT"]
+            else:
+                self.case_assert_config = None
+        else:
+            self.case_config = None
+            self.case_assert_config = None
+        self.assert_config()
         self.url_path = self.case_data["SOURCE"]["URL_PATH"]
         self.source = self.case_data["SOURCE"][self.source_name]
         self.url = self.case_data["SOURCE"][self.source_name]["URL"]
@@ -71,10 +80,19 @@ class ApiTester:
         self.the_body = None
         # 上线文数据处理
         self.above_response = None
-        try:
+        if "ABOVE" in self.case_data.keys():
             self.above_way = self.case_data["ABOVE"]
-        except:
+        else:
             self.above_way = None
+
+    def assert_config(self):
+        if self.case_data["ENV_DATA"] is not None:
+            self.env_config = self.case_data["ENV_DATA"]["CONFIG"]
+        if self.env_config is not None and "ASSERT" in self.env_config and self.case_assert_config is None:
+            self.case_assert_config = self.env_config["ASSERT"]
+        if self.case_assert_config is not None:
+            for k, v in self.case_assert_config.items():
+                self.inspection_method.extra[k] = v
 
     def get_headers(self):
         if self.headers_type == "NORMAL":

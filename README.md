@@ -10,7 +10,7 @@ python3 main.py 然后添加参数，参数内容如下:
 -h --help   
 -r --record main.py 指定读取.har文件路径进行用例转换  
 -p --path .har文件录制转换结果路径  
--c --cases 运行case某个文件夹的用例，all_case时为所有文件夹  
+-c --cases 运行case某个文件夹的用例，all_cases时为所有文件夹  
 -f --filepath 运行用例文件夹下某一个用例case文件夹的相对路径  
 -s --source 运行case所指定的环境,不填写默认为online  
 -j --json json内容转化为format校验内容  
@@ -149,7 +149,7 @@ ASSERT:
   ANOTHER_ASSERT:
   RESPONSE_HEADER:
 ```
-### 上下问用例
+### 上下文用例
 上下文用例是顺序执行可以使用之前已经写好的单用例文件,如果不需要可以让PATH关键字为空，随后和单用例一致的数据格式填写,ABOVE关键字是描述使用上文的方法，可以自定义。  
 如果要正确的执行上下文用例文件名需要有关键字context,例如:context_xxxxx.yml    
 ```yaml
