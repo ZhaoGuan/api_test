@@ -29,7 +29,10 @@ class HarToCase:
         return the_header
 
     def get_post(self, request):
-        request_mimetype = request["postData"]["mimeType"]
+        try:
+            request_mimetype = request["postData"]["mimeType"]
+        except:
+            request_mimetype = None
         try:
             post_body = request["postData"]["params"]
         except:
