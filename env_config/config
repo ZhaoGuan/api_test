@@ -12,7 +12,8 @@ little_bear:
     HOST: https://test.meixiu.mobi
 CONFIG:
   ASSERT:
-    URL_CHECK_IGNORE: [".*.zip"]
+    URL_CHECK_IGNORE:
+      - .*.zip
     LIST_REPEATED: true
     LIST_EMPTY: null
     DICT_LIST_COUNT: null

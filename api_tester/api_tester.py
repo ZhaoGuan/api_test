@@ -17,7 +17,7 @@ def change_keys_value(base_data, keys, value):
         keys = keys.split("/")
     key = keys.pop(0)
     if isinstance(base_data[key], dict):
-        base_data[key] = change_keys_value(base_data, keys, value)
+        base_data[key] = change_keys_value(base_data[key], keys, value)
     else:
         base_data[key] = value
     return base_data
@@ -229,13 +229,13 @@ class ApiTester:
             if data_from == "HEADERS" and data_type == "ALL":
                 self.headers_data = self.above_response.headers
                 self.headers_type = "NORMAL"
-                return
+                continue
             if data_from == "HEADERS" and data_type == "KEYS":
                 self.above_headers_to(result)
-                return
+                continue
             if data_from == "BODY" and data_type == "KEYS":
                 self.above_response_to(result)
-                return
+                continue
             func = above_function_import(data_type)
             func(self.case_data)
 
