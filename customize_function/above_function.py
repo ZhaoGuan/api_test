@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # __author__ = 'Gz'
 
-def example(case_data):
+def example(case_data, source_name):
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     print("above")
     print(case_data)

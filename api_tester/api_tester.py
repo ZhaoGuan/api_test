@@ -98,7 +98,7 @@ class ApiTester:
         if self.headers_type == "NORMAL":
             return self.headers_data
         headers_func = header_function_import(self.headers_type)
-        return headers_func(func_data=self.headers_data, case_data=self.case_data)
+        return headers_func(func_data=self.headers_data, case_data=self.case_data, source_name=self.source_name)
 
     def get_url(self):
         if self.host is not None and self.url_path is not None:
@@ -108,7 +108,7 @@ class ApiTester:
         if self.params_type == "JOIN":
             return self.url + "?" + urlencode(self.params_data)
         params_func = params_function_import(self.params_type)
-        return params_func(func_data=self.params_data, case_data=self.case_data)
+        return params_func(func_data=self.params_data, case_data=self.case_data, source_name=self.source_name)
 
     def get_body(self):
         if self.request_mode == "GET":
@@ -117,7 +117,7 @@ class ApiTester:
             return json.dumps(self.body_data)
         body_func = body_function_import(self.body_type)
         self.body_type = "JSON"
-        return body_func(func_data=self.body_data, case_data=self.case_data)
+        return body_func(func_data=self.body_data, case_data=self.case_data, source_name=self.source_name)
 
     def format_assert(self):
         if self.response.status_code == 200:
@@ -151,13 +151,13 @@ class ApiTester:
                 function_data = assert_data["DATA"]
                 func = assert_function_import(function_name)
                 func(func_data=function_data, case_data=self.case_data, response=self.response,
-                     fail_list=self.another_assert_fail_list)
+                     fail_list=self.another_assert_fail_list, source_name=self.source_name)
         else:
             function_name = self.another_assert_data["TYPE"]
             function_data = self.another_assert_data["DATA"]
             func = assert_function_import(function_name)
             func(func_data=function_data, case_data=self.case_data, response=self.response,
-                 fail_list=self.another_assert_fail_list)
+                 fail_list=self.another_assert_fail_list, source_name=self.source_name)
 
     def another_assert_report(self):
         msg = ""
@@ -237,7 +237,7 @@ class ApiTester:
                 self.above_response_to(result)
                 continue
             func = above_function_import(data_type)
-            func(self.case_data)
+            func(self.case_data, source_name=self.source_name)
 
     def api_test(self):
         if self.above_way is None:
