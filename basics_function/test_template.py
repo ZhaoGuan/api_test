@@ -82,6 +82,7 @@ def test_template(path, source, result_print):
 @allure.feature("上下文接口测试用例")
 @pytest.mark.parametrize("path,source", run_context_data, ids=context_apis)
 def test_context_template(path, source, result_print):
+    os.mkdir(PATH + "/../temp_cases/")
     if result_print == "true":
         print("\n用例路径:", path)
     config_list = config_reader(path)
