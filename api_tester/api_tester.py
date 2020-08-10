@@ -113,7 +113,7 @@ class ApiTester:
     def get_body(self):
         if self.request_mode == "GET":
             return None
-        if self.request_mode == "POST" and self.body_type == "JSON":
+        if self.request_mode == "POST" and self.body_type == "JSON" or self.body_type == "DATA":
             return json.dumps(self.body_data)
         body_func = body_function_import(self.body_type)
         self.body_type = "JSON"
@@ -185,6 +185,9 @@ class ApiTester:
             if self.body_type == "JSON":
                 response = requests.post(url=url, headers=headers,
                                          json=body)
+            else:
+                response = requests.post(url=url, headers=headers,
+                                         data=body)
         self.response = response
         self.the_url = url
         self.the_headers = headers
