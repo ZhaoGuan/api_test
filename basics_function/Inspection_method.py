@@ -241,7 +241,7 @@ class InspectionMethod:
                 for t_temp_fail in t_temp_fail_list:
                     temp_result.append(t_temp_fail)
             if True not in temp_result:
-                fail_data = {"reason": "\nList格式检查中未发先任何匹配的结构:", "case": str(case), "response": str(e)}
+                fail_data = {"reason": "\nList格式检查中未发现任何匹配的结构:", "case": str(case), "response": str(e)}
                 fail_list.append(fail_data)
 
     def dict_key_list_count(self, key, response_list):
