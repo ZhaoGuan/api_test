@@ -280,7 +280,7 @@ class InspectionMethod:
                   "case: {} \n" \
                   "response: {} \n".format(str(case.keys()), str(response.keys()))
             fail_data = {"reason": msg, "case": case, "response": response}
-            self.fail_list.append(fail_data)
+            fail_list.append(fail_data)
 
     # response检查格式
     def format_diff(self, case, response, fail_list):
