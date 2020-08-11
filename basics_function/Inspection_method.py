@@ -250,7 +250,11 @@ class InspectionMethod:
 
     # response检查dict类型
     def format_dict(self, case, response):
-        if case.keys() == response.keys():
+        case_keys = list(case.keys())
+        case_keys.sort()
+        response_keys = list(response.keys())
+        response_keys.sort()
+        if case_keys == response_keys:
             for key in case.keys():
                 # 值得类型是list进行忽略检查
                 self._format_dict(case, response, key)
