@@ -231,12 +231,15 @@ class InspectionMethod:
             temp_fail = []
             temp_result = []
             for i in case:
+                t_temp_fail_list = []
                 if isinstance(i, str):
                     fail_data = self.response_data_check(model, e)
                     if fail_data is not False:
-                        temp_fail.append(fail_data)
+                        t_temp_fail_list.append(fail_data)
                 else:
-                    temp_result.append(self.format_diff(i, e, temp_fail))
+                    temp_result.append(self.format_diff(i, e, t_temp_fail_list))
+                for t_temp_fail in t_temp_fail_list:
+                    temp_result.append(t_temp_fail)
             if True not in temp_result:
                 fail_data = {"reason": "\nList格式检查中未发先任何匹配的结构:", "case": str(case), "response": str(e)}
                 fail_list.append(fail_data)
