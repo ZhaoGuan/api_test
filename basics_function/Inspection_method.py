@@ -218,15 +218,6 @@ class InspectionMethod:
             self.list_repeated_examination(response=response)
         if self.extra["LIST_EMPTY"] is True:
             self.list_empty_check(case, response)
-        # for i in case:
-        #     print(i)
-        #     for e in response:
-        #         print(e)
-        #         if isinstance(i, str):
-        #             fail_data = self.response_data_check(model, e)
-        #             self.fail_append(fail_data)
-        #         else:
-        #             self.format_diff(i, e)
         for e in response:
             temp_fail = []
             temp_result = []
@@ -239,7 +230,7 @@ class InspectionMethod:
                 else:
                     temp_result.append(self.format_diff(i, e, t_temp_fail_list))
                 for t_temp_fail in t_temp_fail_list:
-                    temp_result.append(t_temp_fail)
+                    temp_fail.append(t_temp_fail)
             if True not in temp_result:
                 fail_data = {"reason": "\nList格式检查中未发现任何匹配的结构:", "case": str(case), "response": str(e)}
                 fail_list.append(fail_data)
