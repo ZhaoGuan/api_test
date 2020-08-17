@@ -17,7 +17,7 @@ def change_keys_value(base_data, keys, value):
         keys = keys.split("/")
     key = keys.pop(0)
     if isinstance(base_data[key], dict):
-        base_data[key] = change_keys_value(base_data, keys, value)
+        base_data[key] = change_keys_value(base_data[key], keys, value)
     else:
         base_data[key] = value
     return base_data
@@ -25,17 +25,26 @@ def change_keys_value(base_data, keys, value):
 
 class ApiTester:
     def __init__(self, config, source="online"):
+        self.env_config = None
         self.source_name = source
         self.inspection_method = InspectionMethod()
         self.case_data = config
-        try:
+        if self.case_data["ENV_DATA"] is not None and self.source_name in self.case_data["ENV_DATA"].keys():
             self.env_data = self.case_data["ENV_DATA"][self.source_name]
-        except:
-            self.env_data = None
-        if self.env_data is None:
-            self.host = None
-        else:
             self.host = self.env_data["HOST"]
+        else:
+            self.env_data = None
+            self.host = None
+        if "CONFIG" in self.case_data:
+            self.case_config = self.case_data["CONFIG"]
+            if "ASSERT" in self.case_config.keys():
+                self.case_assert_config = self.case_config["ASSERT"]
+            else:
+                self.case_assert_config = None
+        else:
+            self.case_config = None
+            self.case_assert_config = None
+        self.assert_config()
         self.url_path = self.case_data["SOURCE"]["URL_PATH"]
         self.source = self.case_data["SOURCE"][self.source_name]
         self.url = self.case_data["SOURCE"][self.source_name]["URL"]
@@ -66,18 +75,30 @@ class ApiTester:
         self.another_assert_fail_list = []
         self.fail_list = []
         self.response = None
+        self.the_url = None
+        self.the_headers = None
+        self.the_body = None
         # 上线文数据处理
         self.above_response = None
-        try:
+        if "ABOVE" in self.case_data.keys():
             self.above_way = self.case_data["ABOVE"]
-        except:
+        else:
             self.above_way = None
+
+    def assert_config(self):
+        if self.case_data["ENV_DATA"] is not None:
+            self.env_config = self.case_data["ENV_DATA"]["CONFIG"]
+        if self.env_config is not None and "ASSERT" in self.env_config and self.case_assert_config is None:
+            self.case_assert_config = self.env_config["ASSERT"]
+        if self.case_assert_config is not None:
+            for k, v in self.case_assert_config.items():
+                self.inspection_method.extra[k] = v
 
     def get_headers(self):
         if self.headers_type == "NORMAL":
             return self.headers_data
         headers_func = header_function_import(self.headers_type)
-        return headers_func(func_data=self.headers_data, case_data=self.case_data)
+        return headers_func(func_data=self.headers_data, case_data=self.case_data, source_name=self.source_name)
 
     def get_url(self):
         if self.host is not None and self.url_path is not None:
@@ -87,16 +108,16 @@ class ApiTester:
         if self.params_type == "JOIN":
             return self.url + "?" + urlencode(self.params_data)
         params_func = params_function_import(self.params_type)
-        return params_func(func_data=self.params_data, case_data=self.case_data)
+        return params_func(func_data=self.params_data, case_data=self.case_data, source_name=self.source_name)
 
     def get_body(self):
         if self.request_mode == "GET":
             return None
-        if self.request_mode == "POST" and self.body_type == "JSON":
+        if self.request_mode == "POST" and self.body_type == "JSON" or self.body_type == "DATA":
             return json.dumps(self.body_data)
         body_func = body_function_import(self.body_type)
         self.body_type = "JSON"
-        return body_func(func_data=self.body_data, case_data=self.case_data)
+        return body_func(func_data=self.body_data, case_data=self.case_data, source_name=self.source_name)
 
     def format_assert(self):
         if self.response.status_code == 200:
@@ -130,13 +151,13 @@ class ApiTester:
                 function_data = assert_data["DATA"]
                 func = assert_function_import(function_name)
                 func(func_data=function_data, case_data=self.case_data, response=self.response,
-                     fail_list=self.another_assert_fail_list)
+                     fail_list=self.another_assert_fail_list, source_name=self.source_name)
         else:
             function_name = self.another_assert_data["TYPE"]
             function_data = self.another_assert_data["DATA"]
             func = assert_function_import(function_name)
             func(func_data=function_data, case_data=self.case_data, response=self.response,
-                 fail_list=self.another_assert_fail_list)
+                 fail_list=self.another_assert_fail_list, source_name=self.source_name)
 
     def another_assert_report(self):
         msg = ""
@@ -155,13 +176,22 @@ class ApiTester:
             print("Response:", fail["response"])
 
     def normal_api_test(self):
+        url = self.get_url()
+        headers = self.get_headers()
+        body = self.get_body()
         if self.request_mode == "GET":
-            response = requests.get(url=self.get_url(), headers=self.get_headers())
+            response = requests.get(url=url, headers=headers)
         else:
             if self.body_type == "JSON":
-                response = requests.post(url=self.get_url(), headers=self.get_headers(),
-                                         json=self.get_body())
+                response = requests.post(url=url, headers=headers,
+                                         json=body)
+            else:
+                response = requests.post(url=url, headers=headers,
+                                         data=body)
         self.response = response
+        self.the_url = url
+        self.the_headers = headers
+        self.the_body = url
 
     def above_response_to(self, data):
         keys = data["DATA"].split("/")
@@ -202,15 +232,15 @@ class ApiTester:
             if data_from == "HEADERS" and data_type == "ALL":
                 self.headers_data = self.above_response.headers
                 self.headers_type = "NORMAL"
-                return
+                continue
             if data_from == "HEADERS" and data_type == "KEYS":
                 self.above_headers_to(result)
-                return
+                continue
             if data_from == "BODY" and data_type == "KEYS":
                 self.above_response_to(result)
-                return
+                continue
             func = above_function_import(data_type)
-            func(self.case_data)
+            func(self.case_data, source_name=self.source_name)
 
     def api_test(self):
         if self.above_way is None:

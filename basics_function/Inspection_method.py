@@ -3,6 +3,7 @@
 # __author__ = "Gz"
 import requests
 import json
+import re
 import io
 from PIL import Image
 import random
@@ -25,7 +26,8 @@ class InspectionMethod:
                       "LIST_EMPTY": True,
                       "DICT_LIST_COUNT": None,
                       "URL_FROM": None,
-                      "EMPTY_STRING_CHECK": False
+                      "EMPTY_STRING_CHECK": False,
+                      "URL_CHECK_IGNORE": []
                       }
         # host+path 和 url+MD5 判断应该做 配置文件
         self.requests = requests
@@ -33,15 +35,23 @@ class InspectionMethod:
         self.fail_list = []
 
     def fail_append(self, data):
-        if data is not None:
+        if data is not False:
             self.fail_list.append(data)
 
-    def response_data_check_other(self, case, response):
+    @classmethod
+    def response_data_check_other(cls, case, response):
         if (str(case) != str(response) and str(case) != "$$$" and str(case) != "null") or (case == "URL_WRONG") or (
                 str(case) == "null" and (response != "null" and response is not None)):
             return False
         else:
             return True
+
+    def url_ignore(self, data):
+        for ignore in self.extra["URL_CHECK_IGNORE"]:
+            re_value = re.compile(ignore)
+            if re_value.match(data) is not None:
+                return True
+        return False
 
     def list_repeated_examination(self, response):
         new_response = []
@@ -63,6 +73,8 @@ class InspectionMethod:
     # http资源验证
     def http_resource(self, url):
         url = str(url).replace("%2F", "/")
+        if self.extra["URL_CHECK_IGNORE"] is not [] and self.url_ignore(url):
+            return True
         if self.extra["URL_FROM"] is not None and self.extra["URL_FROM"] not in url:
             self.fail_list.append(
                 {"reason": "\n" + url + " 资源来源不是" + str(self.extra["URL_FROM"]), "case": None, "response": None})
@@ -75,9 +87,8 @@ class InspectionMethod:
                     {"reason": url + "\nurl请求错误" + str(resources.status_code), "case": None, "response": None})
                 return False
         except Exception as e:
-            print(e)
             self.fail_list.append(
-                {"reason": "\nHttp请求错误,错误信息:" + e, "case": None, "response": None})
+                {"reason": "\nHttp请求错误,错误信息:" + str(e), "case": None, "response": None})
             return False
 
     def response_data_check_url(self, response):
@@ -123,11 +134,13 @@ class InspectionMethod:
         if "|" in str(case):
             case_ = str(case).split("|")
             for i in case_:
-                result.append(self.response_data_check_(i, response))
+                i_r = self.response_data_check_(i, response)
+                result.append(i_r)
         else:
-            result.append(self.response_data_check_(case, response))
+            i_r = self.response_data_check_(case, response)
+            result.append(i_r)
         if True in result:
-            return None
+            return False
         else:
             return {"reason": "\n返回数据校验错误，错误内容:", "case": str(case), "response": str(response)}
 
@@ -199,19 +212,28 @@ class InspectionMethod:
 
     # response检查list类型
     # 默认进行重复检查
-    def format_list(self, case, response):
+    def format_list(self, case, response, fail_list):
         model = case[0]
         if self.extra["LIST_REPEATED"] is True:
             self.list_repeated_examination(response=response)
         if self.extra["LIST_EMPTY"] is True:
             self.list_empty_check(case, response)
-        for i in case:
-            for e in response:
+        for e in response:
+            temp_fail = []
+            temp_result = []
+            for i in case:
+                t_temp_fail_list = []
                 if isinstance(i, str):
                     fail_data = self.response_data_check(model, e)
-                    self.fail_append(fail_data)
+                    if fail_data is not False:
+                        t_temp_fail_list.append(fail_data)
                 else:
-                    self.format_diff(i, e)
+                    temp_result.append(self.format_diff(i, e, t_temp_fail_list))
+                for t_temp_fail in t_temp_fail_list:
+                    temp_fail.append(t_temp_fail)
+            if True not in temp_result:
+                fail_data = {"reason": "\nList格式检查中未发现任何匹配的结构:", "case": str(case), "response": str(e)}
+                fail_list.append(fail_data)
 
     def dict_key_list_count(self, key, response_list):
         for check_key, check_count in self.extra["DICT_LIST_COUNT"].items():
@@ -221,55 +243,56 @@ class InspectionMethod:
                     "case": None, "response": None}
                 self.fail_list.append(fail_data)
 
-    def _format_dict(self, case, response, key):
-        if isinstance(case[key], list) and isinstance(response[key], list):
+    def _format_dict(self, case, response, key, fail_list):
+        if (isinstance(case[key], dict) and ("$$$" not in case[key])) or (
+                isinstance(case[key], str) and (case[key] != response[key])):
+            self.format_diff(case[key], response[key], fail_list)
+        elif isinstance(case[key], list):
             if self.extra["DICT_LIST_COUNT"] is not None:
                 self.dict_key_list_count(key, response[key])
-            if (isinstance(case[key], dict) and ("$$$" not in case[key])) or (
-                    isinstance(case[key], str) and (case[key] != response[key])):
-                self.format_diff(case[key], response[key])
-            else:
-                self.format_list(case[key], response[key])
+            self.format_list(case[key], response[key], fail_list)
         elif isinstance(case[key], str):
-            # 待验证
-            self.fail_append(self.response_data_check(case[key], response[key]))
+            fail_data = self.response_data_check(case[key], response[key])
+            if fail_data is not False:
+                fail_list.append(fail_data)
+            self.fail_append(fail_data)
         else:
-            self.format_diff(case[key], response[key])
+            self.format_diff(case[key], response[key], fail_list)
 
     # response检查dict类型
-    def format_dict(self, case, response):
-        if case.keys() == response.keys():
+    def format_dict(self, case, response, fail_list):
+        case_keys = list(case.keys())
+        case_keys.sort()
+        response_keys = list(response.keys())
+        response_keys.sort()
+        if case_keys == response_keys:
             for key in case.keys():
                 # 值得类型是list进行忽略检查
-                self._format_dict(case, response, key)
+                self._format_dict(case, response, key, fail_list)
         else:
             msg = "\nresponse检查dict类型错误,字典型key不匹配\n" \
                   "case: {} \n" \
                   "response: {} \n".format(str(case.keys()), str(response.keys()))
             fail_data = {"reason": msg, "case": case, "response": response}
-            self.fail_list.append(fail_data)
+            fail_list.append(fail_data)
 
     # response检查格式
-    def format_diff(self, case, response):
+    def format_diff(self, case, response, fail_list):
         try:
             # case为list
             if isinstance(case, list) and isinstance(response, list):
-                self.format_list(case, response)
+                self.format_list(case, response, fail_list)
             # case 为dict
-            elif isinstance(case, dict):
-                self.format_dict(case, response)
+            elif isinstance(case, dict) and isinstance(response, dict):
+                self.format_dict(case, response, fail_list)
             # case 为str
             else:
-                if case is None:
-                    case = "null"
-                if response is None:
-                    response = "null"
-                self.fail_append(self.response_data_check(case, response))
+                fail_data = self.response_data_check(case, response)
+                self.fail_append(fail_data)
         except Exception as e:
-            # print(e)
-            fail_data = {"reason": "response格式检查错误", "case": case, "response": response}
-            self.fail_list.append(fail_data)
-        if len(self.fail_list) > 0:
+            fail_data = {"reason": "response格式检查错误," + str(e), "case": case, "response": response}
+            fail_list.append(fail_data)
+        if len(fail_list) > 0:
             return False
         else:
             return True
@@ -289,7 +312,7 @@ class InspectionMethod:
             format_data = case
         result_list = []
         if format_type == "ONLY":
-            return self.format_diff(format_data, response)
+            return self.format_diff(format_data, response, self.fail_list)
         else:
             # 多个可能时case
             '''
@@ -299,7 +322,7 @@ class InspectionMethod:
             '''
             for content, single_case in format_data.items():
                 if self.key_value_check(content, response):
-                    result_list.append(self.format_diff(single_case, response))
+                    result_list.append(self.format_diff(single_case, response, self.fail_list))
                 else:
                     assert False, "未发现对应DATA_FORMAT条件,条件为: {}".format(str(content))
         if True in result_list:
@@ -313,7 +336,7 @@ class InspectionMethod:
             for fail in self.fail_list:
                 msg = msg + "\n\t错误原因:{}\n\t".format(fail["reason"])
                 if fail["case"] is not None:
-                    msg = msg + "\n\tcase:{}\n\t".format(fail["case"])
+                    msg = msg + "\n\tcase:{}\n\t".format(json.dumps(fail["case"]))
                 if fail["response"] is not None:
                     msg = msg + "\n\tresponse:{}\n\t".format(json.dumps(fail["response"]))
                 msg = msg + "\n\t"

@@ -1,0 +1,58 @@
+ASSERT:
+  DATA_CONTENT: null
+  DATA_FORMAT:
+    DATA:
+      code: Int
+      payload:
+        cid: Str
+        ctime: Str
+        del: Str
+        deviceId: Str
+        id: Str
+        mid: Str
+        ostype: Str
+        regId: Str
+        uid: Str
+        utime: Str
+      status: Str
+    TYPE: ONLY
+  RESPONSE_HEADER: null
+SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: POST
+  URL_PATH: null
+  online:
+    BODY:
+      DATA:
+        regId: 191e35f7e0c91caf703
+        userId: '460148395898834944'
+      TYPE: JSON
+    HEADERS:
+      DATA:
+        accept: '*/*'
+        accept-encoding: br;q=1.0, gzip;q=0.9, deflate;q=0.8
+        accept-language: zh-Hans-CN;q=1.0
+        appname: ArtAiClass
+        appversion: 1.5.2
+        authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJzdWIiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJpYXQiOjE1OTY0NjUzNTksImF1ZCI6InVzZXIiLCJleHAiOjE2MDUxMDUzNTl9.ZDjO39ioSvUhy9Q0v584DeLKJ9lWxxMnBYrPqwt0wIBl1hh8hBmMBK65OX1QRYmRXw2KcTD3G-bDCQavDjnb2Q
+        buildcode: '329'
+        channel: '38'
+        content-length: '51'
+        content-type: application/x-www-form-urlencoded; charset=utf-8
+        cookie: sajssdk_2015_new_user_www_xiaoxiongmeishu_com=1
+        deviceid: 05502E96-CE53-4A8F-B448-9C65F91120E6
+        devicemodel: iPhone X
+        devicetype: iPhone
+        idfa: 00000000-0000-0000-0000-000000000000
+        market: AppStore
+        ostype: iOS
+        ratio: 375.0x812.0
+        systermversion: '14.0'
+        token: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJzdWIiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJpYXQiOjE1OTY0NjUzNTksImF1ZCI6InVzZXIiLCJleHAiOjE2MDUxMDUzNTl9.ZDjO39ioSvUhy9Q0v584DeLKJ9lWxxMnBYrPqwt0wIBl1hh8hBmMBK65OX1QRYmRXw2KcTD3G-bDCQavDjnb2Q
+        user-agent: ArtAIClassSwift/1.5.2 (com.meishubao.art.aiclass; build:329; iOS
+          14.0.0) Alamofire/5.2.2
+      TYPE: NORMAL
+    PARAMS:
+      DATA: null
+      TYPE: JOIN
+    URL: https://www.xiaoxiongmeishu.com/api/u/v1/user/createUserAndRegId

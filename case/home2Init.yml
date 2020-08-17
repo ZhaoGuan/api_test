@@ -1,0 +1,114 @@
+ASSERT:
+  DATA_CONTENT: null
+  DATA_FORMAT:
+    DATA:
+      code: Int
+      payload:
+        adContent: Str
+        adUrl: HTTP
+        head: HTTP
+        introduceContent: Str
+        introduceUrl: Str
+        introduceWindow: Int
+        level: Str
+        levelCount: Int
+        levelValue: Int
+        studentCourseItemList:
+        - courseId: Str
+          courseState: Str
+          courseStateTip: Str
+          currentLesson: Str
+          dayOfWeek: Str
+          desc: Str
+          howToTeachCard: null
+          image: HTTP
+          learned: Int
+          lessonType: Str
+          liveIsOver: null
+          liveUrl: Str
+          locked: Int
+          planId: Str
+          processing: Str
+          star: Int
+          startLiveTime: null
+          startTime: Str
+          studentId: Str
+          tag: Str
+          teacherId: Str
+          teamId: Str
+          term: Str
+          title: Str
+          week: Int
+        studentCourseListGroup:
+          futureList:
+          - courseId: Str
+            courseState: Str
+            courseStateTip: Str
+            currentLesson: Str
+            dayOfWeek: Str
+            desc: Str
+            howToTeachCard: null
+            image: HTTP
+            learned: null
+            lessonType: Str
+            liveIsOver: null
+            liveUrl: HTTP
+            locked: Int
+            planId: null
+            processing: Str
+            star: Int
+            startLiveTime: null
+            startTime: Str
+            studentId: Str
+            tag: null
+            teacherId: Str
+            teamId: Str
+            term: Str
+            title: Str
+            week: Int
+          tips:
+          - Str
+          todayList: null
+        studyDays: Int
+        stydyingWeek: Int
+        userName: Str
+        works: Str
+      status: Str
+    TYPE: ONLY
+  RESPONSE_HEADER: null
+SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: GET
+  URL_PATH: null
+  online:
+    BODY:
+      DATA: null
+      TYPE: JSON
+    HEADERS:
+      DATA:
+        accept: '*/*'
+        accept-encoding: br;q=1.0, gzip;q=0.9, deflate;q=0.8
+        accept-language: zh-Hans-CN;q=1.0
+        appname: ArtAiClass
+        appversion: 1.5.2
+        authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJzdWIiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJpYXQiOjE1OTY0NjUzNTksImF1ZCI6InVzZXIiLCJleHAiOjE2MDUxMDUzNTl9.ZDjO39ioSvUhy9Q0v584DeLKJ9lWxxMnBYrPqwt0wIBl1hh8hBmMBK65OX1QRYmRXw2KcTD3G-bDCQavDjnb2Q
+        buildcode: '329'
+        channel: '38'
+        cookie: sajssdk_2015_new_user_www_xiaoxiongmeishu_com=1
+        deviceid: 05502E96-CE53-4A8F-B448-9C65F91120E6
+        devicemodel: iPhone X
+        devicetype: iPhone
+        idfa: 00000000-0000-0000-0000-000000000000
+        market: AppStore
+        ostype: iOS
+        ratio: 375.0x812.0
+        systermversion: '14.0'
+        token: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJzdWIiOiI0NjAxNDgzOTU4OTg4MzQ5NDQiLCJpYXQiOjE1OTY0NjUzNTksImF1ZCI6InVzZXIiLCJleHAiOjE2MDUxMDUzNTl9.ZDjO39ioSvUhy9Q0v584DeLKJ9lWxxMnBYrPqwt0wIBl1hh8hBmMBK65OX1QRYmRXw2KcTD3G-bDCQavDjnb2Q
+        user-agent: ArtAIClassSwift/1.5.2 (com.meishubao.art.aiclass; build:329; iOS
+          14.0.0) Alamofire/5.2.2
+      TYPE: NORMAL
+    PARAMS:
+      DATA:
+        uid: '460148395898834944'
+      TYPE: JOIN
+    URL: https://www.xiaoxiongmeishu.com/api/home/v1/config/home2Init

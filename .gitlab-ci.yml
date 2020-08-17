@@ -1,0 +1,42 @@
+.sonar: &sonar
+    script:
+        # 上传sonar
+        # 文件名处理
+        - branchName=$(echo ${CI_COMMIT_REF_NAME}|sed 's/[/]/-/g')
+        - echo ${branchName}
+        - sonar_host='http://192.168.100.27:9000'
+        - projectKey=${CI_PROJECT_NAME}"-"${branchName}
+        - sonar_token='8d6a9078d0b988bc1dc98e0c3b9d18807dcc22a2'
+        # 数据插入sonar-project.properties
+        - sed -i '1a sonar.projectKey='${projectKey} sonar-project.properties
+        - sed -i '1a sonar.host.url='${sonar_host} sonar-project.properties
+        - sed -i '1a sonar.login='${sonar_token} sonar-project.properties
+        - sed -i '1a sonar.projectName='${CI_PROJECT_NAME}' '${CI_COMMIT_REF_NAME} sonar-project.properties
+        - /home/rein/sonar-scanner/bin/sonar-scanner
+        # 获取分析结果
+        - ./sonar_result.sh ${sonar_host} ${projectKey}
+        - echo "1"
+stages:
+  - feature
+  - develop
+# 每次提交
+task-feature:
+  tags:
+    - sonar
+  stage:
+    feature
+  only:
+    - branches
+  except:
+    - develop
+  <<: *sonar
+# develop合并后
+task-develop:
+    tags:
+      - sonar
+    stage:
+      develop
+    only:
+      - develop
+    script:
+      - echo 'merge develop'

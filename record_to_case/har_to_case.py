@@ -29,18 +29,33 @@ class HarToCase:
         return the_header
 
     def get_post(self, request):
-        request_mimetype = request["postData"]["mimeType"]
-        post_body = request["postData"]["params"]
+        try:
+            request_mimetype = request["postData"]["mimeType"]
+        except:
+            request_mimetype = None
+        try:
+            post_body = request["postData"]["params"]
+        except:
+            post_body = None
         the_post_body = {}
-        if request_mimetype == "application/x-www-form-urlencoded":
+        if request_mimetype is not None and "application/x-www-form-urlencoded" in request_mimetype:
             for response_body_data in post_body:
                 the_post_body[response_body_data["name"]] = response_body_data["value"]
-            request_post_type = "NORMAL"
-            body_type = "JSON"
-            request_body_function = "NORMAL"
+        request_post_type = "NORMAL"
+        body_type = "JSON"
+        request_body_function = "NORMAL"
         if the_post_body == {}:
             the_post_body = None
         return the_post_body, request_post_type, body_type, request_body_function
+
+    @classmethod
+    def new_header(cls, header):
+        result = {}
+        for k, v in header.items():
+            if ":" in k:
+                continue
+            result[k] = v
+        return result
 
     def to_case(self, case_path):
         with open(self.path, "r") as f:
@@ -50,9 +65,10 @@ class HarToCase:
             # request things
             request = data["request"]
             method = request['method']
-            url = request["url"]
+            url = request["url"].split("?")[0]
             headers = request["headers"]
             the_header = self.get_headers(headers)
+            the_header = self.new_header(the_header)
             params = request["queryString"]
             the_params = self.get_params(params)
             the_post_body, request_post_type, body_type, request_body_function = self.get_post(request)
@@ -74,8 +90,3 @@ class HarToCase:
             file_name = url.split("/")[-1] + ".yml"
             with open(case_path + "/" + file_name, "w") as f:
                 yaml.dump(case_data, f)
-
-
-if __name__ == "__main__":
-    htc = HarToCase("./Desktop.har", source)
-    htc.to_case("./")

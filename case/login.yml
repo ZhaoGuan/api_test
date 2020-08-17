@@ -1,0 +1,103 @@
+ASSERT:
+  DATA_CONTENT: null
+  DATA_FORMAT:
+    DATA:
+      code: Int
+      payload:
+        channel: Str
+        id: Str
+        mobile: Str
+        pageOrigin: Str
+        pageOriginId: Str
+        password: Str
+        profile: Bool
+        sendId: Str
+        token: Str
+        type: Str
+        user:
+          addedWechat: Str
+          basePainting: Str
+          birthday: Str
+          birthdayActivity: Str
+          channel: Str
+          cid: Str
+          cityId: Str
+          country: Str
+          ctime: Str
+          del: Str
+          exportRemark: Str
+          firstOrderSendId: Str
+          head: HTTP
+          id: Str
+          importRemark: Str
+          importTime: Str
+          joinDate: Str
+          lastTeacherId: Str
+          lastTeamId: Str
+          mid: Str
+          mobile: Str
+          mobileCity: Str
+          mobileProvince: Str
+          nickname: Str
+          pageOrigin: Str
+          pageOriginId: Str
+          password: Str
+          provinceId: Str
+          sendId: Str
+          sensorsId: Str
+          sex: Str
+          spreadCode: Str
+          status: Str
+          subscribe: Str
+          teamId: Str
+          type: Str
+          user1v1Id: Str
+          userNum: Str
+          username: Str
+          utime: Str
+          wallBackground: HTTP
+          wechatNikename: Str
+          weixinOpenid: Str
+          weixinUnionid: Str
+      status: Str
+    TYPE: ONLY
+  RESPONSE_HEADER: null
+SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: POST
+  URL_PATH: null
+  online:
+    BODY:
+      DATA: null
+      TYPE: JSON
+    HEADERS:
+      DATA:
+        accept: '*/*'
+        accept-encoding: br;q=1.0, gzip;q=0.9, deflate;q=0.8
+        accept-language: zh-Hans-CN;q=1.0
+        appname: ArtAiClass
+        appversion: 1.5.2
+        authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0ODc3OTI4NTExNzA3NTg2NTYiLCJzdWIiOiI0ODc3OTI4NTExNzA3NTg2NTYiLCJpYXQiOjE1OTY0NjUzNDQsImF1ZCI6ImFub255bW91cyIsImV4cCI6MTYwNTEwNTM0NH0.Nr6wX8oaY7Nf_YkEXGzkUtKEmQd-9nYY39hsplSyePmkLu7QoK8Xfn7tSbmlvk1H6P3kirfuslgLEwmOsOs-tQ
+        buildcode: '329'
+        channel: '38'
+        content-length: '0'
+        cookie: sajssdk_2015_new_user_www_xiaoxiongmeishu_com=1
+        deviceid: 05502E96-CE53-4A8F-B448-9C65F91120E6
+        devicemodel: iPhone X
+        devicetype: iPhone
+        idfa: 00000000-0000-0000-0000-000000000000
+        market: AppStore
+        ostype: iOS
+        ratio: 375.0x812.0
+        systermversion: '14.0'
+        token: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0ODc3OTI4NTExNzA3NTg2NTYiLCJzdWIiOiI0ODc3OTI4NTExNzA3NTg2NTYiLCJpYXQiOjE1OTY0NjUzNDQsImF1ZCI6ImFub255bW91cyIsImV4cCI6MTYwNTEwNTM0NH0.Nr6wX8oaY7Nf_YkEXGzkUtKEmQd-9nYY39hsplSyePmkLu7QoK8Xfn7tSbmlvk1H6P3kirfuslgLEwmOsOs-tQ
+        user-agent: ArtAIClassSwift/1.5.2 (com.meishubao.art.aiclass; build:329; iOS
+          14.0.0) Alamofire/5.2.2
+      TYPE: NORMAL
+    PARAMS:
+      DATA:
+        channel: '38'
+        code: '119110'
+        mobile: '13261695357'
+      TYPE: JOIN
+    URL: https://www.xiaoxiongmeishu.com/api/u/v1/user/login

@@ -1,28 +1,28 @@
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/cases_from.yml:
-  api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/cases_from.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/context_relation_cases_to.yml:
-  api: context_relation_cases_to.yml
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/context_relation_cases_to.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/get_request.yml:
-  api: /api/o/v1/order/getOrders/regtypeAndStatuses
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/get_request.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/get_request_moreassert.yml:
-  api: /api/ts/v1/teaching/student/history/course/list
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/get_request_moreassert.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/more_cases.yml:
-  api: /api/home/v1/config/home1Init
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/more_cases.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/post_paramrequest.yml:
-  api: /api/s/v1/popup/createCouponPopup
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/little_bear/post_paramrequest.yml
-  source: dev
-/Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/post_bodyrequest.yml:
-  api: /xbk/classmanage/class/createClass
-  path: /Users/gz/Desktop/project/MSB_api_test/basics_function/../case/xbk/post_bodyrequest.yml
-  source: dev
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/createCouponPopup.yml:
+  api: createCouponPopup.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/createCouponPopup.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/createUserAndRegId.yml:
+  api: createUserAndRegId.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/createUserAndRegId.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/getIosPublish.yml:
+  api: getIosPublish.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/getIosPublish.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/getUserDetail.yml:
+  api: getUserDetail.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/getUserDetail.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/home2Init.yml:
+  api: home2Init.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/home2Init.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/list.yml:
+  api: list.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/list.yml
+  source: online
+/Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/login.yml:
+  api: login.yml
+  path: /Users/gz/Desktop/project/MSB/MSB_api_test/basics_function/../case/login.yml
+  source: online

@@ -1,0 +1,35 @@
+ASSERT:
+  DATA_CONTENT: null
+  DATA_FORMAT:
+    DATA:
+      code: Int
+      payload: Bool
+      status: Str
+    TYPE: ONLY
+  RESPONSE_HEADER: null
+SOURCE:
+  DATA_TYPE: ONLY
+  METHOD: GET
+  URL_PATH: null
+  online:
+    BODY:
+      DATA: null
+      TYPE: JSON
+    HEADERS:
+      DATA:
+        accept: application/json, text/plain, */*
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NTgwNTIyOTY3NzgwNTk3NzYiLCJzdWIiOiI0NTgwNTIyOTY3NzgwNTk3NzYiLCJpYXQiOjE1ODkzNzQ2NDMsImF1ZCI6InVzZXIiLCJleHAiOjE1OTgwMTQ2NDN9.VMeHKQHHOHb_9Hd764BjDGQwYLwHrgbavqHcvisKGeFu5ZWAFGckS60dkNVHo20x_tU8vGlnDS8AC97IKTBFEw
+        cookie: sajssdk_2015_new_user_www_xiaoxiongmeishu_com=1
+        referer: https://www.xiaoxiongmeishu.com/h5/about
+        user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15
+          (KHTML, like Gecko) Mobile/15E148 /sa-sdk-ios/sensors-verify/hm.meishubao.com?production   ArtAiClass/1.5.2/329/38(iPhone/14.0/iPhone
+          X)
+      TYPE: NORMAL
+    PARAMS:
+      DATA:
+        iosPublishChannel: '38'
+        iosPublishVersion: 1.5.2
+      TYPE: JOIN
+    URL: https://www.xiaoxiongmeishu.com/api/home/v1/config/getIosPublish
